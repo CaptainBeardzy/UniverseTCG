@@ -313,6 +313,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function updateResourceDisplay() { 
   ['heat','hype','clout'].forEach(r=>document.getElementById(`res-${r}`).textContent = resources[r]); 
   document.getElementById('packs-count').textContent = packs;
+  document.getElementById('show-num').textContent = showNumber;
 }
 function applyResource(type, amount) { 
   resources[type] = Math.max(0, resources[type] + amount); 
@@ -861,23 +862,20 @@ async function runTransition() {
   // Show the continue button so user can proceed
   document.getElementById('transition-done-btn').style.display = 'inline-block';
   document.getElementById('transition-msg').textContent = 'Transition complete. Click continue to proceed.';
-}
-
-// FIXED: Give player a pack when completing transition
-function completeTransition(nextShow) {
-  showNumber = nextShow;
-  document.getElementById('show-num').textContent = showNumber;
-  packs++; // Give player one pack
-  updateHandCount(); updateActiveBar();
-  updateResourceDisplay(); // Update packs counter
   
-  // FIXED: Ensure continue button is enabled after transition
-  document.getElementById('next-show-btn').disabled = false;
+  // Update show number and packs immediately
+  showNumber = nextShow;
+  packs++; // Give player one pack
+  updateResourceDisplay();
 }
 
-function finishTransition() { 
-  showScreen('pack-screen'); 
-  updateContinueButtonState(); 
+// FIXED: Properly complete transition when user clicks continue
+function finishTransition() {
+  // Ensure show number and packs are updated
+  updateResourceDisplay();
+  updateHandCount();
+  showScreen('pack-screen');
+  updateContinueButtonState();
   document.getElementById('no-packs-msg').style.display = 'none';
 }
 
