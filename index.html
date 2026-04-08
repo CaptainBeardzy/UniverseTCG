@@ -534,9 +534,15 @@ function isDiscardEligible(h) {
 async function loadCards() {
   try {
     const res = await fetch('packs.json');
-    if (!res.ok) throw new Error();
+    if (!res.ok) throw new Error(`packs.json returned ${res.status}`);
     const packsIndex = await res.json();
-    const packPromises = packsIndex.packs.map(p => fetch(p).then(r => r.json()));
+
+    const packPromises = packsIndex.packs.map(async p => {
+      const r = await fetch(p);
+      if (!r.ok) throw new Error(`${p} returned ${r.status}`);
+      return r.json();
+    });
+
     cardData = await Promise.all(packPromises);
     document.getElementById('loading-msg').style.display = 'none';
     buildPackUI();
@@ -544,7 +550,7 @@ async function loadCards() {
     document.getElementById('loading-msg').style.display = 'none';
     const err = document.getElementById('error-msg');
     err.style.display = 'block';
-    err.textContent = 'Could not load packs. Run from GitHub Pages with packs.json in the root.';
+    err.textContent = `Load error: ${e.message}`;
   }
 }
 
