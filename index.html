@@ -16,15 +16,10 @@ body { background:#0a0a0f; color:#fff; font-family: 'Segoe UI',sans-serif; min-h
 #pill-heat .r-val { color:#f55; } #pill-hype .r-val { color:#fa0 } #pill-clout .r-val { color:#a8f }
 #show-counter { background:#1a1a2e; border:1px solid #333; border-radius:20px; padding:4px 12px; font-size:11px; color:#aaa; }
 #hand-btn { background:#2a2a4a; border:1px solid #4a4aaa; border-radius:20px; padding:6px 12px; font-size:11px; color:#aaf; cursor:pointer; }
-
-/* active bar */
-#active-bar { position:fixed; top:56px; left:0; right:0; background:rgba(10,10,20,0.92); border-bottom:1px solid #1a3a1a; z-index:1000; transition:max-height .3s; max-height:44px; overflow:hidden; }
-#active-bar.expanded { max-height:260px; }
-#active-bar-header { display:flex; align-items:center; padding:0 16px; height:44px; gap:10px; cursor:pointer; }
-#active-cards-list { display:flex; gap:10px; padding:8px 16px 12px; overflow-x:auto; }
+#active-btn { background:#2a4a2a; border:1px solid #4aa44a; border-radius:20px; padding:6px 12px; font-size:11px; color:#afa; cursor:pointer; }
 
 /* main */
-#main-content { padding-top:100px; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+#main-content { padding-top:56px; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
 .screen { display:none; width:100%; max-width:960px; padding:20px; }
 .screen.active { display:flex; flex-direction:column; align-items:center; }
 
@@ -64,7 +59,7 @@ body { background:#0a0a0f; color:#fff; font-family: 'Segoe UI',sans-serif; min-h
 }
 
 /* play screen controls */
-#play-screen .action-row { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px; }
+.action-row { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px; }
 #play-card-btn, #discard-card-btn { padding:10px 28px; border-radius:12px; font-weight:700; cursor:pointer; }
 #next-show-btn { padding:12px 32px; border-radius:12px; font-weight:700; cursor:pointer; }
 
@@ -107,6 +102,81 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
   100% { transform: scale(0) rotate(20deg); opacity: 0; }
 }
 
+/* Overlay screens */
+.overlay-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.overlay-screen.active {
+  display: flex;
+}
+
+.overlay-content {
+  background: #1a1a2e;
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #333;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hand overlay */
+#hand-overlay-content h2 {
+  margin-bottom: 15px;
+  color: #e8c84a;
+}
+
+#hand-grid-overlay {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Active cards overlay */
+#active-overlay-content h2 {
+  margin-bottom: 15px;
+  color: #4f4;
+}
+
+#active-cards-overlay {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 </style>
 </head>
 <body>
@@ -123,16 +193,8 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
     <span class="r-icon">🌐</span><span class="r-val" id="res-clout">5</span><span style="font-size:9px;color:#666">CLOUT</span>
   </div>
   <div id="show-counter">Show #<span id="show-num">1</span></div>
-  <button id="hand-btn" onclick="showScreen('play-screen'); renderPlayScreen();">🃏 Hand (<span id="hand-count">0</span>)</button>
-</div>
-
-<div id="active-bar">
-  <div id="active-bar-header" onclick="toggleActiveBar()">
-    <span style="font-size:12px;color:#4f4">🟢 ACTIVE</span>
-    <span class="ab-label" id="active-bar-label">No active cards</span>
-    <span class="ab-toggle" id="active-toggle">▼ expand</span>
-  </div>
-  <div id="active-cards-list"></div>
+  <button id="hand-btn" onclick="showOverlay('hand-overlay')">🃏 Hand (<span id="hand-count">0</span>)</button>
+  <button id="active-btn" onclick="showOverlay('active-overlay')">🟢 Active (<span id="active-count">0</span>)</button>
 </div>
 
 <div id="main-content">
@@ -184,6 +246,31 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
 
 </div>
 
+<!-- Hand Overlay -->
+<div id="hand-overlay" class="overlay-screen">
+  <div id="hand-overlay-content" class="overlay-content">
+    <button class="close-btn" onclick="hideOverlay('hand-overlay')">✕</button>
+    <h2>Your Hand <span id="hand-capacity-overlay" style="font-size:13px;color:#aaa;margin-left:8px"></span></h2>
+    <div id="play-status-overlay" style="max-width:640px; text-align:center; background:#111; border:1px solid #222; padding:12px; border-radius:8px; color:#aaa; margin:10px 0;"></div>
+    <div id="hand-grid-overlay" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px;"></div>
+
+    <div class="action-row" style="margin-top:12px;">
+      <button id="play-card-btn-overlay" onclick="playSelectedCardOverlay()" style="display:none; background:linear-gradient(135deg,#2a4a8a,#1a2a5a); border:2px solid #4a8af4; border-radius:12px; padding:10px 28px; color:#4a8af4;">▶ Play Card</button>
+      <button id="discard-card-btn-overlay" onclick="discardSelectedCardOverlay()" style="display:none; background:linear-gradient(135deg,#6a2a2a,#4a1a1a); border:2px solid #f44; border-radius:12px; padding:10px 28px; color:#f44;">🗑 Discard</button>
+      <div id="resource-warning-overlay" style="color:#f84; margin-left:8px; display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Active Cards Overlay -->
+<div id="active-overlay" class="overlay-screen">
+  <div id="active-overlay-content" class="overlay-content">
+    <button class="close-btn" onclick="hideOverlay('active-overlay')">✕</button>
+    <h2>Active Cards</h2>
+    <div id="active-cards-overlay" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px;"></div>
+  </div>
+</div>
+
 <script>
 // STATE
 let cardData = [];
@@ -198,6 +285,7 @@ let drawnTotal = 0;
 let drawnPromosTotal = 0;
 let selectedHandItem = null;
 const HAND_LIMIT = 5;
+let currentOverlay = null;
 
 // UTIL
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -210,6 +298,31 @@ function isFreeSlot(h) { return h.card.cardType === 'heel' && isImmediate(h.card
 function countedHandSize() { return hand.filter(h => !isFreeSlot(h)).length; }
 function isOverCapacity() { return countedHandSize() > HAND_LIMIT; }
 function isDiscardEligible(h) { if (h.card.cardType === 'heel' && isImmediate(h.card)) return false; return true; }
+
+// OVERLAY MANAGEMENT
+function showOverlay(id) {
+  document.getElementById(id).classList.add('active');
+  currentOverlay = id;
+  
+  if (id === 'hand-overlay') {
+    renderHandOverlay();
+  } else if (id === 'active-overlay') {
+    renderActiveOverlay();
+  }
+}
+
+function hideOverlay(id) {
+  document.getElementById(id).classList.remove('active');
+  currentOverlay = null;
+  
+  // If we were on the play screen, refresh it
+  if (document.getElementById('play-screen').classList.contains('active')) {
+    renderPlayScreen();
+  }
+  
+  // Update continue button state in case anything changed
+  updateContinueButtonState();
+}
 
 // LOAD PACKS
 async function loadCards() {
@@ -415,26 +528,28 @@ function addCardsToHand() {
   drawnPromosTotal = 0;
   promoResolved = 0;
   updateHandCount();
-  showScreen('play-screen');
-  renderPlayScreen();
+  showScreen('pack-screen');
   updateContinueButtonState();
 }
 
-function updateHandCount() { document.getElementById('hand-count').textContent = hand.length; }
+function updateHandCount() { 
+  document.getElementById('hand-count').textContent = hand.length;
+  document.getElementById('active-count').textContent = activeCards.length;
+}
 
-// RENDER PLAY SCREEN
-function renderPlayScreen() {
+// RENDER HAND OVERLAY
+function renderHandOverlay() {
   selectedHandItem = null;
-  document.getElementById('play-card-btn').style.display = 'none';
-  document.getElementById('discard-card-btn').style.display = 'none';
-  document.getElementById('resource-warning').style.display = 'none';
+  document.getElementById('play-card-btn-overlay').style.display = 'none';
+  document.getElementById('discard-card-btn-overlay').style.display = 'none';
+  document.getElementById('resource-warning-overlay').style.display = 'none';
 
-  const capEl = document.getElementById('hand-capacity');
+  const capEl = document.getElementById('hand-capacity-overlay');
   const counted = countedHandSize();
   capEl.textContent = `(${counted}/${HAND_LIMIT} slots used)`;
   capEl.className = counted > HAND_LIMIT ? 'over' : '';
 
-  const statusEl = document.getElementById('play-status');
+  const statusEl = document.getElementById('play-status-overlay');
   const immediateHeels = hand.filter(h => h.card.cardType === 'heel' && isImmediate(h.card));
 
   if (isOverCapacity()) {
@@ -448,13 +563,10 @@ function renderPlayScreen() {
     statusEl.innerHTML = `Hand is empty. Open a new pack!`;
   } else {
     statusEl.className = '';
-    statusEl.innerHTML = `All immediate cards resolved. Play optional cards or continue to the next show.`;
+    statusEl.innerHTML = `All immediate cards resolved. Play optional cards.`;
   }
 
-  // always keep Continue visible; enabled state managed separately
-  document.getElementById('next-show-btn').style.display = 'inline-block';
-
-  const grid = document.getElementById('hand-grid'); grid.innerHTML = '';
+  const grid = document.getElementById('hand-grid-overlay'); grid.innerHTML = '';
   if (hand.length === 0) return;
 
   hand.forEach(h => {
@@ -471,30 +583,30 @@ function renderPlayScreen() {
       const eligible = isDiscardEligible(h);
       el.classList.toggle('discardable', eligible);
       el.classList.toggle('dimmed', !eligible);
-      if (eligible) el.onclick = () => selectCard(el, h, 'discard');
+      if (eligible) el.onclick = () => selectCardOverlay(el, h, 'discard');
     } else {
-      el.onclick = () => selectCard(el, h, 'play');
+      el.onclick = () => selectCardOverlay(el, h, 'play');
     }
     grid.appendChild(el);
   });
 }
 
-// SELECT CARD
-function selectCard(el, handItem, mode) {
-  document.querySelectorAll('#hand-grid .card').forEach(c => c.classList.remove('selected'));
+// SELECT CARD IN OVERLAY
+function selectCardOverlay(el, handItem, mode) {
+  document.querySelectorAll('#hand-grid-overlay .card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   selectedHandItem = handItem;
-  const warn = document.getElementById('resource-warning');
+  const warn = document.getElementById('resource-warning-overlay');
 
   if (mode === 'discard') {
-    document.getElementById('play-card-btn').style.display = 'none';
-    document.getElementById('discard-card-btn').style.display = 'inline-block';
+    document.getElementById('play-card-btn-overlay').style.display = 'none';
+    document.getElementById('discard-card-btn-overlay').style.display = 'inline-block';
     warn.style.display = 'none';
   } else {
     const affordable = canAffordCard(handItem.card);
-    document.getElementById('play-card-btn').style.display = 'inline-block';
-    document.getElementById('play-card-btn').disabled = !affordable;
-    document.getElementById('discard-card-btn').style.display = 'none';
+    document.getElementById('play-card-btn-overlay').style.display = 'inline-block';
+    document.getElementById('play-card-btn-overlay').disabled = !affordable;
+    document.getElementById('discard-card-btn-overlay').style.display = 'none';
     if (!affordable) {
       const missing = Object.entries(handItem.card.cost || {})
         .filter(([r,v]) => resources[r] < v)
@@ -505,8 +617,8 @@ function selectCard(el, handItem, mode) {
   }
 }
 
-// PLAY / DISCARD
-function playSelectedCard() {
+// PLAY / DISCARD FROM OVERLAY
+function playSelectedCardOverlay() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
   if (!canAffordCard(h.card)) return;
@@ -527,33 +639,36 @@ function playSelectedCard() {
   }
   selectedHandItem = null;
   updateHandCount();
-  renderPlayScreen();
+  renderHandOverlay();
   updateContinueButtonState();
 }
 
-async function discardSelectedCard() {
+async function discardSelectedCardOverlay() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
   // animate selected card removing
-  const cards = document.querySelectorAll('#hand-grid .card');
+  const cards = document.querySelectorAll('#hand-grid-overlay .card');
   let targetEl = null;
   cards.forEach(el => { if (el.classList.contains('selected')) targetEl = el; });
   if (targetEl) { targetEl.classList.add('discarding'); await sleep(650); }
   removeFromHand(h);
   selectedHandItem = null;
   updateHandCount();
-  renderPlayScreen();
+  renderHandOverlay();
   updateContinueButtonState();
 }
 
 function removeFromHand(h) { hand = hand.filter(item => item !== h); }
 
-// active bar
-function updateActiveBar() {
-  const list = document.getElementById('active-cards-list'); list.innerHTML='';
-  const label = document.getElementById('active-bar-label');
-  if (activeCards.length === 0) { label.textContent='No active cards'; return; }
-  label.textContent = `${activeCards.length} card${activeCards.length>1?'s':''} active`;
+// ACTIVE CARDS OVERLAY
+function renderActiveOverlay() {
+  const list = document.getElementById('active-cards-overlay'); list.innerHTML='';
+  
+  if (activeCards.length === 0) {
+    list.innerHTML = '<p style="color:#aaa;width:100%;text-align:center;">No active cards</p>';
+    return;
+  }
+  
   activeCards.forEach(ac => {
     const el = buildCardElement(ac.card);
     el.classList.add('flipped','active-card');
@@ -563,11 +678,6 @@ function updateActiveBar() {
     el.appendChild(overlay);
     list.appendChild(el);
   });
-}
-function toggleActiveBar() {
-  const bar=document.getElementById('active-bar');
-  bar.classList.toggle('expanded');
-  document.getElementById('active-toggle').textContent = bar.classList.contains('expanded') ? '▲ collapse' : '▼ expand';
 }
 
 // NEXT SHOW / TRANSITION
@@ -733,8 +843,23 @@ function updateContinueButtonState() {
   }
 }
 
+// Render play screen (minimal version since we're using overlays)
+function renderPlayScreen() {
+  const statusEl = document.getElementById('play-status');
+  const immediateHeels = hand.filter(h => h.card.cardType === 'heel' && isImmediate(h.card));
+
+  if (immediateHeels.length > 0) {
+    statusEl.innerHTML = `Play all <strong style="color:#f88">immediate Heel cards</strong> before continuing. <button onclick="showOverlay('hand-overlay')" style="margin-left:10px;background:#2a2a4a;border:1px solid #4a4aaa;border-radius:4px;padding:4px 8px;color:#aaf;cursor:pointer;">View Hand</button>`;
+  } else {
+    statusEl.innerHTML = `All immediate cards resolved. <button onclick="showOverlay('hand-overlay')" style="margin-left:10px;background:#2a2a4a;border:1px solid #4a4aaa;border-radius:4px;padding:4px 8px;color:#aaf;cursor:pointer;">View Hand</button>`;
+  }
+  
+  document.getElementById('hand-grid').innerHTML = '';
+}
+
 // INIT
 updateResourceDisplay();
+updateHandCount();
 loadCards();
 
 </script>
