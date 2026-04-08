@@ -846,11 +846,15 @@ async function runTransition() {
   document.getElementById('transition-msg').textContent = 'Transition complete. Click continue to proceed.';
 }
 
+// FIXED: Reset pack opened flag when completing transition
 function completeTransition(nextShow) {
   showNumber = nextShow;
   document.getElementById('show-num').textContent = showNumber;
   packOpenedThisWeek = false; // Reset pack opened flag for new week
   updateHandCount(); updateActiveBar();
+  
+  // FIXED: Ensure continue button is enabled after transition
+  document.getElementById('next-show-btn').disabled = false;
 }
 
 function finishTransition() { 
