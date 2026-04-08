@@ -210,6 +210,9 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
     <div id="pack-locked-msg" style="display:none; margin-top:16px; color:#f88; background:#1a1010; border:1px solid #a44; padding:10px; border-radius:8px;">
       ⚠️ Play all immediate-use Heel cards before opening a new pack.
     </div>
+    <div id="pack-used-msg" style="display:none; margin-top:16px; color:#88f; background:#1a101a; border:1px solid #44a; padding:10px; border-radius:8px;">
+      📦 Pack already opened this week. Continue to next show.
+    </div>
   </div>
 
   <div id="reveal-screen" class="screen">
@@ -243,6 +246,23 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
     <p id="transition-msg">Updating durations…</p>
     <div id="transition-cards-area" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:12px; min-height:120px;"></div>
     <button id="transition-done-btn" onclick="finishTransition()" style="display:none; margin-top:12px; padding:10px 20px; border-radius:10px;">Continue ▶</button>
+  </div>
+
+  <!-- Post-Pack Screen -->
+  <div id="post-pack-screen" class="screen">
+    <h2>Show #<span id="current-show-num">1</span> in Progress</h2>
+    <p>You've opened your pack for this week. Manage your hand and active cards.</p>
+    <div style="margin:20px 0; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+      <button onclick="showOverlay('hand-overlay')" style="padding:12px 24px; background:#2a2a4a; border:1px solid #4a4aaa; border-radius:12px; color:#aaf; cursor:pointer;">
+        🃏 View Hand (<span id="hand-count-post">0</span>)
+      </button>
+      <button onclick="showOverlay('active-overlay')" style="padding:12px 24px; background:#2a4a2a; border:1px solid #4aa44a; border-radius:12px; color:#afa; cursor:pointer;">
+        🟢 View Active (<span id="active-count-post">0</span>)
+      </button>
+    </div>
+    <button onclick="goToNextShow()" style="padding:14px 32px; background:linear-gradient(135deg,#e8c84a,#d8b83a); border:none; border-radius:12px; color:#000; font-weight:700; font-size:16px; cursor:pointer; margin-top:20px;">
+      ➡ Continue to Next Show
+    </button>
   </div>
 
 </div>
@@ -287,6 +307,7 @@ let drawnPromosTotal = 0;
 let selectedHandItem = null;
 const HAND_LIMIT = 5;
 let currentOverlay = null;
+let packOpenedThisWeek = false; // New state to track if pack was opened
 
 // UTIL
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -389,6 +410,12 @@ function parseUseWindow(use) {
 
 // OPEN PACK
 function openPack(packIndex) {
+  // Check if pack already opened this week
+  if (packOpenedThisWeek) {
+    document.getElementById('pack-used-msg').style.display = 'block';
+    return;
+  }
+  
   // Block if immediate heels still in hand
   if (hand.some(h => h.card.cardType === 'heel' && isImmediate(h.card))) {
     document.getElementById('pack-locked-msg').style.display = 'block';
@@ -524,14 +551,21 @@ function addCardsToHand() {
   drawnTotal = 0;
   drawnPromosTotal = 0;
   promoResolved = 0;
+  packOpenedThisWeek = true; // Mark that pack was opened this week
   updateHandCount();
-  showScreen('pack-screen');
+  
+  // Show post-pack screen instead of returning to pack screen
+  document.getElementById('current-show-num').textContent = showNumber;
+  updateHandCount(); // Update counts in post-pack screen
+  showScreen('post-pack-screen');
   updateContinueButtonState();
 }
 
 function updateHandCount() { 
   document.getElementById('hand-count').textContent = hand.length;
   document.getElementById('active-count').textContent = activeCards.length;
+  document.getElementById('hand-count-post').textContent = hand.length;
+  document.getElementById('active-count-post').textContent = activeCards.length;
 }
 
 // RENDER HAND OVERLAY
@@ -813,11 +847,18 @@ async function runTransition() {
 function completeTransition(nextShow) {
   showNumber = nextShow;
   document.getElementById('show-num').textContent = showNumber;
+  packOpenedThisWeek = false; // Reset pack opened flag for new week
   updateHandCount(); updateActiveBar();
   document.getElementById('transition-msg').textContent = `Show #${nextShow} ready. Open a new pack!`;
   document.getElementById('transition-done-btn').style.display = 'inline-block';
 }
-function finishTransition() { showScreen('pack-screen'); updateContinueButtonState(); }
+
+function finishTransition() { 
+  showScreen('pack-screen'); 
+  updateContinueButtonState(); 
+  // Hide pack used message when starting new week
+  document.getElementById('pack-used-msg').style.display = 'none';
+}
 
 // CARD BUILDER
 function buildCardElement(card) {
@@ -843,7 +884,10 @@ function buildCardElement(card) {
 }
 
 // SCREEN MANAGEMENT
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function showScreen(id) { 
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); 
+  document.getElementById(id).classList.add('active'); 
+}
 
 // CONTINUE button logic: always visible on play-screen but disabled until eligible
 function updateContinueButtonState() {
