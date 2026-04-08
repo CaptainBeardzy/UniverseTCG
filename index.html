@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WWE Chaos Pack Opener</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0f;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: white;
+  }
+
+  /* Particle canvas */
+  #particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .screen {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* ---- PACK SELECTION SCREEN ---- */
+  #pack-screen h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 0 30px #e8c84a;
+    margin-bottom: 8px;
+  }
+
+  #pack-screen p {
+    color: #aaa;
+    margin-bottom: 50px;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+  }
+
+  .pack-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pack {
+    width: 140px;
+    height: 200px;
+    border-radius: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 12px;
+    border: 2px solid transparent;
+    overflow: hidden;
+  }
+
+  .pack:hover {
+    transform: translateY(-8px) scale(1.04);
+  }
+
+  .pack-standard {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border-color: #4a90d9;
+    box-shadow: 0 0 20px rgba(74,144,217,0.3);
+  }
+  .pack-standard:hover { box-shadow: 0 0 40px rgba(74,144,217,0.6); }
+
+  .pack-gold {
+    background: linear-gradient(145deg, #2a1a00, #3d2800);
+    border-color: #e8c84a;
+    box-shadow: 0 0 20px rgba(232,200,74,0.3);
+  }
+  .pack-gold:hover { box-shadow: 0 0 40px rgba(232,200,74,0.7); }
+
+  .pack-chaos {
+    background: linear-gradient(145deg, #1a0020, #2d0040);
+    border-color: #c84aff;
+    box-shadow: 0 0 20px rgba(200,74,255,0.3);
+  }
+  .pack-chaos:hover { box-shadow: 0 0 40px rgba(200,74,255,0.7); }
+
+  .pack-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .pack-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .pack-desc { font-size: 0.65rem; color: #aaa; margin-top: 4px; }
+  .pack-rarity { font-size: 0.6rem; margin-top: 8px; padding: 2px 8px; border-radius: 20px; font-weight: 700; letter-spacing: 1px; }
+  .pack-standard .pack-rarity { background: rgba(74,144,217,0.2); color: #4a90d9; }
+  .pack-gold .pack-rarity { background: rgba(232,200,74,0.2); color: #e8c84a; }
+  .pack-chaos .pack-rarity { background: rgba(200,74,255,0.2); color: #c84aff; }
+
+  /* ---- OPENING ANIMATION SCREEN ---- */
+  #opening-screen { display: none; }
+
+  .pack-opening-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .pack-3d {
+    width: 180px;
+    height: 260px;
+    position: relative;
+    cursor: pointer;
+    perspective: 800px;
+  }
+
+  .pack-3d-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 16px;
+  }
+
+  .pack-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .pack-face-front {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #4a90d9;
+    box-shadow: 0 0 40px rgba(74,144,217,0.5), inset 0 0 60px rgba(74,144,217,0.1);
+  }
+
+  .pack-face-front.gold-pack {
+    background: linear-gradient(145deg, #2a1a00, #3d2800);
+    border-color: #e8c84a;
+    box-shadow: 0 0 40px rgba(232,200,74,0.6), inset 0 0 60px rgba(232,200,74,0.1);
+  }
+
+  .pack-face-front.chaos-pack {
+    background: linear-gradient(145deg, #1a0020, #2d0040);
+    border-color: #c84aff;
+    box-shadow: 0 0 40px rgba(200,74,255,0.6), inset 0 0 60px rgba(200,74,255,0.1);
+  }
+
+  .pack-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+
+  .click-hint {
+    position: absolute;
+    bottom: -40px;
+    font-size: 0.75rem;
+    color: #aaa;
+    letter-spacing: 2px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* Rip animation */
+  .pack-rip-top, .pack-rip-bottom {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    border-radius: 16px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .pack-rip-top {
+    top: 0;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #4a90d9;
+    border-bottom: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+    font-size: 2rem;
+  }
+
+  .pack-rip-bottom {
+    bottom: 0;
+    background: linear-gradient(145deg, #16213e, #0d1b2a);
+    border: 2px solid #4a90d9;
+    border-top: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 20px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  .pack-rip-top.gold { background: linear-gradient(145deg, #2a1a00, #3d2800); border-color: #e8c84a; }
+  .pack-rip-bottom.gold { background: linear-gradient(145deg, #3d2800, #1a0e00); border-color: #e8c84a; }
+  .pack-rip-top.chaos { background: linear-gradient(145deg, #1a0020, #2d0040); border-color: #c84aff; }
+  .pack-rip-bottom.chaos { background: linear-gradient(145deg, #2d0040, #150020); border-color: #c84aff; }
+
+  .pack-rip-top.ripped { transform: translateY(-120%) rotate(-5deg); }
+  .pack-rip-bottom.ripped { transform: translateY(120%) rotate(3deg); }
+
+  /* ---- CARDS REVEAL SCREEN ---- */
+  #cards-screen { display: none; }
+
+  .cards-reveal-area {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+
+  .card {
+    width: 160px;
+    height: 230px;
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    perspective: 600px;
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .card.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 14px;
+  }
+
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-back, .card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .card-back {
+    background: linear-gradient(145deg, #111, #1a1a2e);
+    border: 2px solid #333;
+    font-size: 2rem;
+  }
+
+  .card-back::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    opacity: 0.5;
+  }
+
+  .card-front {
+    transform: rotateY(180deg);
+    border: 2px solid #555;
+  }
+
+  /* Rarity styles */
+  .rarity-common .card-front {
+    background: linear-gradient(145deg, #1a1a2e, #252540);
+    border-color: #4a90d9;
+    box-shadow: 0 0 15px rgba(74,144,217,0.3);
+  }
+
+  .rarity-rare .card-front {
+    background: linear-gradient(145deg, #0d2a0d, #1a3d1a);
+    border-color: #4aff6e;
+    box-shadow: 0 0 20px rgba(74,255,110,0.4);
+  }
+
+  .rarity-epic .card-front {
+    background: linear-gradient(145deg, #1a0030, #2d0050);
+    border-color: #c84aff;
+    box-shadow: 0 0 25px rgba(200,74,255,0.5);
+  }
+
+  .rarity-legendary .card-front {
+    background: linear-gradient(145deg, #2a1500, #3d2000);
+    border-color: #ff9a00;
+    box-shadow: 0 0 30px rgba(255,154,0,0.6), 0 0 60px rgba(255,154,0,0.2);
+  }
+
+  .card-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .card-type { font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
+  .card-title { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 6px; }
+  .card-desc { font-size: 0.6rem; color: #ccc; line-height: 1.4; }
+  .card-rarity-badge {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .rarity-common .card-rarity-badge { background: rgba(74,144,217,0.2); color: #4a90d9; }
+  .rarity-rare .card-rarity-badge { background: rgba(74,255,110,0.2); color: #4aff6e; }
+  .rarity-epic .card-rarity-badge { background: rgba(200,74,255,0.2); color: #c84aff; }
+  .rarity-legendary .card-rarity-badge { background: rgba(255,154,0,0.2); color: #ff9a00; }
+
+  .card:hover .card-inner { transform: rotateY(180deg) scale(1.03); }
+  .card.flipped:hover .card-inner { transform: rotateY(180deg) scale(1.03); }
+
+  /* Legendary shimmer */
+  .rarity-legendary .card-front::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,200,50,0.15) 50%, transparent 60%);
+    animation: shimmer 2.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+
+  /* Buttons */
+  .btn {
+    margin-top: 40px;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .btn:hover { transform: scale(1.05); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #e8c84a, #ff9a00);
+    color: #000;
+    box-shadow: 0 4px 20px rgba(232,200,74,0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #333;
+    margin-top: 12px;
+  }
+
+  .btn-secondary:hover { color: #fff; border-color: #666; }
+
+  /* Flash overlay */
+  #flash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    transition: opacity 0.1s;
+  }
+
+  /* Title on cards screen */
+  .cards-title {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  .flip-hint {
+    font-size: 0.65rem;
+    color: #555;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    animation: pulse 2s infinite;
+  }
+
+  /* Glow burst on legendary */
+  .glow-burst {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    background: radial-gradient(circle at center, rgba(255,154,0,0.3) 0%, transparent 70%);
+    transition: opacity 0.3s;
+  }
+  .glow-burst.active { opacity: 1; }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div id="flash"></div>
+<div class="glow-burst" id="glowBurst"></div>
+
+<!-- PACK SELECTION -->
+<div class="screen" id="pack-screen">
+  <h1>⚡ Chaos Packs</h1>
+  <p>Select a pack to open</p>
+  <div class="pack-container">
+    <div class="pack pack-standard" onclick="selectPack('standard')">
+      <div class="pack-icon">📦</div>
+      <div class="pack-name">Standard</div>
+      <div class="pack-desc">Core chaos events</div>
+      <div class="pack-rarity">Common – Rare</div>
+    </div>
+    <div class="pack pack-gold" onclick="selectPack('gold')">
+      <div class="pack-icon">🏆</div>
+      <div class="pack-name">Gold</div>
+      <div class="pack-desc">Elevated chaos</div>
+      <div class="pack-rarity">Rare – Epic</div>
+    </div>
+    <div class="pack pack-chaos" onclick="selectPack('chaos')">
+      <div class="pack-icon">💀</div>
+      <div class="pack-name">Chaos</div>
+      <div class="pack-desc">Maximum disruption</div>
+      <div class="pack-rarity">Epic – Legendary</div>
+    </div>
+  </div>
+</div>
+
+<!-- OPENING ANIMATION -->
+<div class="screen" id="opening-screen">
+  <div class="pack-opening-wrap">
+    <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+      <div class="pack-3d" id="packVisual" onclick="ripPack()">
+        <div class="pack-rip-top" id="ripTop">🎴</div>
+        <div class="pack-rip-bottom" id="ripBottom">WWE Chaos</div>
+      </div>
+      <div class="click-hint" id="clickHint">CLICK TO OPEN</div>
+    </div>
+  </div>
+</div>
+
+<!-- CARDS REVEAL -->
+<div class="screen" id="cards-screen">
+  <div class="cards-title">Your Cards</div>
+  <div class="cards-reveal-area" id="cardsArea"></div>
+  <div class="flip-hint" id="flipHint">CLICK CARDS TO REVEAL</div>
+  <button class="btn btn-primary" id="openAgainBtn" onclick="resetToPackScreen()" style="display:none;">Open Another Pack</button>
+</div>
+
+<script>
+// ---- PARTICLE SYSTEM ----
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+for (let i = 0; i < 60; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.3,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: -Math.random() * 0.4 - 0.1,
+    alpha: Math.random() * 0.5 + 0.1,
+    color: ['#4a90d9','#e8c84a','#c84aff','#4aff6e'][Math.floor(Math.random()*4)]
+  });
+}
+
+function animParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.alpha;
+    ctx.fill();
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// ---- CARD DATA ----
+const cardPool = {
+  standard: [
+    { rarity:'common', icon:'⚔️', type:'Match Type', title:'Last Man Standing', desc:'Next title match must be a Last Man Standing match.', duration:'Use within 3 shows' },
+    { rarity:'common', icon:'🎭', type:'Gimmick Change', title:'New Attitude', desc:'Pick any mid-card heel and turn them face immediately.', duration:'Immediate' },
+    { rarity:'common', icon:'📺', type:'Booking', title:'Squash Week', desc:'Your next show must include one total squash match.', duration:'Next show' },
+    { rarity:'common', icon:'🏷️', type:'Stipulation', title:'No DQ Night', desc:'All matches on next show have No DQ rules.', duration:'Next show' },
+    { rarity:'common', icon:'🎤', type:'Promo', title:'Open Challenge', desc:'Your current champion must issue an open challenge.', duration:'Use within 2 shows' },
+    { rarity:'rare', icon:'📈', type:'Stat Boost', title:'Underdog Push', desc:'Pick a random mid-carder. Boost their overness by 10 for 4 shows.', duration:'4 shows' },
+    { rarity:'rare', icon:'🔄', type:'Booking', title:'Surprise Return', desc:'Bring back a released or inactive superstar for one show.', duration:'Next show' },
+    { rarity:'rare', icon:'🤝', type:'Alliance', title:'Unlikely Partners', desc:'Two rivals must tag together on the next show.', duration:'Next show' },
+  ],
+  gold: [
+    { rarity:'rare', icon:'🏆', type:'Title Change', title:'Cash In Chaos', desc:'A non-champion must challenge for a title this show, unannounced.', duration:'This show' },
+    { rarity:'rare', icon:'🎭', type:'Gimmick Change', title:'Character Overhaul', desc:'Fully redesign one superstar — new name, attire, alignment.', duration:'Permanent' },
+    { rarity:'epic', icon:'🔥', type:'Event', title:'Extreme Rules Month', desc:'All matches for the next 4 shows have extreme rules stipulations.', duration:'4 shows' },
+    { rarity:'epic', icon:'⚡', type:'Stat Boost', title:'Rocket Push', desc:'One random superstar gets a massive overness spike. Book them to win 3 straight.', duration:'3 shows' },
+    { rarity:'epic', icon:'🩺', type:'Injury', title:'Medical Suspension', desc:'Randomly select a main eventer. They are suspended for 2 shows.', duration:'2 shows' },
+    { rarity:'epic', icon:'🎪', type:'Event', title:'Special Attraction', desc:'Book a dream match between two superstars who have never faced each other.', duration:'Next show' },
+  ],
+  chaos: [
+    { rarity:'epic', icon:'💀', type:'Chaos', title:'Brand Invasion', desc:'Three superstars from another brand invade your next show.', duration:'Next show' },
+    { rarity:'epic', icon:'🌀', type:'Chaos', title:'Authority Shift', desc:'Your GM must be replaced. Randomly pick a new one from your roster.', duration:'Permanent' },
+    { rarity:'legendary', icon:'👑', type:'Legendary', title:'Title Scramble', desc:'All titles are vacated. Book a tournament to crown new champions.', duration:'Immediate' },
+    { rarity:'legendary', icon:'🔱', type:'Legendary', title:'Superstar Starter', desc:'Create a brand new superstar from scratch and push them immediately.', duration:'Permanent' },
+    { rarity:'legendary', icon:'💥', type:'Legendary', title:'Faction War', desc:'Two factions must be formed this show and feud for the next 6 shows.', duration:'6 shows' },
+    { rarity:'legendary', icon:'🌟', type:'Legendary', title:'Hall of Fame Moment', desc:'Book the most memorable match of your universe. No restrictions.', duration:'Next PPV' },
+  ]
+};
+
+let currentPackType = 'standard';
+let drawnCards = [];
+let flippedCount = 0;
+
+function getRandomCards(type) {
+  const pool = cardPool[type];
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 3);
+}
+
+function selectPack(type) {
+  currentPackType = type;
+  drawnCards = getRandomCards(type);
+
+  // Setup pack visuals
+  const ripTop = document.getElementById('ripTop');
+  const ripBottom = document.getElementById('ripBottom');
+  ripTop.className = 'pack-rip-top';
+  ripBottom.className = 'pack-rip-bottom';
+
+  if (type === 'gold') {
+    ripTop.classList.add('gold');
+    ripBottom.classList.add('gold');
+    ripTop.textContent = '🏆';
+  } else if (type === 'chaos') {
+    ripTop.classList.add('chaos');
+    ripBottom.classList.add('chaos');
+    ripTop.textContent = '💀';
+  } else {
+    ripTop.textContent = '🎴';
+  }
+
+  document.getElementById('pack-screen').style.display = 'none';
+  document.getElementById('opening-screen').style.display = 'flex';
+}
+
+let packRipped = false;
+
+function ripPack() {
+  if (packRipped) return;
+  packRipped = true;
+
+  document.getElementById('clickHint').style.display = 'none';
+
+  const ripTop = document.getElementById('ripTop');
+  const ripBottom = document.getElementById('ripBottom');
+
+  // Shake first
+  const packVisual = document.getElementById('packVisual');
+  packVisual.style.animation = 'none';
+
+  setTimeout(() => {
+    ripTop.classList.add('ripped');
+    ripBottom.classList.add('ripped');
+
+    // Flash
+    const flash = document.getElementById('flash');
+    flash.style.opacity = '0.8';
+    setTimeout(() => { flash.style.opacity = '0'; }, 150);
+
+    setTimeout(() => {
+      showCards();
+    }, 700);
+  }, 200);
+}
+
+function showCards() {
+  document.getElementById('opening-screen').style.display = 'none';
+  document.getElementById('cards-screen').style.display = 'flex';
+  document.getElementById('openAgainBtn').style.display = 'none';
+  document.getElementById('flipHint').style.display = 'block';
+
+  const area = document.getElementById('cardsArea');
+  area.innerHTML = '';
+  flippedCount = 0;
+
+  drawnCards.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = `card rarity-${card.rarity}`;
+    el.innerHTML = `
+      <div class="card-inner">
+        <div class="card-back">🎴</div>
+        <div class="card-front">
+          <div class="card-icon">${card.icon}</div>
+          <div class="card-type">${card.type}</div>
+          <div class="card-title">${card.title}</div>
+          <div class="card-desc">${card.desc}</div>
+          <div class="card-rarity-badge">${card.rarity}</div>
+        </div>
+      </div>
+    `;
+    el.onclick = () => flipCard(el, card);
+    area.appendChild(el);
+
+    setTimeout(() => {
+      el.classList.add('revealed');
+    }, i * 200 + 100);
+  });
+
+  packRipped = false;
+}
+
+function flipCard(el, card) {
+  if (el.classList.contains('flipped')) return;
+  el.classList.add('flipped');
+  flippedCount++;
+
+  // Legendary burst
+  if (card.rarity === 'legendary') {
+    const burst = document.getElementById('glowBurst');
+    burst.classList.add('active');
+    setTimeout(() => burst.classList.remove('active'), 800);
+
+    const flash = document.getElementById('flash');
+    flash.style.background = 'rgba(255,154,0,0.4)';
+    flash.style.opacity = '0.6';
+    setTimeout(() => {
+      flash.style.opacity = '0';
+      flash.style.background = 'white';
+    }, 200);
+  }
+
+  if (flippedCount === drawnCards.length) {
+    setTimeout(() => {
+      document.getElementById('flipHint').style.display = 'none';
+      document.getElementById('openAgainBtn').style.display = 'inline-block';
+    }, 600);
+  }
+}
+
+function resetToPackScreen() {
+  document.getElementById('cards-screen').style.display = 'none';
+  document.getElementById('pack-screen').style.display = 'flex';
+}
+</script>
+</body>
+</html>
