@@ -1,0 +1,11 @@
+{
+  "packs": [
+    "packs/core.json"
+  ],
+  "rarityWeights": {
+    "common": 50,
+    "rare": 30,
+    "epic": 15,
+    "legendary": 5
+  }
+}
