@@ -44,10 +44,23 @@ body { background:#0a0a0f; color:#fff; font-family: 'Segoe UI',sans-serif; min-h
 .card-back.promo { box-shadow: inset 0 0 16px rgba(168,136,255,0.08); }
 
 /* promo highlight + cashin button */
+.promo-container { display:flex; flex-direction:column; align-items:center; }
 .promo-highlight { transform:scale(1.15); z-index:1200; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
 .cashin-btn {
-  position:absolute; left:50%; transform:translateX(-50%); bottom:12px; z-index:1300;
-  background:linear-gradient(135deg,#2a6a2a,#1a4a1a); border:2px solid #4f4; color:#4f4; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;
+  margin-top: 10px;
+  background:linear-gradient(135deg,#2a6a2a,#1a4a1a); 
+  border:2px solid #4f4; 
+  color:#4f4; 
+  padding:10px 18px; 
+  border-radius:10px; 
+  font-weight:700; 
+  cursor:pointer;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
 }
 
 /* play screen controls */
@@ -64,6 +77,15 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
 
 /* duration overlay for active bar */
 .duration-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:52px; font-weight:900; color:#fff; background:rgba(0,0,0,0.55); border-radius:12px; pointer-events:none; }
+.duration-overlay.ticking { animation: tickDown 0.5s ease; }
+@keyframes tickDown {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); color: #f84; }
+  100% { transform: scale(1); }
+}
+
+/* card selection highlight */
+.card.selected { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.6); z-index: 100; }
 
 /* small helpers */
 #loading-msg, #error-msg { font-size:14px; color:#888; text-align:center; padding:40px; }
@@ -76,6 +98,15 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
 /* scrollbars */
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+
+/* discard animation */
+.card.discarding { animation: discardAnim 0.6s ease forwards; pointer-events: none; }
+@keyframes discardAnim {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(1.1) rotate(8deg); opacity: 0.6; }
+  100% { transform: scale(0) rotate(20deg); opacity: 0; }
+}
+
 </style>
 </head>
 <body>
@@ -316,22 +347,30 @@ async function flipCard(el, card) {
 }
 
 function showPromoResolve(el, card) {
-  // enlarge briefly and add a "Cash in" button so user can read then activate
+  // Wrap the card in a container to position the button below
+  const container = document.createElement('div');
+  container.className = 'promo-container';
+  
+  // Move the card into the container
+  el.parentNode.insertBefore(container, el);
+  container.appendChild(el);
+  
+  // Create cash-in button below the card
+  const btn = document.createElement('button');
+  btn.className = 'cashin-btn';
+  btn.textContent = 'Cash in';
+  btn.onclick = (e) => { 
+    e.stopPropagation(); 
+    cashInPromo(container, card); 
+  };
+  container.appendChild(btn);
+  
+  // Add highlight effect
   el.classList.add('promo-highlight');
-  // create cash-in button (if not already)
-  let btn = el.querySelector('.cashin-btn');
-  if (!btn) {
-    btn = document.createElement('button');
-    btn.className = 'cashin-btn';
-    btn.textContent = 'Cash in';
-    btn.onclick = (e) => { e.stopPropagation(); cashInPromo(el, card); };
-    el.appendChild(btn);
-  }
-  // Remove highlight after short time but keep button visible to click
   setTimeout(()=> el.classList.remove('promo-highlight'), 700);
 }
 
-function cashInPromo(el, card) {
+function cashInPromo(container, card) {
   // apply grants, remove promo from drawnCards and visually hide the card
   if (card.grants) {
     Object.entries(card.grants).forEach(([r,v]) => applyResource(r, v));
@@ -339,11 +378,12 @@ function cashInPromo(el, card) {
   promoResolved++;
   // mark resolved on card to avoid double cash-in
   card._cashed = true;
-  // hide the element
-  el.style.transition = 'opacity .3s, transform .3s';
-  el.style.opacity = 0;
-  el.style.transform = 'scale(.6)';
-  setTimeout(()=> { el.remove(); }, 350);
+  
+  // Hide the container
+  container.style.transition = 'opacity .3s, transform .3s';
+  container.style.opacity = 0;
+  container.style.transform = 'scale(.6)';
+  setTimeout(()=> { container.remove(); }, 350);
 
   // remove from drawnCards so addCardsToHand won't include promos
   drawnCards = drawnCards.filter(c => c !== card);
@@ -585,8 +625,16 @@ async function runTransition() {
       if (item.duration === null) continue;
       item.duration -= 1;
       const overlay = el.querySelector('.duration-overlay');
-      if (overlay) { overlay.textContent = item.duration; overlay.classList.add('ticking'); setTimeout(()=>overlay.classList.remove('ticking'),500); }
-      if (item.duration <= 0) toDiscard.push({ el, source, item });
+      if (overlay) { 
+        overlay.textContent = item.duration; 
+        overlay.classList.add('ticking'); 
+        setTimeout(()=>overlay.classList.remove('ticking'),500); 
+      }
+      if (item.duration <= 0) {
+        toDiscard.push({ el, source, item });
+        // Keep the card visible with a 0 overlay until user continues
+        if (overlay) overlay.textContent = '0';
+      }
     } else {
       if (item.useWindow === null) continue;
       item.useWindow -= 1;
