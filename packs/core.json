@@ -5,13 +5,13 @@
   "cards": [
     {
       "id": "c001",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Lost Luggage",
       "desc": "A superstar arrives without their gear and must compete in street clothes.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c002",
@@ -19,9 +19,9 @@
       "rarity": "common",
       "title": "Under the Weather",
       "desc": "A minor illness lowers performance for 1 show.",
-      "energy": 1,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c003",
@@ -29,9 +29,9 @@
       "rarity": "common",
       "title": "Fan Gift",
       "desc": "A small morale boost for a superstar (+1 crowd reaction for 1 show).",
-      "energy": -1,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c004",
@@ -39,19 +39,19 @@
       "rarity": "common",
       "title": "Bad Promo",
       "desc": "A poor promo hurts heat slightly for 1 show.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Hold"
+      "use": "Immediately"
     },
     {
       "id": "c005",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Travel Delay",
       "desc": "Late arrival reduces match readiness this show.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c006",
@@ -59,9 +59,9 @@
       "rarity": "rare",
       "title": "Underdog Push",
       "desc": "Short-term push: +3 momentum for the next 2 shows.",
-      "energy": -2,
+      "cost": {"heat": 2},
       "duration": 2,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c007",
@@ -69,19 +69,19 @@
       "rarity": "rare",
       "title": "Sneak Attack",
       "desc": "Interfere to injure opponent, opponent suffers -2 performance for 2 shows.",
-      "energy": 2,
+      "cost": {},
       "duration": 2,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c008",
-      "cardType": "neutral",
+      "cardType": "face",
       "rarity": "rare",
       "title": "Title Scramble",
       "desc": "Make a mid-card title open for a scramble match this show.",
-      "energy": -1,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c009",
@@ -89,19 +89,19 @@
       "rarity": "rare",
       "title": "Rocket Push",
       "desc": "A big crowd moment: +4 momentum for 1 show but increases scrutiny.",
-      "energy": -3,
+      "cost": {"heat": 3},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c010",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Wardrobe Mishap",
       "desc": "Outfit problem leads to a flub; -1 performance this show.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c011",
@@ -109,19 +109,19 @@
       "rarity": "epic",
       "title": "Medical Suspension",
       "desc": "A medical suspension sidelines a rival for 3 shows.",
-      "energy": -4,
+      "cost": {},
       "duration": 3,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c012",
-      "cardType": "neutral",
+      "cardType": "face",
       "rarity": "epic",
       "title": "Extreme Rules Month",
       "desc": "All matches this month use hardcore rules; some superstars gain advantage.",
-      "energy": 2,
+      "cost": {"heat": 2},
       "duration": 4,
-      "use": "Passive"
+      "use": "Within 2 weeks"
     },
     {
       "id": "c013",
@@ -129,19 +129,19 @@
       "rarity": "common",
       "title": "Local Hero Boost",
       "desc": "A hometown crowd gives a small boost this show.",
-      "energy": -1,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c014",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Logistics Mix-Up",
       "desc": "Promo materials delayed; minor show quality drop.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c015",
@@ -149,9 +149,9 @@
       "rarity": "rare",
       "title": "Superstar Starter",
       "desc": "Give a rookie a spotlight match with potential long-term gain.",
-      "energy": -2,
+      "cost": {"heat": 2},
       "duration": 2,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c016",
@@ -159,19 +159,19 @@
       "rarity": "rare",
       "title": "Controversial Angle",
       "desc": "A controversial storyline generates heat but risks penalties.",
-      "energy": 2,
+      "cost": {},
       "duration": 3,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c017",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Equipment Failure",
       "desc": "Ring equipment glitch causes minor chaos, affecting match pacing.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c018",
@@ -179,9 +179,9 @@
       "rarity": "epic",
       "title": "Main Event Elevation",
       "desc": "Promote a mid-card act to main event status for 2 shows.",
-      "energy": -4,
+      "cost": {"heat": 4},
       "duration": 2,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c019",
@@ -189,19 +189,19 @@
       "rarity": "legendary",
       "title": "Power Play",
       "desc": "Executive interference grants a dominant champion run for 4 shows.",
-      "energy": 5,
+      "cost": {},
       "duration": 4,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c020",
-      "cardType": "neutral",
+      "cardType": "face",
       "rarity": "rare",
       "title": "Surprise Debut",
       "desc": "A surprise arrival shakes up the roster this show.",
-      "energy": -2,
+      "cost": {"heat": 2},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c021",
@@ -209,19 +209,19 @@
       "rarity": "common",
       "title": "Training Montage",
       "desc": "A week of focused training improves performance next show.",
-      "energy": -1,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Hold"
+      "use": "Within 1 week"
     },
     {
       "id": "c022",
-      "cardType": "neutral",
+      "cardType": "heel",
       "rarity": "common",
       "title": "Media Day Gone Wrong",
       "desc": "An awkward interview reduces crowd reaction for a show.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c023",
@@ -229,9 +229,9 @@
       "rarity": "epic",
       "title": "Brand Split Advantage",
       "desc": "Shifting the roster favors certain superstars for 3 shows.",
-      "energy": 3,
+      "cost": {},
       "duration": 3,
-      "use": "Passive"
+      "use": "Within 1 week"
     },
     {
       "id": "c024",
@@ -239,19 +239,19 @@
       "rarity": "legendary",
       "title": "Household Name",
       "desc": "A star-making moment that gives sustained momentum for 5 shows.",
-      "energy": -6,
+      "cost": {"heat": 6},
       "duration": 5,
-      "use": "Hold"
+      "use": "Within 2 weeks"
     },
     {
       "id": "c025",
-      "cardType": "neutral",
+      "cardType": "face",
       "rarity": "rare",
       "title": "Match Type Switch",
       "desc": "Change a scheduled match to a specialty match this show.",
-      "energy": 0,
+      "cost": {"heat": 1},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c026",
@@ -259,9 +259,9 @@
       "rarity": "rare",
       "title": "Sponsor Boost",
       "desc": "A sponsor gives extra exposure; +2 momentum for 2 shows.",
-      "energy": -2,
+      "cost": {"heat": 2},
       "duration": 2,
-      "use": "Passive"
+      "use": "Within 1 week"
     },
     {
       "id": "c027",
@@ -269,19 +269,55 @@
       "rarity": "common",
       "title": "Cheap Shot",
       "desc": "A backstage attack tanks the opponent for the show.",
-      "energy": 1,
+      "cost": {},
       "duration": 1,
-      "use": "Immediate"
+      "use": "Immediately"
     },
     {
       "id": "c028",
-      "cardType": "neutral",
+      "cardType": "face",
       "rarity": "epic",
       "title": "Venue Controversy",
       "desc": "A venue incident causes a PR hit; show quality down for 3 shows.",
-      "energy": 3,
+      "cost": {"heat": 3},
       "duration": 3,
-      "use": "Passive"
+      "use": "Within 1 week"
+    },
+    {
+      "id": "p001",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Social Media Blitz",
+      "desc": "Generate buzz online for your promotion.",
+      "grants": {"hype": 2},
+      "use": "Immediately"
+    },
+    {
+      "id": "p002",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Press Tour",
+      "desc": "A major media appearance that boosts visibility.",
+      "grants": {"clout": 2, "hype": 1},
+      "use": "Immediately"
+    },
+    {
+      "id": "p003",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Merchandise Deal",
+      "desc": "Secure a lucrative merchandising contract.",
+      "grants": {"clout": 3, "hype": 2},
+      "use": "Immediately"
+    },
+    {
+      "id": "p004",
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Global Expansion",
+      "desc": "Expand your brand internationally.",
+      "grants": {"clout": 4, "hype": 3, "heat": 2},
+      "use": "Immediately"
     }
   ]
 }
