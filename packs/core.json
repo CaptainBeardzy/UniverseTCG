@@ -1,241 +1,287 @@
 {
   "name": "Core Pack",
-  "icon": "🎲",
-  "desc": "The standard chaos pack. One Heel, one Face, one Promo.",
+  "icon": "📦",
+  "desc": "The standard chaos pack for Season 1.",
   "cards": [
     {
-      "cardType": "heel",
+      "id": "c001",
+      "cardType": "neutral",
       "rarity": "common",
       "title": "Lost Luggage",
-      "desc": "A superstar's gear goes missing. They must compete in generic attire for the next show.",
-      "cost": {},
-      "duration": "1 Show",
-      "use": "Immediately"
+      "desc": "A superstar arrives without their gear and must compete in street clothes.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
     },
     {
-      "cardType": "heel",
+      "id": "c002",
+      "cardType": "face",
       "rarity": "common",
       "title": "Under the Weather",
-      "desc": "A superstar is ill. They lose their next scheduled match via forfeit.",
-      "cost": {},
-      "duration": "1 Show",
-      "use": "Immediately"
+      "desc": "A minor illness lowers performance for 1 show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Hold"
     },
     {
-      "cardType": "heel",
-      "rarity": "common",
-      "title": "Locker Room Tension",
-      "desc": "Two superstars refuse to work together. They cannot be in the same tag team this week.",
-      "cost": {},
-      "duration": "2 Shows",
-      "use": "Within 2 weeks"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "common",
-      "title": "Wardrobe Malfunction",
-      "desc": "A superstar's entrance gear breaks. Change their attire to the most basic available.",
-      "cost": {},
-      "duration": "1 Show",
-      "use": "Immediately"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "rare",
-      "title": "Medical Suspension",
-      "desc": "A superstar is pulled from competition. Bench your current champion for 2 shows.",
-      "cost": {},
-      "duration": "2 Shows",
-      "use": "Immediately"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "rare",
-      "title": "Contract Dispute",
-      "desc": "A superstar demands more money. They refuse to do a clean job for 3 shows.",
-      "cost": {},
-      "duration": "3 Shows",
-      "use": "Within 2 weeks"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "rare",
-      "title": "Injury Scare",
-      "desc": "A superstar picks up a kayfabe injury. They must lose their next match and take 1 show off.",
-      "cost": {},
-      "duration": "2 Shows",
-      "use": "Immediately"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "epic",
-      "title": "Title Scramble Chaos",
-      "desc": "The title picture is thrown into chaos. Strip the current champion and hold a tournament.",
-      "cost": {},
-      "duration": "4 Shows",
-      "use": "Within 3 weeks"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "epic",
-      "title": "Backstage Brawl Gone Wrong",
-      "desc": "A fight breaks out backstage. Two superstars are suspended for 2 shows each.",
-      "cost": {},
-      "duration": "2 Shows",
-      "use": "Immediately"
-    },
-    {
-      "cardType": "heel",
-      "rarity": "legendary",
-      "title": "Brand Split Crisis",
-      "desc": "A superstar goes rogue and jumps brands without permission. Swap your top star to the opposing brand for a full month.",
-      "cost": {},
-      "duration": "4 Shows",
-      "use": "Immediately"
-    },
-    {
+      "id": "c003",
       "cardType": "face",
       "rarity": "common",
+      "title": "Fan Gift",
+      "desc": "A small morale boost for a superstar (+1 crowd reaction for 1 show).",
+      "energy": -1,
+      "duration": 1,
+      "use": "Hold"
+    },
+    {
+      "id": "c004",
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Bad Promo",
+      "desc": "A poor promo hurts heat slightly for 1 show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Hold"
+    },
+    {
+      "id": "c005",
+      "cardType": "neutral",
+      "rarity": "common",
+      "title": "Travel Delay",
+      "desc": "Late arrival reduces match readiness this show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c006",
+      "cardType": "face",
+      "rarity": "rare",
       "title": "Underdog Push",
-      "desc": "A mid-card superstar gets a surprise title shot. Book them to win clean.",
-      "cost": { "hype": 1 },
-      "duration": "2 Shows",
-      "use": "Within 2 weeks"
+      "desc": "Short-term push: +3 momentum for the next 2 shows.",
+      "energy": -2,
+      "duration": 2,
+      "use": "Hold"
     },
     {
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Crowd Favourite Moment",
-      "desc": "A superstar gets an unexpected crowd reaction. Give them a promo segment this show.",
-      "cost": { "hype": 1 },
-      "duration": "1 Show",
-      "use": "Within 2 weeks"
+      "id": "c007",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Sneak Attack",
+      "desc": "Interfere to injure opponent, opponent suffers -2 performance for 2 shows.",
+      "energy": 2,
+      "duration": 2,
+      "use": "Immediate"
     },
     {
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Surprise Return",
-      "desc": "A superstar returns from injury ahead of schedule. Bring back a benched superstar immediately.",
-      "cost": { "heat": 1 },
-      "duration": "1 Show",
-      "use": "Within 3 weeks"
+      "id": "c008",
+      "cardType": "neutral",
+      "rarity": "rare",
+      "title": "Title Scramble",
+      "desc": "Make a mid-card title open for a scramble match this show.",
+      "energy": -1,
+      "duration": 1,
+      "use": "Hold"
     },
     {
+      "id": "c009",
       "cardType": "face",
       "rarity": "rare",
-      "title": "Viral Moment",
-      "desc": "A match clip goes viral. The superstar involved gets a 3-show push with wins over ranked opponents.",
-      "cost": { "hype": 1, "clout": 1 },
-      "duration": "3 Shows",
-      "use": "Within 3 weeks"
-    },
-    {
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Hot Feud Ignition",
-      "desc": "Two superstars have undeniable chemistry. Book a best-of-3 series between them.",
-      "cost": { "heat": 2 },
-      "duration": "3 Shows",
-      "use": "Within 2 weeks"
-    },
-    {
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Breakout Performance",
-      "desc": "A superstar steals the show. Give them a title match at the next PPV.",
-      "cost": { "hype": 2 },
-      "duration": "2 Shows",
-      "use": "Within 3 weeks"
-    },
-    {
-      "cardType": "face",
-      "rarity": "epic",
       "title": "Rocket Push",
-      "desc": "Management goes all-in on a superstar. They win every match for the next month, clean.",
-      "cost": { "hype": 2, "heat": 1 },
-      "duration": "4 Shows",
-      "use": "Within 4 weeks"
+      "desc": "A big crowd moment: +4 momentum for 1 show but increases scrutiny.",
+      "energy": -3,
+      "duration": 1,
+      "use": "Hold"
     },
     {
+      "id": "c010",
+      "cardType": "neutral",
+      "rarity": "common",
+      "title": "Wardrobe Mishap",
+      "desc": "Outfit problem leads to a flub; -1 performance this show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c011",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Medical Suspension",
+      "desc": "A medical suspension sidelines a rival for 3 shows.",
+      "energy": -4,
+      "duration": 3,
+      "use": "Immediate"
+    },
+    {
+      "id": "c012",
+      "cardType": "neutral",
+      "rarity": "epic",
+      "title": "Extreme Rules Month",
+      "desc": "All matches this month use hardcore rules; some superstars gain advantage.",
+      "energy": 2,
+      "duration": 4,
+      "use": "Passive"
+    },
+    {
+      "id": "c013",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Local Hero Boost",
+      "desc": "A hometown crowd gives a small boost this show.",
+      "energy": -1,
+      "duration": 1,
+      "use": "Hold"
+    },
+    {
+      "id": "c014",
+      "cardType": "neutral",
+      "rarity": "common",
+      "title": "Logistics Mix-Up",
+      "desc": "Promo materials delayed; minor show quality drop.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c015",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Superstar Starter",
+      "desc": "Give a rookie a spotlight match with potential long-term gain.",
+      "energy": -2,
+      "duration": 2,
+      "use": "Hold"
+    },
+    {
+      "id": "c016",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Controversial Angle",
+      "desc": "A controversial storyline generates heat but risks penalties.",
+      "energy": 2,
+      "duration": 3,
+      "use": "Hold"
+    },
+    {
+      "id": "c017",
+      "cardType": "neutral",
+      "rarity": "common",
+      "title": "Equipment Failure",
+      "desc": "Ring equipment glitch causes minor chaos, affecting match pacing.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c018",
       "cardType": "face",
       "rarity": "epic",
-      "title": "Celebrity Crossover",
-      "desc": "A mainstream celebrity appears at ringside. Book a match with celebrity involvement this show.",
-      "cost": { "clout": 2, "hype": 1 },
-      "duration": "1 Show",
-      "use": "Within 2 weeks"
+      "title": "Main Event Elevation",
+      "desc": "Promote a mid-card act to main event status for 2 shows.",
+      "energy": -4,
+      "duration": 2,
+      "use": "Hold"
     },
     {
+      "id": "c019",
+      "cardType": "heel",
+      "rarity": "legendary",
+      "title": "Power Play",
+      "desc": "Executive interference grants a dominant champion run for 4 shows.",
+      "energy": 5,
+      "duration": 4,
+      "use": "Immediate"
+    },
+    {
+      "id": "c020",
+      "cardType": "neutral",
+      "rarity": "rare",
+      "title": "Surprise Debut",
+      "desc": "A surprise arrival shakes up the roster this show.",
+      "energy": -2,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c021",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Training Montage",
+      "desc": "A week of focused training improves performance next show.",
+      "energy": -1,
+      "duration": 1,
+      "use": "Hold"
+    },
+    {
+      "id": "c022",
+      "cardType": "neutral",
+      "rarity": "common",
+      "title": "Media Day Gone Wrong",
+      "desc": "An awkward interview reduces crowd reaction for a show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c023",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Brand Split Advantage",
+      "desc": "Shifting the roster favors certain superstars for 3 shows.",
+      "energy": 3,
+      "duration": 3,
+      "use": "Passive"
+    },
+    {
+      "id": "c024",
       "cardType": "face",
       "rarity": "legendary",
-      "title": "Legend Returns",
-      "desc": "A retired legend makes a one-night return. Book them in a match or segment this show.",
-      "cost": { "clout": 2, "heat": 1, "hype": 1 },
-      "duration": "1 Show",
-      "use": "Within 3 weeks"
+      "title": "Household Name",
+      "desc": "A star-making moment that gives sustained momentum for 5 shows.",
+      "energy": -6,
+      "duration": 5,
+      "use": "Hold"
     },
     {
-      "cardType": "promo",
-      "rarity": "common",
-      "title": "Crowd Chant",
-      "desc": "The crowd erupts in a spontaneous chant. Pure fan energy.",
-      "grants": { "hype": 2 },
-      "duration": null,
-      "use": null
-    },
-    {
-      "cardType": "promo",
-      "rarity": "common",
-      "title": "Heated Rivalry",
-      "desc": "Two superstars exchange words backstage. The tension is palpable.",
-      "grants": { "heat": 2 },
-      "duration": null,
-      "use": null
-    },
-    {
-      "cardType": "promo",
-      "rarity": "common",
-      "title": "Sports Talk Mention",
-      "desc": "A wrestling segment gets picked up by a mainstream sports outlet.",
-      "grants": { "clout": 2 },
-      "duration": null,
-      "use": null
-    },
-    {
-      "cardType": "promo",
+      "id": "c025",
+      "cardType": "neutral",
       "rarity": "rare",
-      "title": "Electric Promo",
-      "desc": "A superstar cuts the promo of their career. The crowd is on their feet.",
-      "grants": { "hype": 2, "heat": 1 },
-      "duration": null,
-      "use": null
+      "title": "Match Type Switch",
+      "desc": "Change a scheduled match to a specialty match this show.",
+      "energy": 0,
+      "duration": 1,
+      "use": "Immediate"
     },
     {
-      "cardType": "promo",
+      "id": "c026",
+      "cardType": "face",
       "rarity": "rare",
-      "title": "Viral Clip",
-      "desc": "A moment from the show spreads across social media overnight.",
-      "grants": { "clout": 2, "hype": 1 },
-      "duration": null,
-      "use": null
+      "title": "Sponsor Boost",
+      "desc": "A sponsor gives extra exposure; +2 momentum for 2 shows.",
+      "energy": -2,
+      "duration": 2,
+      "use": "Passive"
     },
     {
-      "cardType": "promo",
+      "id": "c027",
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Cheap Shot",
+      "desc": "A backstage attack tanks the opponent for the show.",
+      "energy": 1,
+      "duration": 1,
+      "use": "Immediate"
+    },
+    {
+      "id": "c028",
+      "cardType": "neutral",
       "rarity": "epic",
-      "title": "Attitude Era Energy",
-      "desc": "The show has that rare, electric quality. Everything clicks tonight.",
-      "grants": { "heat": 2, "hype": 2, "clout": 1 },
-      "duration": null,
-      "use": null
-    },
-    {
-      "cardType": "promo",
-      "rarity": "legendary",
-      "title": "Cultural Moment",
-      "desc": "Wrestling breaks into the mainstream in a way that hasn't been seen in years.",
-      "grants": { "clout": 3, "hype": 2, "heat": 1 },
-      "duration": null,
-      "use": null
+      "title": "Venue Controversy",
+      "desc": "A venue incident causes a PR hit; show quality down for 3 shows.",
+      "energy": 3,
+      "duration": 3,
+      "use": "Passive"
     }
   ]
 }
