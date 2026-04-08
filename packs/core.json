@@ -1,210 +1,42 @@
 {
-  "packs": {
-    "core": {
-      "name": "Core Pack",
-      "icon": "\ud83d\udce6",
-      "desc": "The essentials of chaos",
-      "color": "#4a90d9",
-      "cards": [
-        {
-          "rarity": "common",
-          "icon": "\ud83e\uddf3",
-          "type": "Logistics",
-          "title": "Lost Luggage",
-          "desc": "A superstar arrives to the show without their gear. They must compete in street clothes this week.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83e\udd27",
-          "type": "Injury",
-          "title": "Under the Weather",
-          "desc": "A randomly selected mid-carder is ill. They appear on the show but lose their match, no matter the booking.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83d\ude97",
-          "type": "Logistics",
-          "title": "Travel Delay",
-          "desc": "One superstar arrives late. They cannot appear in the first half of the show.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83c\udfa4",
-          "type": "Promo",
-          "title": "Unscheduled Promo",
-          "desc": "A superstar not booked for a match must open the show with a promo. They get no match this week.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83d\udcfa",
-          "type": "Booking",
-          "title": "Dark Match Debut",
-          "desc": "A superstar from NXT or the lower card must appear and win a match this show.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83d\udd01",
-          "type": "Booking",
-          "title": "Rematch Clause",
-          "desc": "The loser of last week's main event invokes their rematch clause. Book it this show.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83e\ude79",
-          "type": "Injury",
-          "title": "Worked Injury",
-          "desc": "A superstar sells a kayfabe injury. They must lose their next match via referee stoppage.",
-          "duration": "Next match"
-        },
-        {
-          "rarity": "common",
-          "icon": "\ud83c\udfad",
-          "type": "Gimmick",
-          "title": "Wardrobe Malfunction",
-          "desc": "Change the attire of one superstar this week. New colour, new look \u2014 no explanation given.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83d\udcc8",
-          "type": "Push",
-          "title": "Underdog Push",
-          "desc": "Pick a mid-carder at random. They must win their next 3 matches clean.",
-          "duration": "3 shows"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83e\udd1d",
-          "type": "Booking",
-          "title": "Unlikely Partners",
-          "desc": "Two rivals must tag together this show. They don't have to get along.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\u2694\ufe0f",
-          "type": "Match Type",
-          "title": "Last Man Standing",
-          "desc": "The next title match on this show must be a Last Man Standing match.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83e\ude7a",
-          "type": "Injury",
-          "title": "Medical Suspension",
-          "desc": "Randomly select a main eventer. They are pulled from bookings for 2 shows.",
-          "duration": "2 shows"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83d\udd04",
-          "type": "Booking",
-          "title": "Surprise Return",
-          "desc": "Bring back an inactive or previously released superstar for one appearance.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83d\udce3",
-          "type": "Booking",
-          "title": "Open Challenge",
-          "desc": "Your current champion must issue an open challenge. Anyone can answer \u2014 you pick randomly.",
-          "duration": "Use within 2 shows"
-        },
-        {
-          "rarity": "rare",
-          "icon": "\ud83c\udff7\ufe0f",
-          "type": "Stipulation",
-          "title": "No DQ Night",
-          "desc": "All matches on this show have No Disqualification rules.",
-          "duration": "This show"
-        },
-        {
-          "rarity": "epic",
-          "icon": "\ud83d\udd25",
-          "type": "Event",
-          "title": "Extreme Rules Month",
-          "desc": "Every match for the next 4 shows must have an extreme or hardcore stipulation.",
-          "duration": "4 shows"
-        },
-        {
-          "rarity": "epic",
-          "icon": "\ud83c\udfad",
-          "type": "Gimmick",
-          "title": "Character Overhaul",
-          "desc": "Fully redesign one superstar \u2014 new name, new attire, new alignment. No explanation given on screen.",
-          "duration": "Permanent"
-        },
-        {
-          "rarity": "epic",
-          "icon": "\u26a1",
-          "type": "Push",
-          "title": "Rocket Push",
-          "desc": "One randomly selected superstar gets an immediate main event push. Book them to win 3 straight, including over a champion.",
-          "duration": "3 shows"
-        },
-        {
-          "rarity": "epic",
-          "icon": "\ud83c\udf00",
-          "type": "Authority",
-          "title": "Authority Shift",
-          "desc": "Your current GM is replaced. Randomly pick a new one from your active roster.",
-          "duration": "Permanent"
-        },
-        {
-          "rarity": "epic",
-          "icon": "\ud83c\udfaa",
-          "type": "Event",
-          "title": "Special Attraction",
-          "desc": "Book a dream match between two superstars who have never faced each other in your universe.",
-          "duration": "Next show"
-        },
-        {
-          "rarity": "legendary",
-          "icon": "\ud83d\udc51",
-          "type": "Legendary",
-          "title": "Title Scramble",
-          "desc": "All titles are immediately vacated. Book a tournament across the next 4 shows to crown new champions.",
-          "duration": "Immediate"
-        },
-        {
-          "rarity": "legendary",
-          "icon": "\ud83d\udd31",
-          "type": "Legendary",
-          "title": "Superstar Starter",
-          "desc": "Create a brand new superstar from scratch and debut them this show. They must win their first 3 matches.",
-          "duration": "Permanent"
-        },
-        {
-          "rarity": "legendary",
-          "icon": "\ud83d\udca5",
-          "type": "Legendary",
-          "title": "Faction War",
-          "desc": "Two factions must be formed this show and feud exclusively against each other for the next 6 shows.",
-          "duration": "6 shows"
-        },
-        {
-          "rarity": "legendary",
-          "icon": "\ud83c\udf1f",
-          "type": "Legendary",
-          "title": "Hall of Fame Moment",
-          "desc": "Book the most memorable match of your entire universe. No restrictions. Make it count.",
-          "duration": "Next PPV"
-        }
-      ]
-    }
-  },
-  "rarityWeights": {
-    "common": 50,
-    "rare": 30,
-    "epic": 15,
-    "legendary": 5
-  }
+  "name": "Core Pack",
+  "icon": "📦",
+  "desc": "The essentials of chaos",
+  "color": "#4a90d9",
+  "cards": [
+    { "rarity": "common", "icon": "🧳", "type": "Logistics", "title": "Lost Luggage", "desc": "A superstar arrives without their gear. They must compete in street clothes this week.", "duration": "This show" },
+    { "rarity": "common", "icon": "🤧", "type": "Injury", "title": "Under the Weather", "desc": "A randomly selected mid-carder is ill. They appear but lose their match, no matter the booking.", "duration": "This show" },
+    { "rarity": "common", "icon": "🚗", "type": "Logistics", "title": "Travel Delay", "desc": "One superstar arrives late. They cannot appear in the first half of the show.", "duration": "This show" },
+    { "rarity": "common", "icon": "🎤", "type": "Promo", "title": "Unscheduled Promo", "desc": "A superstar not booked for a match must open the show with a promo. They get no match this week.", "duration": "This show" },
+    { "rarity": "common", "icon": "📺", "type": "Booking", "title": "Dark Match Debut", "desc": "A superstar from NXT or the lower card must appear and win a match this show.", "duration": "This show" },
+    { "rarity": "common", "icon": "🔁", "type": "Booking", "title": "Rematch Clause", "desc": "The loser of last week's main event invokes their rematch clause. Book it this show.", "duration": "This show" },
+    { "rarity": "common", "icon": "🩹", "type": "Injury", "title": "Worked Injury", "desc": "A superstar sells a kayfabe injury. They must lose their next match via referee stoppage.", "duration": "Next match" },
+    { "rarity": "common", "icon": "🎭", "type": "Gimmick", "title": "Wardrobe Malfunction", "desc": "Change the attire of one superstar this week. New colour, new look — no explanation given.", "duration": "This show" },
+    { "rarity": "common", "icon": "😤", "type": "Backstage", "title": "Locker Room Argument", "desc": "Two superstars had a backstage altercation. They must be booked on opposite ends of the show and cannot interact.", "duration": "This show" },
+    { "rarity": "common", "icon": "🎯", "type": "Booking", "title": "Squash Match", "desc": "A main eventer must squash a jobber in under 2 minutes. No competitive offence from the jobber.", "duration": "This show" },
+    { "rarity": "common", "icon": "📵", "type": "Logistics", "title": "Mic Cut", "desc": "A superstar's mic gets cut mid-promo. They storm off and cannot compete this show.", "duration": "This show" },
+    { "rarity": "common", "icon": "🤼", "type": "Booking", "title": "Unsanctioned Brawl", "desc": "Two superstars brawl before their match is officially announced. Book it as a No Contest or Street Fight.", "duration": "This show" },
+    { "rarity": "rare", "icon": "📈", "type": "Push", "title": "Underdog Push", "desc": "Pick a mid-carder at random. They must win their next 3 matches clean.", "duration": "3 shows" },
+    { "rarity": "rare", "icon": "🤝", "type": "Booking", "title": "Unlikely Partners", "desc": "Two rivals must tag together this show. They don't have to get along.", "duration": "This show" },
+    { "rarity": "rare", "icon": "⚔️", "type": "Match Type", "title": "Last Man Standing", "desc": "The next title match on this show must be a Last Man Standing match.", "duration": "This show" },
+    { "rarity": "rare", "icon": "🩺", "type": "Injury", "title": "Medical Suspension", "desc": "Randomly select a main eventer. They are pulled from bookings for 2 shows.", "duration": "2 shows" },
+    { "rarity": "rare", "icon": "🔄", "type": "Booking", "title": "Surprise Return", "desc": "Bring back an inactive or previously released superstar for one appearance.", "duration": "This show" },
+    { "rarity": "rare", "icon": "📣", "type": "Booking", "title": "Open Challenge", "desc": "Your current champion must issue an open challenge. Anyone can answer — you pick randomly.", "duration": "Use within 2 shows" },
+    { "rarity": "rare", "icon": "🏷️", "type": "Stipulation", "title": "No DQ Night", "desc": "All matches on this show have No Disqualification rules.", "duration": "This show" },
+    { "rarity": "rare", "icon": "🔀", "type": "Booking", "title": "Brand Invader", "desc": "A superstar from the opposing brand shows up uninvited and demands a match. Book it.", "duration": "This show" },
+    { "rarity": "rare", "icon": "🏆", "type": "Booking", "title": "Number One Contender Match", "desc": "An unplanned #1 contender match must be added to this show. Pick two mid-carders randomly.", "duration": "This show" },
+    { "rarity": "rare", "icon": "😠", "type": "Backstage", "title": "Contract Dispute", "desc": "A superstar refuses to perform unless they get a title shot. Book them in a match this show — they win regardless.", "duration": "This show" },
+    { "rarity": "epic", "icon": "🔥", "type": "Event", "title": "Extreme Rules Month", "desc": "Every match for the next 4 shows must have an extreme or hardcore stipulation.", "duration": "4 shows" },
+    { "rarity": "epic", "icon": "🎭", "type": "Gimmick", "title": "Character Overhaul", "desc": "Fully redesign one superstar — new name, new attire, new alignment. No explanation given on screen.", "duration": "Permanent" },
+    { "rarity": "epic", "icon": "⚡", "type": "Push", "title": "Rocket Push", "desc": "One randomly selected superstar gets an immediate main event push. Book them to win 3 straight, including over a champion.", "duration": "3 shows" },
+    { "rarity": "epic", "icon": "🌀", "type": "Authority", "title": "Authority Shift", "desc": "Your current GM is replaced. Randomly pick a new one from your active roster.", "duration": "Permanent" },
+    { "rarity": "epic", "icon": "🎪", "type": "Event", "title": "Special Attraction", "desc": "Book a dream match between two superstars who have never faced each other in your universe.", "duration": "Next show" },
+    { "rarity": "epic", "icon": "💔", "type": "Booking", "title": "Stable Implosion", "desc": "A faction turns on one of their own members this show. That member must feud with the stable for the next 3 shows.", "duration": "3 shows" },
+    { "rarity": "epic", "icon": "🎲", "type": "Stipulation", "title": "Spin the Wheel", "desc": "Randomly determine the stipulation for tonight's main event. Roll a dice — 1: Ladder, 2: Steel Cage, 3: TLC, 4: Hell in a Cell, 5: Iron Man, 6: Buried Alive.", "duration": "This show" },
+    { "rarity": "legendary", "icon": "👑", "type": "Legendary", "title": "Title Scramble", "desc": "All titles are immediately vacated. Book a tournament across the next 4 shows to crown new champions.", "duration": "Immediate" },
+    { "rarity": "legendary", "icon": "🔱", "type": "Legendary", "title": "Superstar Starter", "desc": "Create a brand new superstar from scratch and debut them this show. They must win their first 3 matches.", "duration": "Permanent" },
+    { "rarity": "legendary", "icon": "💥", "type": "Legendary", "title": "Faction War", "desc": "Two factions must be formed this show and feud exclusively against each other for the next 6 shows.", "duration": "6 shows" },
+    { "rarity": "legendary", "icon": "🌟", "type": "Legendary", "title": "Hall of Fame Moment", "desc": "Book the most memorable match of your entire universe. No restrictions. Make it count.", "duration": "Next PPV" },
+    { "rarity": "legendary", "icon": "🔃", "type": "Legendary", "title": "Brand Shake-Up", "desc": "Randomly reassign 5 superstars to the opposing brand. No trades — just chaos.", "duration": "Permanent" }
+  ]
 }
