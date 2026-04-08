@@ -1,42 +1,247 @@
 {
   "name": "Core Pack",
-  "icon": "📦",
-  "desc": "The essentials of chaos",
-  "color": "#4a90d9",
+  "icon": "🎲",
+  "desc": "The standard chaos pack. One Heel, one Face, one Promo.",
   "cards": [
-    { "rarity": "common", "type": "Logistics", "title": "Lost Luggage", "desc": "A superstar arrives without their gear. They must compete in street clothes this week.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Injury", "title": "Under the Weather", "desc": "A randomly selected mid-carder is ill. They appear but lose their match, no matter the booking.", "energy": 2, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Logistics", "title": "Travel Delay", "desc": "One superstar arrives late. They cannot appear in the first half of the show.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Promo", "title": "Unscheduled Promo", "desc": "A superstar not booked for a match must open the show with a promo. They get no match this week.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Booking", "title": "Dark Match Debut", "desc": "A superstar from NXT or the lower card must appear and win a match this show.", "energy": -1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Booking", "title": "Rematch Clause", "desc": "The loser of last week's main event invokes their rematch clause. Book it this show.", "energy": 0, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Injury", "title": "Worked Injury", "desc": "A superstar sells a kayfabe injury. They must lose their next match via referee stoppage.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Gimmick", "title": "Wardrobe Malfunction", "desc": "Change the attire of one superstar this week. New colour, new look — no explanation given.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Backstage", "title": "Locker Room Argument", "desc": "Two superstars had a backstage altercation. They must be booked on opposite ends of the show and cannot interact.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Booking", "title": "Squash Match", "desc": "A main eventer must squash a jobber in under 2 minutes. No competitive offence from the jobber.", "energy": 0, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Logistics", "title": "Mic Cut", "desc": "A superstar's mic gets cut mid-promo. They storm off and cannot compete this show.", "energy": 2, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "common", "type": "Booking", "title": "Unsanctioned Brawl", "desc": "Two superstars brawl before their match is officially announced. Book it as a No Contest or Street Fight.", "energy": 1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "rare", "type": "Push", "title": "Underdog Push", "desc": "Pick a mid-carder at random. They must win their next 3 matches clean.", "energy": -3, "duration": "3 shows", "use": "Within 2 shows" },
-    { "rarity": "rare", "type": "Booking", "title": "Unlikely Partners", "desc": "Two rivals must tag together this show. They don't have to get along.", "energy": -1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "rare", "type": "Match Type", "title": "Last Man Standing", "desc": "The next title match on this show must be a Last Man Standing match.", "energy": -2, "duration": "1 show", "use": "Within 2 shows" },
-    { "rarity": "rare", "type": "Injury", "title": "Medical Suspension", "desc": "Randomly select a main eventer. They are pulled from bookings for 2 shows.", "energy": 5, "duration": "2 shows", "use": "Immediately" },
-    { "rarity": "rare", "type": "Booking", "title": "Surprise Return", "desc": "Bring back an inactive or previously released superstar for one appearance.", "energy": -2, "duration": "1 show", "use": "Within 3 shows" },
-    { "rarity": "rare", "type": "Booking", "title": "Open Challenge", "desc": "Your current champion must issue an open challenge. Anyone can answer — you pick randomly.", "energy": -2, "duration": "1 show", "use": "Within 2 shows" },
-    { "rarity": "rare", "type": "Stipulation", "title": "No DQ Night", "desc": "All matches on this show have No Disqualification rules.", "energy": -1, "duration": "1 show", "use": "Within 2 shows" },
-    { "rarity": "rare", "type": "Booking", "title": "Brand Invader", "desc": "A superstar from the opposing brand shows up uninvited and demands a match. Book it.", "energy": 2, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "rare", "type": "Booking", "title": "Number One Contender Match", "desc": "An unplanned #1 contender match must be added to this show. Pick two mid-carders randomly.", "energy": -1, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "rare", "type": "Backstage", "title": "Contract Dispute", "desc": "A superstar refuses to perform unless they get a title shot. Book them in a match this show — they win regardless.", "energy": 3, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "epic", "type": "Event", "title": "Extreme Rules Month", "desc": "Every match for the next 4 shows must have an extreme or hardcore stipulation.", "energy": -4, "duration": "4 shows", "use": "Within 2 shows" },
-    { "rarity": "epic", "type": "Gimmick", "title": "Character Overhaul", "desc": "Fully redesign one superstar — new name, new attire, new alignment. No explanation given on screen.", "energy": -3, "duration": "Permanent", "use": "Within 3 shows" },
-    { "rarity": "epic", "type": "Push", "title": "Rocket Push", "desc": "One randomly selected superstar gets an immediate main event push. Book them to win 3 straight, including over a champion.", "energy": -5, "duration": "3 shows", "use": "Immediately" },
-    { "rarity": "epic", "type": "Authority", "title": "Authority Shift", "desc": "Your current GM is replaced. Randomly pick a new one from your active roster.", "energy": 4, "duration": "Permanent", "use": "Immediately" },
-    { "rarity": "epic", "type": "Booking", "title": "Stable Implosion", "desc": "A faction turns on one of their own members this show. That member must feud with the stable for the next 3 shows.", "energy": 4, "duration": "3 shows", "use": "Immediately" },
-    { "rarity": "epic", "type": "Stipulation", "title": "Spin the Wheel", "desc": "Randomly determine the stipulation for tonight's main event. Roll a dice — 1: Ladder, 2: Steel Cage, 3: TLC, 4: Hell in a Cell, 5: Iron Man, 6: Buried Alive.", "energy": 0, "duration": "1 show", "use": "Immediately" },
-    { "rarity": "epic", "type": "Event", "title": "Special Attraction", "desc": "Book a dream match between two superstars who have never faced each other in your universe.", "energy": -3, "duration": "1 show", "use": "Within 3 shows" },
-    { "rarity": "legendary", "type": "Legendary", "title": "Title Scramble", "desc": "All titles are immediately vacated. Book a tournament across the next 4 shows to crown new champions.", "energy": 8, "duration": "4 shows", "use": "Immediately" },
-    { "rarity": "legendary", "type": "Legendary", "title": "Superstar Starter", "desc": "Create a brand new superstar from scratch and debut them this show. They must win their first 3 matches.", "energy": -6, "duration": "Permanent", "use": "Immediately" },
-    { "rarity": "legendary", "type": "Legendary", "title": "Faction War", "desc": "Two factions must be formed this show and feud exclusively against each other for the next 6 shows.", "energy": 0, "duration": "6 shows", "use": "Immediately" },
-    { "rarity": "legendary", "type": "Legendary", "title": "Hall of Fame Moment", "desc": "Book the most memorable match of your entire universe. No restrictions. Make it count.", "energy": -8, "duration": "1 show", "use": "Within 1 PPV" },
-    { "rarity": "legendary", "type": "Legendary", "title": "Brand Shake-Up", "desc": "Randomly reassign 5 superstars to the opposing brand. No trades — just chaos.", "energy": 6, "duration": "Permanent", "use": "Immediately" }
+
+    // ── HEEL CARDS (negative events, zero cost, can be forced) ──
+    {
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Lost Luggage",
+      "desc": "A superstar's gear goes missing. They must compete in generic attire for the next show.",
+      "cost": {},
+      "duration": "1 Show",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Under the Weather",
+      "desc": "A superstar is ill. They lose their next scheduled match via forfeit.",
+      "cost": {},
+      "duration": "1 Show",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Locker Room Tension",
+      "desc": "Two superstars refuse to work together. They cannot be in the same tag team this week.",
+      "cost": {},
+      "duration": "2 Shows",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Wardrobe Malfunction",
+      "desc": "A superstar's entrance gear breaks. Change their attire to the most basic available.",
+      "cost": {},
+      "duration": "1 Show",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Medical Suspension",
+      "desc": "A superstar is pulled from competition. Bench your current champion for 2 shows.",
+      "cost": {},
+      "duration": "2 Shows",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Contract Dispute",
+      "desc": "A superstar demands more money. They refuse to do a clean job for 3 shows.",
+      "cost": {},
+      "duration": "3 Shows",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Injury Scare",
+      "desc": "A superstar picks up a kayfabe injury. They must lose their next match and take 1 show off.",
+      "cost": {},
+      "duration": "2 Shows",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Title Scramble Chaos",
+      "desc": "The title picture is thrown into chaos. Strip the current champion and hold a tournament.",
+      "cost": {},
+      "duration": "4 Shows",
+      "use": "Within 3 weeks"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Backstage Brawl Gone Wrong",
+      "desc": "A fight breaks out backstage. Two superstars are suspended for 2 shows each.",
+      "cost": {},
+      "duration": "2 Shows",
+      "use": "Immediately"
+    },
+    {
+      "cardType": "heel",
+      "rarity": "legendary",
+      "title": "Brand Split Crisis",
+      "desc": "A superstar goes rogue and jumps brands without permission. Swap your top star to the opposing brand for a full month.",
+      "cost": {},
+      "duration": "4 Shows",
+      "use": "Immediately"
+    },
+
+    // ── FACE CARDS (positive events, resource cost, never forced) ──
+    {
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Underdog Push",
+      "desc": "A mid-card superstar gets a surprise title shot. Book them to win clean.",
+      "cost": { "hype": 1 },
+      "duration": "2 Shows",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Crowd Favourite Moment",
+      "desc": "A superstar gets an unexpected crowd reaction. Give them a promo segment this show.",
+      "cost": { "hype": 1 },
+      "duration": "1 Show",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Surprise Return",
+      "desc": "A superstar returns from injury ahead of schedule. Bring back a benched superstar immediately.",
+      "cost": { "heat": 1 },
+      "duration": "1 Show",
+      "use": "Within 3 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Viral Moment",
+      "desc": "A match clip goes viral. The superstar involved gets a 3-show push with wins over ranked opponents.",
+      "cost": { "hype": 1, "clout": 1 },
+      "duration": "3 Shows",
+      "use": "Within 3 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Hot Feud Ignition",
+      "desc": "Two superstars have undeniable chemistry. Book a best-of-3 series between them.",
+      "cost": { "heat": 2 },
+      "duration": "3 Shows",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Breakout Performance",
+      "desc": "A superstar steals the show. Give them a title match at the next PPV.",
+      "cost": { "hype": 2 },
+      "duration": "2 Shows",
+      "use": "Within 3 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Rocket Push",
+      "desc": "Management goes all-in on a superstar. They win every match for the next month, clean.",
+      "cost": { "hype": 2, "heat": 1 },
+      "duration": "4 Shows",
+      "use": "Within 4 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Celebrity Crossover",
+      "desc": "A mainstream celebrity appears at ringside. Book a match with celebrity involvement this show.",
+      "cost": { "clout": 2, "hype": 1 },
+      "duration": "1 Show",
+      "use": "Within 2 weeks"
+    },
+    {
+      "cardType": "face",
+      "rarity": "legendary",
+      "title": "Legend Returns",
+      "desc": "A retired legend makes a one-night return. Book them in a match or segment this show.",
+      "cost": { "clout": 2, "heat": 1, "hype": 1 },
+      "duration": "1 Show",
+      "use": "Within 3 weeks"
+    },
+
+    // ── PROMO CARDS (utility, auto-resolve, grant resources) ──
+    {
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Crowd Chant",
+      "desc": "The crowd erupts in a spontaneous chant. Pure fan energy.",
+      "grants": { "hype": 2 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Heated Rivalry",
+      "desc": "Two superstars exchange words backstage. The tension is palpable.",
+      "grants": { "heat": 2 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Sports Talk Mention",
+      "desc": "A wrestling segment gets picked up by a mainstream sports outlet.",
+      "grants": { "clout": 2 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Electric Promo",
+      "desc": "A superstar cuts the promo of their career. The crowd is on their feet.",
+      "grants": { "hype": 2, "heat": 1 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Viral Clip",
+      "desc": "A moment from the show spreads across social media overnight.",
+      "grants": { "clout": 2, "hype": 1 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Attitude Era Energy",
+      "desc": "The show has that rare, electric quality. Everything clicks tonight.",
+      "grants": { "heat": 2, "hype": 2, "clout": 1 },
+      "duration": null,
+      "use": null
+    },
+    {
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Cultural Moment",
+      "desc": "Wrestling breaks into the mainstream in a way that hasn't been seen in years.",
+      "grants": { "clout": 3, "hype": 2, "heat": 1 },
+      "duration": null,
+      "use": null
+    }
   ]
 }
