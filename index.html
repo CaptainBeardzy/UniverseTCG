@@ -1,439 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>WWE Chaos Packs – Universe Mode</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #0a0a0f;
-  font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh;
-  color: #fff;
-  overflow-x: hidden;
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a0f; color:#fff; font-family: 'Segoe UI',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+/* top bar */
+#top-bar { position:fixed; top:0; left:0; right:0; height:56px; background:rgba(10,10,20,0.97); border-bottom:1px solid #222; display:flex; align-items:center; padding:0 16px; gap:10px; z-index:1100; }
+#top-bar h1 { color:#e8c84a; font-size:13px; font-weight:700; letter-spacing:1px; flex:1; }
+.resource-pill { display:flex; align-items:center; gap:5px; background:#1a1a2e; border:1px solid #333; border-radius:20px; padding:4px 12px; font-size:13px; font-weight:700; transition:background .3s; min-width:70px; justify-content:center; }
+.resource-pill .r-val { min-width:20px; text-align:center; }
+#pill-heat .r-val { color:#f55; } #pill-hype .r-val { color:#fa0 } #pill-clout .r-val { color:#a8f }
+#show-counter { background:#1a1a2e; border:1px solid #333; border-radius:20px; padding:4px 12px; font-size:11px; color:#aaa; }
+#hand-btn { background:#2a2a4a; border:1px solid #4a4aaa; border-radius:20px; padding:6px 12px; font-size:11px; color:#aaf; cursor:pointer; }
+
+/* active bar */
+#active-bar { position:fixed; top:56px; left:0; right:0; background:rgba(10,10,20,0.92); border-bottom:1px solid #1a3a1a; z-index:1000; transition:max-height .3s; max-height:44px; overflow:hidden; }
+#active-bar.expanded { max-height:260px; }
+#active-bar-header { display:flex; align-items:center; padding:0 16px; height:44px; gap:10px; cursor:pointer; }
+#active-cards-list { display:flex; gap:10px; padding:8px 16px 12px; overflow-x:auto; }
+
+/* main */
+#main-content { padding-top:100px; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+.screen { display:none; width:100%; max-width:960px; padding:20px; }
+.screen.active { display:flex; flex-direction:column; align-items:center; }
+
+/* packs */
+#pack-list { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+.pack-card { background:linear-gradient(145deg,#1a1a2e,#0f0f1e); border:2px solid #333; border-radius:16px; padding:24px 20px; width:180px; text-align:center; cursor:pointer; transition:transform .2s, border-color .2s; }
+.pack-card:hover { transform:translateY(-4px); border-color:#e8c84a; box-shadow:0 8px 24px rgba(232,200,74,0.12); }
+
+/* reveal */
+#cards-row { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin:10px 0; }
+.card { width:150px; height:270px; border-radius:12px; position:relative; perspective:800px; transition:transform .25s; cursor:pointer; }
+.card-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .6s; border-radius:12px; }
+.card.flipped .card-inner { transform:rotateY(180deg); }
+.card-front, .card-back { position:absolute; inset:0; border-radius:12px; backface-visibility:hidden; display:flex; flex-direction:column; padding:10px; }
+.card-front { align-items:center; justify-content:center; background:linear-gradient(145deg,#1a1a3a,#0d0d20); border:2px solid #333; font-size:36px; }
+.card-back { transform:rotateY(180deg); border:2px solid #444; gap:6px; }
+.card-back.promo { box-shadow: inset 0 0 16px rgba(168,136,255,0.08); }
+
+/* promo highlight + cashin button */
+.promo-highlight { transform:scale(1.15); z-index:1200; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+.cashin-btn {
+  position:absolute; left:50%; transform:translateX(-50%); bottom:12px; z-index:1300;
+  background:linear-gradient(135deg,#2a6a2a,#1a4a1a); border:2px solid #4f4; color:#4f4; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;
 }
 
-/* ── TOP BAR ── */
-#top-bar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 56px;
-  background: rgba(10,10,20,0.97);
-  border-bottom: 1px solid #222;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  gap: 10px;
-  z-index: 1000;
-}
-#top-bar h1 { font-size: 13px; font-weight: 700; color: #e8c84a; letter-spacing: 1px; flex: 1; }
+/* play screen controls */
+#play-screen .action-row { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px; }
+#play-card-btn, #discard-card-btn { padding:10px 28px; border-radius:12px; font-weight:700; cursor:pointer; }
+#next-show-btn { padding:12px 32px; border-radius:12px; font-weight:700; cursor:pointer; }
 
-.resource-pill {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: #1a1a2e;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  transition: background 0.5s;
-  min-width: 70px;
-  justify-content: center;
-}
-.resource-pill .r-icon { font-size: 14px; }
-.resource-pill .r-val { min-width: 20px; text-align: center; }
-#pill-heat .r-val { color: #f55; }
-#pill-hype .r-val { color: #fa0; }
-#pill-clout .r-val { color: #a8f; }
+/* disabled styling */
+button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
 
-#show-counter {
-  background: #1a1a2e;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 11px;
-  color: #aaa;
-}
-#hand-btn {
-  background: #2a2a4a;
-  border: 1px solid #4a4aaa;
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: 11px;
-  color: #aaf;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-#hand-btn:hover { background: #3a3a6a; }
+/* use badge & overlays */
+.use-badge { position:absolute; bottom:6px; right:6px; background:#2a2a4a; border:1px solid #4a4aaa; padding:4px 6px; border-radius:6px; color:#aaf; font-size:11px; pointer-events:none; }
+.use-badge.immediate { background:#2a1a1a; border-color:#a44; color:#f88; }
 
-/* ── ACTIVE BAR ── */
-#active-bar {
-  position: fixed;
-  top: 56px; left: 0; right: 0;
-  background: rgba(10,10,20,0.92);
-  border-bottom: 1px solid #1a3a1a;
-  z-index: 900;
-  transition: max-height 0.4s ease;
-  max-height: 44px;
-  overflow: hidden;
-}
-#active-bar.expanded { max-height: 260px; }
-#active-bar-header {
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  height: 44px;
-  cursor: pointer;
-  gap: 10px;
-}
-#active-bar-header .ab-label { font-size: 12px; color: #888; flex: 1; }
-#active-bar-header .ab-toggle { font-size: 10px; color: #555; }
-#active-cards-list {
-  display: flex;
-  gap: 10px;
-  padding: 8px 16px 12px;
-  overflow-x: auto;
-}
+/* duration overlay for active bar */
+.duration-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:52px; font-weight:900; color:#fff; background:rgba(0,0,0,0.55); border-radius:12px; pointer-events:none; }
 
-/* ── SCREENS ── */
-#main-content {
-  padding-top: 100px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.screen { display: none; width: 100%; max-width: 960px; padding: 20px; }
-.screen.active { display: flex; flex-direction: column; align-items: center; }
+/* small helpers */
+#loading-msg, #error-msg { font-size:14px; color:#888; text-align:center; padding:40px; }
+#error-msg { color:#f84; display:none; }
 
-/* ── PACK SCREEN ── */
-#pack-screen h2 { font-size: 22px; color: #e8c84a; margin-bottom: 6px; }
-#pack-screen p { font-size: 13px; color: #888; margin-bottom: 24px; }
-#pack-list { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-.pack-card {
-  background: linear-gradient(145deg, #1a1a2e, #0f0f1e);
-  border: 2px solid #333;
-  border-radius: 16px;
-  padding: 24px 20px;
-  width: 180px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-}
-.pack-card:hover { transform: translateY(-4px); border-color: #e8c84a; box-shadow: 0 8px 24px rgba(232,200,74,0.2); }
-.pack-card .pack-icon { font-size: 40px; margin-bottom: 10px; }
-.pack-card .pack-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-.pack-card .pack-desc { font-size: 11px; color: #888; }
-#pack-locked-msg {
-  margin-top: 20px;
-  background: #1a1010;
-  border: 1px solid #a44;
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 13px;
-  color: #f88;
-  text-align: center;
-  display: none;
-}
+/* continue placement */
+#continue-wrapper { margin-top:12px; display:flex; gap:10px; align-items:center; }
+#continue-info { color:#aaa; font-size:13px; }
 
-/* ── REVEAL SCREEN ── */
-#reveal-screen { gap: 20px; }
-#reveal-screen h2 { font-size: 18px; color: #e8c84a; }
-#cards-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 10px 0; }
-#flip-hint { font-size: 13px; color: #888; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-#continue-btn {
-  display: none;
-  background: linear-gradient(135deg, #2a6a2a, #1a4a1a);
-  border: 2px solid #4f4;
-  border-radius: 12px;
-  padding: 12px 32px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #4f4;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#continue-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(80,255,80,0.3); }
-
-/* ── PLAY SCREEN ── */
-#play-screen { gap: 14px; }
-#play-screen h2 { font-size: 18px; color: #e8c84a; }
-#play-status {
-  font-size: 13px;
-  color: #888;
-  text-align: center;
-  max-width: 560px;
-  line-height: 1.6;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #111;
-  border: 1px solid #222;
-}
-#play-status.overflow { color: #f84; border-color: #a44; background: #1a0f0f; }
-#hand-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 4px 0; }
-#hand-capacity { font-size: 11px; color: #666; }
-#hand-capacity.over { color: #f84; font-weight: 700; }
-.action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
-
-#play-card-btn {
-  display: none;
-  background: linear-gradient(135deg, #2a4a8a, #1a2a5a);
-  border: 2px solid #4a8af4;
-  border-radius: 12px;
-  padding: 10px 28px;
-  font-size: 14px; font-weight: 700;
-  color: #4a8af4;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#play-card-btn:hover:not(:disabled) { transform: scale(1.04); box-shadow: 0 4px 20px rgba(74,138,244,0.3); }
-#play-card-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-#discard-card-btn {
-  display: none;
-  background: linear-gradient(135deg, #6a2a2a, #4a1a1a);
-  border: 2px solid #f44;
-  border-radius: 12px;
-  padding: 10px 28px;
-  font-size: 14px; font-weight: 700;
-  color: #f44;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#discard-card-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(255,80,80,0.3); }
-
-#resource-warning { font-size: 12px; color: #f84; display: none; text-align: center; }
-
-#next-show-btn {
-  display: none;
-  background: linear-gradient(135deg, #6a2a6a, #4a1a4a);
-  border: 2px solid #f4f;
-  border-radius: 12px;
-  padding: 12px 32px;
-  font-size: 15px; font-weight: 700;
-  color: #f4f;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#next-show-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(255,80,255,0.3); }
-
-/* ── TRANSITION SCREEN ── */
-#transition-screen { gap: 16px; }
-#transition-screen h2 { font-size: 20px; color: #e8c84a; }
-#transition-cards-area { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 10px 0; min-height: 120px; }
-#transition-msg { font-size: 14px; color: #aaa; text-align: center; }
-#transition-done-btn {
-  display: none;
-  background: #1a1a2e;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 10px 28px;
-  color: #aaa;
-  cursor: pointer;
-  font-size: 13px;
-  margin-top: 10px;
-}
-#transition-done-btn:hover { background: #2a2a4a; }
-
-/* ── CARD STYLES ── */
-.card {
-  width: 150px;
-  height: 270px;
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  perspective: 800px;
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-.card-inner {
-  width: 100%; height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
-  border-radius: 12px;
-}
-.card.flipped .card-inner { transform: rotateY(180deg); }
-.card-front, .card-back {
-  position: absolute; inset: 0;
-  border-radius: 12px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.card-front {
-  background: linear-gradient(145deg, #1a1a3a, #0d0d20);
-  border: 2px solid #333;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px;
-}
-.card-back {
-  transform: rotateY(180deg);
-  display: flex; flex-direction: column;
-  padding: 10px 8px; gap: 4px;
-  border: 2px solid #444;
-}
-
-/* Card type themes */
-.card-back.heel.common  { background: linear-gradient(160deg,#1e0a0a,#120606); border-color: #6a2a2a; }
-.card-back.heel.rare    { background: linear-gradient(160deg,#2a0a0a,#1a0606); border-color: #c0392b; }
-.card-back.heel.epic    { background: linear-gradient(160deg,#3a0a0a,#220606); border-color: #e74c3c; }
-.card-back.heel.legendary { background: linear-gradient(160deg,#4a0a0a,#2a0606); border-color: #ff6b6b; }
-
-.card-back.face.common  { background: linear-gradient(160deg,#0a1e0a,#060c06); border-color: #2a6a2a; }
-.card-back.face.rare    { background: linear-gradient(160deg,#0a2a0a,#061a06); border-color: #27ae60; }
-.card-back.face.epic    { background: linear-gradient(160deg,#0a3a0a,#062206); border-color: #2ecc71; }
-.card-back.face.legendary { background: linear-gradient(160deg,#0a4a0a,#062a06); border-color: #55ff55; }
-
-.card-back.promo.common  { background: linear-gradient(160deg,#0a0a1e,#06060c); border-color: #2a2a8a; }
-.card-back.promo.rare    { background: linear-gradient(160deg,#0a0a2a,#06061a); border-color: #8e44ad; }
-.card-back.promo.epic    { background: linear-gradient(160deg,#0a0a3a,#060622); border-color: #9b59b6; }
-.card-back.promo.legendary { background: linear-gradient(160deg,#1a0a2a,#0f0618); border-color: #e8c84a; }
-
-.card-type-label {
-  font-size: 8px; font-weight: 900; letter-spacing: 2px;
-  text-transform: uppercase; padding: 2px 6px; border-radius: 4px;
-  align-self: flex-start; margin-bottom: 2px;
-}
-.heel .card-type-label  { background: #4a1010; color: #f88; }
-.face .card-type-label  { background: #104a10; color: #8f8; }
-.promo .card-type-label { background: #1a1040; color: #aaf; }
-
-.card-rarity-badge {
-  font-size: 8px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; padding: 1px 5px; border-radius: 3px;
-  align-self: flex-start;
-}
-.common .card-rarity-badge  { background: #333; color: #aaa; }
-.rare .card-rarity-badge    { background: #1a3a6a; color: #4a8af4; }
-.epic .card-rarity-badge    { background: #2a1a4a; color: #9b59b6; }
-.legendary .card-rarity-badge { background: #3a2a00; color: #e8c84a; }
-
-.card-title { font-size: 12px; font-weight: 700; line-height: 1.3; margin: 3px 0; }
-.card-desc { font-size: 9px; color: #bbb; line-height: 1.4; flex: 1; overflow: hidden; }
-.card-meta { font-size: 9px; color: #888; border-top: 1px solid #222; padding-top: 4px; margin-top: 2px; }
-.card-meta span { display: block; line-height: 1.6; }
-
-.cost-heat  { color: #f55; }
-.cost-hype  { color: #fa0; }
-.cost-clout { color: #a8f; }
-.cost-free  { color: #666; }
-
-/* Promo glow */
-.card.promo-card .card-back { box-shadow: inset 0 0 20px rgba(168,136,255,0.15); }
-
-/* Use badge */
-.use-badge {
-  position: absolute;
-  bottom: 6px; right: 6px;
-  background: #2a2a4a;
-  border: 1px solid #4a4aaa;
-  border-radius: 6px;
-  padding: 2px 6px;
-  font-size: 9px; color: #aaf;
-  z-index: 3; pointer-events: none;
-}
-.use-badge.immediate { background: #2a1a1a; border-color: #a44; color: #f88; }
-.use-badge.urgent    { background: #3a2a00; border-color: #a84; color: #fa8; }
-.use-badge.face-exp  { background: #102a10; border-color: #4a8; color: #8f8; }
-
-/* Duration overlay */
-.card.active-card .duration-overlay {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.55);
-  border-radius: 12px;
-  font-size: 52px; font-weight: 900; color: #fff;
-  text-shadow: 0 2px 12px #000;
-  pointer-events: none; z-index: 2;
-}
-.card.active-card.permanent-card .duration-overlay { font-size: 22px; }
-
-/* Selected */
-.card.selected .card-back { border-color: #fff !important; box-shadow: 0 0 16px rgba(255,255,255,0.4); }
-
-/* Overflow states */
-.card.discardable { transform: translateY(-10px); box-shadow: 0 8px 24px rgba(255,80,80,0.4); cursor: pointer; }
-.card.discardable .card-back { border-color: #f44 !important; }
-.card.dimmed { opacity: 0.35; pointer-events: none; }
-
-/* Animations */
-@keyframes discardAnim {
-  0%   { transform: scale(1) rotate(0deg); opacity: 1; }
-  50%  { transform: scale(1.1) rotate(8deg); opacity: 0.6; }
-  100% { transform: scale(0) rotate(20deg); opacity: 0; }
-}
-.card.discarding { animation: discardAnim 0.6s ease forwards; pointer-events: none; }
-
-@keyframes tickDown {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.4); color: #f84; }
-  100% { transform: scale(1); }
-}
-.duration-overlay.ticking { animation: tickDown 0.5s ease; }
-
-/* Promo fly-in animation */
-@keyframes flyToBar {
-  0%   { transform: scale(1) translateY(0); opacity: 1; }
-  60%  { transform: scale(1.15) translateY(-30px); opacity: 0.9; }
-  100% { transform: scale(0.2) translateY(-200px); opacity: 0; }
-}
-.card.flying { animation: flyToBar 0.8s ease forwards; pointer-events: none; }
-
-@keyframes resourcePop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.4); }
-  100% { transform: scale(1); }
-}
-.resource-pill.popping { animation: resourcePop 0.4s ease; }
-
-/* Flash */
-#flash {
-  position: fixed; inset: 0;
-  background: white; opacity: 0;
-  pointer-events: none; z-index: 9999;
-  transition: opacity 0.15s;
-}
-
-#loading-msg, #error-msg { font-size: 14px; color: #888; text-align: center; padding: 40px; }
-#error-msg { color: #f84; display: none; }
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #111; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+/* scrollbars */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
 </style>
 </head>
 <body>
 
-<div id="flash"></div>
-
-<!-- TOP BAR -->
 <div id="top-bar">
   <h1>⚡ CHAOS PACKS</h1>
   <div class="resource-pill" id="pill-heat" title="Heat – Rivalry Momentum">
-    <span class="r-icon">🔥</span>
-    <span class="r-val" id="res-heat">5</span>
-    <span style="font-size:9px;color:#666">HEAT</span>
+    <span class="r-icon">🔥</span><span class="r-val" id="res-heat">5</span><span style="font-size:9px;color:#666">HEAT</span>
   </div>
   <div class="resource-pill" id="pill-hype" title="Hype – Fan Excitement">
-    <span class="r-icon">📣</span>
-    <span class="r-val" id="res-hype">5</span>
-    <span style="font-size:9px;color:#666">HYPE</span>
+    <span class="r-icon">📣</span><span class="r-val" id="res-hype">5</span><span style="font-size:9px;color:#666">HYPE</span>
   </div>
   <div class="resource-pill" id="pill-clout" title="Clout – Mainstream Reach">
-    <span class="r-icon">🌐</span>
-    <span class="r-val" id="res-clout">5</span>
-    <span style="font-size:9px;color:#666">CLOUT</span>
+    <span class="r-icon">🌐</span><span class="r-val" id="res-clout">5</span><span style="font-size:9px;color:#666">CLOUT</span>
   </div>
   <div id="show-counter">Show #<span id="show-num">1</span></div>
   <button id="hand-btn" onclick="showScreen('play-screen'); renderPlayScreen();">🃏 Hand (<span id="hand-count">0</span>)</button>
 </div>
 
-<!-- ACTIVE BAR -->
 <div id="active-bar">
   <div id="active-bar-header" onclick="toggleActiveBar()">
     <span style="font-size:12px;color:#4f4">🟢 ACTIVE</span>
@@ -443,10 +104,8 @@ body {
   <div id="active-cards-list"></div>
 </div>
 
-<!-- MAIN CONTENT -->
 <div id="main-content">
 
-  <!-- PACK SCREEN -->
   <div id="pack-screen" class="screen active">
     <h2>Open a Pack</h2>
     <p>Every pack contains one Heel, one Face, and one Promo card.</p>
@@ -454,95 +113,84 @@ body {
       <div id="loading-msg">Loading packs…</div>
       <div id="error-msg"></div>
     </div>
-    <div id="pack-locked-msg">⚠️ Play all immediate-use Heel cards before opening a new pack.</div>
+    <div id="pack-locked-msg" style="display:none; margin-top:16px; color:#f88; background:#1a1010; border:1px solid #a44; padding:10px; border-radius:8px;">
+      ⚠️ Play all immediate-use Heel cards before opening a new pack.
+    </div>
   </div>
 
-  <!-- REVEAL SCREEN -->
   <div id="reveal-screen" class="screen">
     <h2 id="reveal-pack-name">Opening Pack…</h2>
     <div id="cards-row"></div>
-    <p id="flip-hint">Click each card to reveal</p>
-    <button id="continue-btn" onclick="addCardsToHand()">✅ Add to Hand</button>
-  </div>
-
-  <!-- PLAY SCREEN -->
-  <div id="play-screen" class="screen">
-    <h2>Your Hand <span id="hand-capacity" style="font-size:13px;font-weight:400;color:#666;margin-left:8px"></span></h2>
-    <div id="play-status"></div>
-    <div id="hand-grid"></div>
-    <div class="action-row">
-      <button id="play-card-btn" onclick="playSelectedCard()">▶ Play Card</button>
-      <button id="discard-card-btn" onclick="discardSelectedCard()">🗑 Discard</button>
+    <p id="flip-hint" style="color:#aaa">Click each card to reveal</p>
+    <div style="margin-top:10px;">
+      <button id="reveal-continue-btn" onclick="addCardsToHand()" style="display:none; padding:10px 20px; border-radius:10px; font-weight:700;">✅ Add to Hand</button>
     </div>
-    <div id="resource-warning"></div>
-    <button id="next-show-btn" onclick="goToNextShow()">➡ Continue to Next Show</button>
   </div>
 
-  <!-- TRANSITION SCREEN -->
+  <div id="play-screen" class="screen">
+    <h2>Your Hand <span id="hand-capacity" style="font-size:13px;color:#aaa;margin-left:8px"></span></h2>
+    <div id="play-status" style="max-width:640px; text-align:center; background:#111; border:1px solid #222; padding:12px; border-radius:8px; color:#aaa;"></div>
+    <div id="hand-grid" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px;"></div>
+
+    <div class="action-row" style="margin-top:12px;">
+      <button id="play-card-btn" onclick="playSelectedCard()" style="display:none; background:linear-gradient(135deg,#2a4a8a,#1a2a5a); border:2px solid #4a8af4; border-radius:12px; padding:10px 28px; color:#4a8af4;">▶ Play Card</button>
+      <button id="discard-card-btn" onclick="discardSelectedCard()" style="display:none; background:linear-gradient(135deg,#6a2a2a,#4a1a1a); border:2px solid #f44; border-radius:12px; padding:10px 28px; color:#f44;">🗑 Discard</button>
+      <div id="resource-warning" style="color:#f84; margin-left:8px; display:none;"></div>
+    </div>
+
+    <div id="continue-wrapper">
+      <button id="next-show-btn" onclick="goToNextShow()" disabled>➡ Continue to Next Show</button>
+      <div id="continue-info">Button enabled when all cards flipped, promos cashed, and immediate heels resolved.</div>
+    </div>
+  </div>
+
   <div id="transition-screen" class="screen">
     <h2>Advancing to Show #<span id="next-show-num">2</span>…</h2>
     <p id="transition-msg">Updating durations…</p>
-    <div id="transition-cards-area"></div>
-    <button id="transition-done-btn" onclick="finishTransition()">Continue ▶</button>
+    <div id="transition-cards-area" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:12px; min-height:120px;"></div>
+    <button id="transition-done-btn" onclick="finishTransition()" style="display:none; margin-top:12px; padding:10px 20px; border-radius:10px;">Continue ▶</button>
   </div>
 
 </div>
 
 <script>
-// ══════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════
+// STATE
 let cardData = [];
 let resources = { heat: 5, hype: 5, clout: 5 };
 let showNumber = 1;
 let hand = [];        // { card, useWindow }
 let activeCards = []; // { card, duration }
-let drawnCards = [];
+let drawnCards = [];  // current drawn set (includes promo until cashed)
 let flippedCount = 0;
 let promoResolved = 0;
+let drawnTotal = 0;
+let drawnPromosTotal = 0;
 let selectedHandItem = null;
-let activeBarExpanded = false;
-
 const HAND_LIMIT = 5;
 
-// ══════════════════════════════════════════
-//  HAND CAPACITY
-// ══════════════════════════════════════════
-// Immediate Heel cards are free (don't count toward limit)
-function isFreeSlot(h) {
-  return h.card.cardType === 'heel' && isImmediate(h.card);
-}
-function isImmediate(card) {
-  return card.use === 'Immediately' || card.use === 'Immediate';
-}
-function countedHandSize() {
-  return hand.filter(h => !isFreeSlot(h)).length;
-}
-function isOverCapacity() {
-  return countedHandSize() > HAND_LIMIT;
-}
-// Eligible to discard: Face cards (positive effect) or non-immediate Heel cards
-// Cannot discard: immediate Heel cards
-function isDiscardEligible(h) {
-  if (h.card.cardType === 'heel' && isImmediate(h.card)) return false;
-  return true;
-}
+// UTIL
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function updateResourceDisplay() { ['heat','hype','clout'].forEach(r=>document.getElementById(`res-${r}`).textContent = resources[r]); }
+function applyResource(type, amount) { resources[type] = Math.max(0, resources[type] + amount); updateResourceDisplay(); const pill=document.getElementById(`pill-${type}`); pill.classList.remove('popping'); void pill.offsetWidth; pill.classList.add('popping'); setTimeout(()=>pill.classList.remove('popping'),400); }
 
-// ══════════════════════════════════════════
-//  LOAD PACKS
-// ══════════════════════════════════════════
+// CAPACITY / IMMEDIATE
+function isImmediate(card) { return card && (card.use === 'Immediately' || card.use === 'Immediate'); }
+function isFreeSlot(h) { return h.card.cardType === 'heel' && isImmediate(h.card); }
+function countedHandSize() { return hand.filter(h => !isFreeSlot(h)).length; }
+function isOverCapacity() { return countedHandSize() > HAND_LIMIT; }
+function isDiscardEligible(h) { if (h.card.cardType === 'heel' && isImmediate(h.card)) return false; return true; }
+
+// LOAD PACKS
 async function loadCards() {
   try {
     const res = await fetch('packs.json');
     if (!res.ok) throw new Error(`packs.json returned ${res.status}`);
     const packsIndex = await res.json();
-
     const packPromises = packsIndex.packs.map(async p => {
       const r = await fetch(p);
       if (!r.ok) throw new Error(`${p} returned ${r.status}`);
       return r.json();
     });
-
     cardData = await Promise.all(packPromises);
     document.getElementById('loading-msg').style.display = 'none';
     buildPackUI();
@@ -553,63 +201,54 @@ async function loadCards() {
     err.textContent = `Load error: ${e.message}`;
   }
 }
-
 function buildPackUI() {
-  const list = document.getElementById('pack-list');
-  list.innerHTML = '';
-  cardData.forEach((pack, i) => {
-    const el = document.createElement('div');
-    el.className = 'pack-card';
-    el.innerHTML = `<div class="pack-icon">${pack.icon}</div><div class="pack-name">${pack.name}</div><div class="pack-desc">${pack.desc}</div>`;
+  const list=document.getElementById('pack-list'); list.innerHTML='';
+  cardData.forEach((pack,i)=>{
+    const el=document.createElement('div'); el.className='pack-card';
+    el.innerHTML=`<div style="font-size:38px">${pack.icon || '📦'}</div><div style="font-weight:700;margin-top:6px">${pack.name}</div><div style="color:#aaa;font-size:12px;margin-top:6px">${pack.desc || ''}</div>`;
     el.onclick = () => openPack(i);
     list.appendChild(el);
   });
 }
 
-// ══════════════════════════════════════════
-//  RESOURCES
-// ══════════════════════════════════════════
-function updateResourceDisplay() {
-  ['heat','hype','clout'].forEach(r => {
-    document.getElementById(`res-${r}`).textContent = resources[r];
-  });
-}
-
-function applyResource(type, amount) {
-  resources[type] = Math.max(0, resources[type] + amount);
-  updateResourceDisplay();
-  const pill = document.getElementById(`pill-${type}`);
-  pill.classList.remove('popping');
-  void pill.offsetWidth;
-  pill.classList.add('popping');
-  setTimeout(() => pill.classList.remove('popping'), 400);
-}
-
+// COST helpers
 function canAffordCard(card) {
-  if (card.cardType === 'promo') return true; // Promo cards are free
-  if (!card.cost || Object.keys(card.cost).length === 0) return true;
-  return Object.entries(card.cost).every(([r, v]) => resources[r] >= v);
+  if (!card) return false;
+  if (card.cardType === 'promo') return true;
+  const cost = card.cost || {};
+  if (Object.keys(cost).length === 0) return true;
+  return Object.entries(cost).every(([r,v]) => resources[r] >= v);
 }
-
 function spendCard(card) {
-  if (card.cardType === 'promo') return; // Promo cards don't cost anything
-  if (!card.cost || Object.keys(card.cost).length === 0) return;
-  Object.entries(card.cost).forEach(([r, v]) => applyResource(r, -v));
+  if (!card || card.cardType === 'promo') return;
+  const cost = card.cost || {};
+  Object.entries(cost).forEach(([r,v]) => applyResource(r, -v));
+}
+function formatCost(costObj) {
+  const cost = costObj || {};
+  if (Object.keys(cost).length === 0) return '<span class="cost-free">Free</span>';
+  const icons = { heat:'🔥', hype:'📣', clout:'🌐' };
+  return Object.entries(cost).map(([r,v]) => `<span class="cost-${r}">${icons[r]} ${v} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`).join(' ');
 }
 
-function formatCost(cost) {
-  if (!cost || Object.keys(cost).length === 0) return '<span class="cost-free">Free</span>';
-  return Object.entries(cost).map(([r, v]) => {
-    const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
-    return `<span class="cost-${r}">${icons[r]} ${v} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`;
-  }).join(' ');
+// DURATION parser (handles number or string)
+function parseDuration(dur) {
+  if (dur === null || dur === undefined) return 0;
+  if (typeof dur === 'number') return dur;
+  if (dur === 'Permanent') return null;
+  const m = String(dur).match(/(\d+)/);
+  return m ? parseInt(m[1]) : 0;
+}
+function parseUseWindow(use) {
+  if (!use) return null;
+  if (use === 'Immediately' || use === 'Immediate') return null;
+  const m = String(use).match(/(\d+)/);
+  return m ? parseInt(m[1]) : null;
 }
 
-// ══════════════════════════════════════════
-//  PACK OPENING — guaranteed 1 Heel, 1 Face, 1 Promo
-// ══════════════════════════════════════════
+// OPEN PACK
 function openPack(packIndex) {
-  // Check if player has immediate heel cards that need to be played
+  // Block if immediate heels still in hand
   if (hand.some(h => h.card.cardType === 'heel' && isImmediate(h.card))) {
     document.getElementById('pack-locked-msg').style.display = 'block';
     return;
@@ -620,133 +259,132 @@ function openPack(packIndex) {
   drawnCards = drawGuaranteedSet(pack);
   flippedCount = 0;
   promoResolved = 0;
+  drawnTotal = drawnCards.length;
+  drawnPromosTotal = drawnCards.filter(c => c.cardType === 'promo').length;
 
   document.getElementById('reveal-pack-name').textContent = `Opening: ${pack.name}`;
-  document.getElementById('continue-btn').style.display = 'none';
+  document.getElementById('reveal-continue-btn').style.display = 'none';
   document.getElementById('flip-hint').style.display = 'block';
 
-  const row = document.getElementById('cards-row');
-  row.innerHTML = '';
-  drawnCards.forEach(card => {
+  const row=document.getElementById('cards-row'); row.innerHTML='';
+  drawnCards.forEach(card=>{
     const el = buildCardElement(card);
     el.onclick = () => flipCard(el, card);
     row.appendChild(el);
   });
-
   showScreen('reveal-screen');
+  updateContinueButtonState();
 }
 
 function drawGuaranteedSet(pack) {
-  // Filter cards by type
-  let heels = pack.cards.filter(c => c.cardType === 'heel');
-  let faces = pack.cards.filter(c => c.cardType === 'face');
-  let promos = pack.cards.filter(c => c.cardType === 'promo');
-  
-  // If we don't have promos, use some neutral cards as promos
-  if (promos.length === 0) {
-    promos = pack.cards.filter(c => c.cardType === 'neutral').slice(0, 5);
-  }
-  
-  // Pick one of each type randomly
+  let heels = pack.cards.filter(c=>c.cardType==='heel');
+  let faces = pack.cards.filter(c=>c.cardType==='face');
+  let promos = pack.cards.filter(c=>c.cardType==='promo');
+  // fallback: use neutral as promo if no promos
+  if (promos.length === 0) promos = pack.cards.filter(c=>c.cardType === 'neutral');
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-  
-  // Make sure we have at least one of each type
-  if (heels.length > 0 && faces.length > 0 && promos.length > 0) {
-    // Shuffle order so it's not always Heel/Face/Promo left-to-right
+  if (heels.length>0 && faces.length>0 && promos.length>0) {
     const set = [pick(heels), pick(faces), pick(promos)];
-    return set.sort(() => Math.random() - 0.5);
-  } else {
-    // Fallback: just pick 3 random cards
-    const shuffled = [...pack.cards].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 3);
+    return set.sort(()=>Math.random() - 0.5);
   }
+  // fallback choose 3 random distinct cards
+  const shuffled = [...pack.cards].sort(()=>Math.random()-0.5);
+  return shuffled.slice(0,3);
 }
 
-// ══════════════════════════════════════════
-//  FLIP
-// ══════════════════════════════════════════
+// FLIP
 async function flipCard(el, card) {
   if (el.classList.contains('flipped')) return;
   el.classList.add('flipped');
   flippedCount++;
 
   if (card.rarity === 'legendary') {
-    const flash = document.getElementById('flash');
-    flash.style.background = 'rgba(232,200,74,0.5)';
-    flash.style.opacity = '0.7';
-    setTimeout(() => { flash.style.opacity = '0'; flash.style.background = 'white'; }, 200);
+    const flash = document.createElement('div');
+    flash.style.position='fixed'; flash.style.inset=0; flash.style.background='rgba(232,200,74,0.5)'; flash.style.zIndex=1500;
+    document.body.appendChild(flash);
+    setTimeout(()=> { flash.remove(); }, 220);
   }
 
-  // Promo cards auto-resolve after a short delay
   if (card.cardType === 'promo') {
-    await sleep(700);
-    await resolvePromo(el, card);
+    // highlight and show cash-in button (user must click to resolve)
+    showPromoResolve(el, card);
   }
 
+  // after flipping any card, check whether to show continue & reveal-continue
   checkAllFlipped();
+  updateContinueButtonState();
 }
 
-async function resolvePromo(el, card) {
-  // Fly card up to resource bar
-  el.classList.add('flying');
-  await sleep(850);
+function showPromoResolve(el, card) {
+  // enlarge briefly and add a "Cash in" button so user can read then activate
+  el.classList.add('promo-highlight');
+  // create cash-in button (if not already)
+  let btn = el.querySelector('.cashin-btn');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.className = 'cashin-btn';
+    btn.textContent = 'Cash in';
+    btn.onclick = (e) => { e.stopPropagation(); cashInPromo(el, card); };
+    el.appendChild(btn);
+  }
+  // Remove highlight after short time but keep button visible to click
+  setTimeout(()=> el.classList.remove('promo-highlight'), 700);
+}
 
-  // Grant resources
+function cashInPromo(el, card) {
+  // apply grants, remove promo from drawnCards and visually hide the card
   if (card.grants) {
-    for (const [r, v] of Object.entries(card.grants)) {
-      applyResource(r, v);
-    }
+    Object.entries(card.grants).forEach(([r,v]) => applyResource(r, v));
   }
-
-  // Remove from drawn so it doesn't go to hand
-  drawnCards = drawnCards.filter(c => c !== card);
   promoResolved++;
-  el.style.visibility = 'hidden';
+  // mark resolved on card to avoid double cash-in
+  card._cashed = true;
+  // hide the element
+  el.style.transition = 'opacity .3s, transform .3s';
+  el.style.opacity = 0;
+  el.style.transform = 'scale(.6)';
+  setTimeout(()=> { el.remove(); }, 350);
+
+  // remove from drawnCards so addCardsToHand won't include promos
+  drawnCards = drawnCards.filter(c => c !== card);
+  updateContinueButtonState();
 }
 
+// after each flip, decide if continue (reveal continue button) should appear
 function checkAllFlipped() {
-  const totalNonPromo = drawnCards.length;
-  const allFlipped = flippedCount >= 3; // all 3 were clicked
-  if (allFlipped) {
-    setTimeout(() => {
-      document.getElementById('flip-hint').style.display = 'none';
-      document.getElementById('continue-btn').style.display = 'inline-block';
-    }, 500);
+  // all three flips clicked? (we count clicks for the current pack draw)
+  // drawnTotal is the number of cards drawn initially
+  if (flippedCount >= drawnTotal) {
+    document.getElementById('flip-hint').style.display = 'none';
+    document.getElementById('reveal-continue-btn').style.display = 'inline-block';
   }
 }
 
-// ══════════════════════════════════════════
-//  ADD TO HAND
-// ══════════════════════════════════════════
+// ADD TO HAND
 function addCardsToHand() {
-  // Only non-promo cards go to hand (promos already resolved)
-  drawnCards.forEach(card => {
+  // non-promo cards remaining in drawnCards go to hand
+  drawnCards.forEach(card=>{
     if (card.cardType !== 'promo') {
       hand.push({ card, useWindow: parseUseWindow(card.use) });
     }
   });
+  // clear drawn set (promos already cashed in will have been removed earlier)
+  drawnCards = [];
+  flippedCount = 0;
+  drawnTotal = 0;
+  drawnPromosTotal = 0;
+  promoResolved = 0;
   updateHandCount();
   showScreen('play-screen');
   renderPlayScreen();
+  updateContinueButtonState();
 }
 
-function parseUseWindow(use) {
-  if (!use || use === 'Immediately' || use === 'Immediate') return null;
-  const match = use.match(/(\d+)/);
-  return match ? parseInt(match[1]) : null;
-}
+function updateHandCount() { document.getElementById('hand-count').textContent = hand.length; }
 
-function updateHandCount() {
-  document.getElementById('hand-count').textContent = hand.length;
-}
-
-// ══════════════════════════════════════════
-//  PLAY SCREEN
-// ══════════════════════════════════════════
+// RENDER PLAY SCREEN
 function renderPlayScreen() {
   selectedHandItem = null;
-  const overflow = isOverCapacity();
-
   document.getElementById('play-card-btn').style.display = 'none';
   document.getElementById('discard-card-btn').style.display = 'none';
   document.getElementById('resource-warning').style.display = 'none';
@@ -759,45 +397,37 @@ function renderPlayScreen() {
   const statusEl = document.getElementById('play-status');
   const immediateHeels = hand.filter(h => h.card.cardType === 'heel' && isImmediate(h.card));
 
-  if (overflow) {
+  if (isOverCapacity()) {
     statusEl.className = 'overflow';
     statusEl.innerHTML = `⚠️ Hand over capacity! Discard a card to continue.<br><small>Highlighted cards are eligible to discard.</small>`;
-    document.getElementById('next-show-btn').style.display = 'none';
   } else if (immediateHeels.length > 0) {
     statusEl.className = '';
     statusEl.innerHTML = `Play all <strong style="color:#f88">immediate Heel cards</strong> before continuing.`;
-    document.getElementById('next-show-btn').style.display = 'none';
   } else if (hand.length === 0) {
     statusEl.className = '';
     statusEl.innerHTML = `Hand is empty. Open a new pack!`;
-    document.getElementById('next-show-btn').style.display = 'inline-block';
   } else {
     statusEl.className = '';
     statusEl.innerHTML = `All immediate cards resolved. Play optional cards or continue to the next show.`;
-    document.getElementById('next-show-btn').style.display = 'inline-block';
   }
 
-  const grid = document.getElementById('hand-grid');
-  grid.innerHTML = '';
+  // always keep Continue visible; enabled state managed separately
+  document.getElementById('next-show-btn').style.display = 'inline-block';
+
+  const grid = document.getElementById('hand-grid'); grid.innerHTML = '';
   if (hand.length === 0) return;
 
   hand.forEach(h => {
     const el = buildCardElement(h.card);
     el.classList.add('flipped');
 
-    // Badge
     const badge = document.createElement('div');
     badge.className = 'use-badge';
-    if (isImmediate(h.card)) {
-      badge.classList.add('immediate');
-      badge.textContent = '⚡ Immediate';
-    } else if (h.useWindow !== null) {
-      badge.textContent = `Use within ${h.useWindow}w`;
-      if (h.useWindow <= 1) badge.classList.add(h.card.cardType === 'face' ? 'face-exp' : 'urgent');
-    }
+    if (isImmediate(h.card)) { badge.classList.add('immediate'); badge.textContent = '⚡ Immediate'; }
+    else if (h.useWindow !== null) { badge.textContent = `Use within ${h.useWindow}w`; if (h.useWindow<=1) badge.classList.add(h.card.cardType==='face'?'face-exp':'urgent'); }
     el.appendChild(badge);
 
-    if (overflow) {
+    if (isOverCapacity()) {
       const eligible = isDiscardEligible(h);
       el.classList.toggle('discardable', eligible);
       el.classList.toggle('dimmed', !eligible);
@@ -805,16 +435,15 @@ function renderPlayScreen() {
     } else {
       el.onclick = () => selectCard(el, h, 'play');
     }
-
     grid.appendChild(el);
   });
 }
 
+// SELECT CARD
 function selectCard(el, handItem, mode) {
   document.querySelectorAll('#hand-grid .card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   selectedHandItem = handItem;
-
   const warn = document.getElementById('resource-warning');
 
   if (mode === 'discard') {
@@ -828,91 +457,83 @@ function selectCard(el, handItem, mode) {
     document.getElementById('discard-card-btn').style.display = 'none';
     if (!affordable) {
       const missing = Object.entries(handItem.card.cost || {})
-        .filter(([r, v]) => resources[r] < v)
-        .map(([r, v]) => `${v - resources[r]} more ${r}`)
-        .join(', ');
+        .filter(([r,v]) => resources[r] < v)
+        .map(([r,v]) => `${v - resources[r]} more ${r}`).join(', ');
       warn.textContent = `Not enough resources! Need ${missing}.`;
       warn.style.display = 'block';
-    } else {
-      warn.style.display = 'none';
-    }
+    } else warn.style.display = 'none';
   }
 }
 
+// PLAY / DISCARD
 function playSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
   if (!canAffordCard(h.card)) return;
-
   spendCard(h.card);
+
+  // determine duration: if >0 or null (permanent) => becomes active; otherwise it's a one-shot and is discarded
+  const dur = parseDuration(h.card.duration);
+  // remove from hand first to prevent re-use
   removeFromHand(h);
 
-  const dur = parseDuration(h.card.duration);
-  if (dur !== 0) {
-    activeCards.push({ card: h.card, duration: dur });
+  if (dur && dur !== 0) {
+    // active effect: add to activeCards (duration may be number or null for permanent)
+    activeCards.push({ card: h.card, duration: dur === null ? null : dur });
     updateActiveBar();
+  } else {
+    // one-shot card: discard (already removed)
+    // optionally we could animate, but removal is enough
   }
-
   selectedHandItem = null;
   updateHandCount();
   renderPlayScreen();
+  updateContinueButtonState();
 }
 
 async function discardSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
-
+  // animate selected card removing
   const cards = document.querySelectorAll('#hand-grid .card');
   let targetEl = null;
   cards.forEach(el => { if (el.classList.contains('selected')) targetEl = el; });
   if (targetEl) { targetEl.classList.add('discarding'); await sleep(650); }
-
   removeFromHand(h);
   selectedHandItem = null;
   updateHandCount();
   renderPlayScreen();
+  updateContinueButtonState();
 }
 
 function removeFromHand(h) { hand = hand.filter(item => item !== h); }
 
-function parseDuration(dur) {
-  if (!dur) return 0;
-  if (dur === 'Permanent') return null;
-  const match = dur.match(/(\d+)/);
-  return match ? parseInt(match[1]) : 1;
-}
-
-// ══════════════════════════════════════════
-//  ACTIVE BAR
-// ══════════════════════════════════════════
+// active bar
 function updateActiveBar() {
-  const list = document.getElementById('active-cards-list');
+  const list = document.getElementById('active-cards-list'); list.innerHTML='';
   const label = document.getElementById('active-bar-label');
-  list.innerHTML = '';
-  if (activeCards.length === 0) { label.textContent = 'No active cards'; return; }
-  label.textContent = `${activeCards.length} card${activeCards.length > 1 ? 's' : ''} active`;
+  if (activeCards.length === 0) { label.textContent='No active cards'; return; }
+  label.textContent = `${activeCards.length} card${activeCards.length>1?'s':''} active`;
   activeCards.forEach(ac => {
     const el = buildCardElement(ac.card);
-    el.classList.add('flipped', 'active-card');
+    el.classList.add('flipped','active-card');
     if (ac.duration === null) el.classList.add('permanent-card');
-    const overlay = document.createElement('div');
-    overlay.className = 'duration-overlay';
+    const overlay = document.createElement('div'); overlay.className='duration-overlay';
     overlay.textContent = ac.duration === null ? '∞' : ac.duration;
     el.appendChild(overlay);
     list.appendChild(el);
   });
 }
-
 function toggleActiveBar() {
-  activeBarExpanded = !activeBarExpanded;
-  document.getElementById('active-bar').classList.toggle('expanded', activeBarExpanded);
-  document.getElementById('active-toggle').textContent = activeBarExpanded ? '▲ collapse' : '▼ expand';
+  const bar=document.getElementById('active-bar');
+  bar.classList.toggle('expanded');
+  document.getElementById('active-toggle').textContent = bar.classList.contains('expanded') ? '▲ collapse' : '▼ expand';
 }
 
-// ══════════════════════════════════════════
-//  NEXT SHOW / TRANSITION
-// ══════════════════════════════════════════
+// NEXT SHOW / TRANSITION
 function goToNextShow() {
+  // guard: button will be disabled if not eligible, but additionally check
+  if (document.getElementById('next-show-btn').disabled) return;
   showScreen('transition-screen');
   runTransition();
 }
@@ -922,13 +543,11 @@ async function runTransition() {
   document.getElementById('next-show-num').textContent = nextShow;
   document.getElementById('transition-msg').textContent = 'Updating durations…';
   document.getElementById('transition-done-btn').style.display = 'none';
-
-  const area = document.getElementById('transition-cards-area');
-  area.innerHTML = '';
+  const area=document.getElementById('transition-cards-area'); area.innerHTML='';
 
   const allItems = [
-    ...activeCards.map(ac => ({ source: 'active', item: ac })),
-    ...hand.filter(h => !isImmediate(h.card)).map(h => ({ source: 'hand', item: h }))
+    ...activeCards.map(ac => ({ source:'active', item:ac })),
+    ...hand.filter(h => !isImmediate(h.card)).map(h => ({ source:'hand', item:h }))
   ];
 
   if (allItems.length === 0) {
@@ -940,18 +559,15 @@ async function runTransition() {
 
   const cardEls = [];
   allItems.forEach(({ source, item }) => {
-    const el = buildCardElement(item.card);
-    el.classList.add('flipped');
+    const el = buildCardElement(item.card); el.classList.add('flipped');
     if (source === 'active') {
       el.classList.add('active-card');
       if (item.duration === null) el.classList.add('permanent-card');
-      const overlay = document.createElement('div');
-      overlay.className = 'duration-overlay';
+      const overlay = document.createElement('div'); overlay.className='duration-overlay';
       overlay.textContent = item.duration === null ? '∞' : item.duration;
       el.appendChild(overlay);
     } else {
-      const badge = document.createElement('div');
-      badge.className = 'use-badge';
+      const badge = document.createElement('div'); badge.className='use-badge';
       badge.textContent = item.useWindow !== null ? `Use in ${item.useWindow}w` : '';
       el.appendChild(badge);
     }
@@ -963,48 +579,37 @@ async function runTransition() {
   document.getElementById('transition-msg').textContent = 'Ticking down durations…';
   await sleep(400);
 
-  const toDiscard = [];
-  const toForce = [];
-
+  const toDiscard = []; const toForce = [];
   for (const { el, source, item } of cardEls) {
     if (source === 'active') {
       if (item.duration === null) continue;
       item.duration -= 1;
       const overlay = el.querySelector('.duration-overlay');
-      if (overlay) { overlay.textContent = item.duration; overlay.classList.add('ticking'); setTimeout(() => overlay.classList.remove('ticking'), 500); }
+      if (overlay) { overlay.textContent = item.duration; overlay.classList.add('ticking'); setTimeout(()=>overlay.classList.remove('ticking'),500); }
       if (item.duration <= 0) toDiscard.push({ el, source, item });
     } else {
       if (item.useWindow === null) continue;
       item.useWindow -= 1;
       const badge = el.querySelector('.use-badge');
       if (badge) badge.textContent = item.useWindow > 0 ? `Use in ${item.useWindow}w` : 'Expired';
-
       if (item.useWindow <= 0) {
-        if (item.card.cardType === 'heel') {
-          // Heel cards become forced immediate
-          toForce.push({ el, source, item });
-        } else {
-          // Face cards just expire — no punishment
-          toDiscard.push({ el, source, item });
-        }
+        if (item.card.cardType === 'heel') toForce.push({ el, source, item });
+        else toDiscard.push({ el, source, item });
       }
     }
     await sleep(150);
   }
 
-  await sleep(500);
-
+  await sleep(400);
   if (toForce.length > 0) {
     document.getElementById('transition-msg').textContent = '⚠️ Heel cards are now FORCED immediate use!';
     toForce.forEach(({ el, item }) => {
       item.useWindow = null;
       item.card = { ...item.card, use: 'Immediately' };
-      el.style.border = '2px solid #f84';
-      el.style.boxShadow = '0 0 12px rgba(255,136,0,0.6)';
       const badge = el.querySelector('.use-badge');
       if (badge) { badge.textContent = '⚡ Immediate'; badge.classList.add('immediate'); }
     });
-    await sleep(1200);
+    await sleep(1000);
   }
 
   if (toDiscard.length > 0) {
@@ -1015,7 +620,7 @@ async function runTransition() {
       if (source === 'active') activeCards = activeCards.filter(ac => ac !== item);
       else hand = hand.filter(h => h !== item);
     }
-    await sleep(700);
+    await sleep(600);
   }
 
   completeTransition(nextShow);
@@ -1024,65 +629,66 @@ async function runTransition() {
 function completeTransition(nextShow) {
   showNumber = nextShow;
   document.getElementById('show-num').textContent = showNumber;
-  updateHandCount();
-  updateActiveBar();
+  updateHandCount(); updateActiveBar();
   document.getElementById('transition-msg').textContent = `Show #${nextShow} ready. Open a new pack!`;
   document.getElementById('transition-done-btn').style.display = 'inline-block';
 }
+function finishTransition() { showScreen('pack-screen'); updateContinueButtonState(); }
 
-function finishTransition() { showScreen('pack-screen'); }
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// ══════════════════════════════════════════
-//  CARD BUILDER
-// ══════════════════════════════════════════
+// CARD BUILDER
 function buildCardElement(card) {
-  const el = document.createElement('div');
-  el.className = 'card';
+  const el = document.createElement('div'); el.className='card';
   if (card.cardType === 'promo') el.classList.add('promo-card');
-
-  const typeLabels = { heel: '👿 HEEL', face: '😇 FACE', promo: '🎤 PROMO' };
-  const costHTML = card.cardType === 'promo' ? 
-    (card.grants ? Object.entries(card.grants).map(([r, v]) => {
-      const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
-      return `<span class="cost-${r}">+${v} ${icons[r]} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`;
-    }).join(' ') : '<span class="cost-free">Free</span>') : 
-    formatCost(card.cost || {});
-
-  el.innerHTML = `
-    <div class="card-inner">
+  const typeLabels = { heel: '👿 HEEL', face:'😇 FACE', promo:'🎤 PROMO' };
+  const costHTML = card.cardType === 'promo' ? (card.grants ? Object.entries(card.grants).map(([r,v])=>{ const icons={heat:'🔥',hype:'📣',clout:'🌐'}; return `<span class="cost-${r}">+${v} ${icons[r]} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`; }).join(' ') : '<span class="cost-free">Free</span>') : formatCost(card.cost || {});
+  el.innerHTML = `<div class="card-inner">
       <div class="card-front">📦</div>
       <div class="card-back ${card.cardType} ${card.rarity}">
-        <div class="card-type-label">${typeLabels[card.cardType] || card.cardType}</div>
-        <div class="card-rarity-badge">${card.rarity}</div>
-        <div class="card-title">${card.title}</div>
-        <div class="card-desc">${card.desc}</div>
-        <div class="card-meta">
-          ${card.cardType === 'promo' ? 
-            `<span>🎁 Grants: ${costHTML}</span>` : 
-            `<span>💰 Cost: ${costHTML}</span>`}
-          ${card.duration ? `<span>⏱ ${card.duration}</span>` : ''}
-          ${card.use ? `<span>📋 ${card.use}</span>` : ''}
+        <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:rgba(0,0,0,0.2)">${typeLabels[card.cardType] || card.cardType}</div>
+        <div style="font-size:9px;font-weight:700;margin-top:2px">${card.rarity}</div>
+        <div style="font-weight:700;margin-top:8px">${card.title}</div>
+        <div style="font-size:12px;color:#bbb;margin-top:6px;flex:1">${card.desc}</div>
+        <div style="font-size:11px;color:#888;margin-top:8px">
+          ${card.cardType === 'promo' ? `<div>🎁 Grants: ${costHTML}</div>` : `<div>💰 Cost: ${costHTML}</div>`}
+          ${card.duration ? `<div>⏱ ${card.duration}</div>` : ''}
+          ${card.use ? `<div>📋 ${card.use}</div>` : ''}
         </div>
       </div>
     </div>`;
   return el;
 }
 
-// ══════════════════════════════════════════
-//  SCREEN MANAGEMENT
-// ══════════════════════════════════════════
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+// SCREEN MANAGEMENT
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+// CONTINUE button logic: always visible on play-screen but disabled until eligible
+function updateContinueButtonState() {
+  const nextBtn = document.getElementById('next-show-btn');
+  // eligibility:
+  // 1) If we are mid-reveal (drawnTotal>0) require all flips and promos cashed before adding to hand AND require no immediate heels in hand and not over capacity.
+  // 2) If not mid-reveal, require no immediate heels in hand and not over capacity.
+  let eligible = true;
+  // if a pack just opened and reveal is showing (drawnTotal>0) require flips and cash-ins
+  if (drawnTotal > 0) {
+    if (flippedCount < drawnTotal) eligible = false; // not all flipped
+    if (promoResolved < drawnPromosTotal) eligible = false; // promos not cashed
+  }
+  // immediate heels in hand must be played first
+  if (hand.some(h => h.card.cardType === 'heel' && isImmediate(h.card))) eligible = false;
+  // not allowed while over capacity
+  if (isOverCapacity()) eligible = false;
+  nextBtn.disabled = !eligible;
+  // keep the reveal add button visible if on reveal-screen but only allow if all flipped (user must then click to add to hand)
+  const revealContinue = document.getElementById('reveal-continue-btn');
+  if (document.getElementById('reveal-screen').classList.contains('active')) {
+    revealContinue.disabled = (flippedCount < drawnTotal) || (promoResolved < drawnPromosTotal);
+  }
 }
 
-// ══════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════
+// INIT
 updateResourceDisplay();
 loadCards();
+
 </script>
 </body>
 </html>
