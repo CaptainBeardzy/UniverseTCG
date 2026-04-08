@@ -4,319 +4,860 @@
   "desc": "The standard chaos pack for Season 1.",
   "cards": [
     {
-      "id": "c001",
+      "id": "f001",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Open Challenge",
+      "desc": "A champion must issue an open challenge this show.",
+      "cost": { "hype": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f002",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Developmental Call-Up",
+      "desc": "Add an unused or created superstar to a match this show.",
+      "cost": { "hype": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f003",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Tag Spotlight",
+      "desc": "Add a tag team match to the card.",
+      "cost": { "heat": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f004",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Rematch Clause",
+      "desc": "Book a rematch from the previous show.",
+      "cost": { "heat": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f005",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Manager Assigned",
+      "desc": "Assign a manager to any superstar this show.",
+      "cost": { "hype": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "f006",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Title Match Upgrade",
+      "desc": "Turn any match into a title match.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f007",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Triple Threat",
+      "desc": "Add a third superstar to a singles match.",
+      "cost": { "heat": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f008",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Fatal 4-Way",
+      "desc": "Convert a match into a Fatal 4-Way.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f009",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Mystery Opponent",
+      "desc": "Replace one competitor with a random superstar.",
+      "cost": { "hype": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f010",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Extreme Rules",
+      "desc": "Change a match to Extreme Rules or No DQ.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "f011",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Steel Cage",
+      "desc": "Change a match to a Steel Cage match.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f012",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Last Man Standing",
+      "desc": "Change a match to Last Man Standing.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f013",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Submission Match",
+      "desc": "Change a match to submission only.",
+      "cost": { "heat": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f014",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Iron Man Match",
+      "desc": "Turn the main event into an Iron Man match.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f015",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Falls Count Anywhere",
+      "desc": "Change a match to Falls Count Anywhere.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "f016",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Gauntlet Match",
+      "desc": "Replace a match with a gauntlet match.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f017",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Tournament Night",
+      "desc": "Book at least two matches as part of a mini tournament.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "This show"
+    },
+    {
+      "id": "f018",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Surprise Return",
+      "desc": "Bring back an inactive superstar into a match.",
+      "cost": { "hype": 3 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f019",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Rivalry Blow-Off",
+      "desc": "Book a decisive stipulation match between rivals.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f020",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Tag Turmoil",
+      "desc": "Replace a tag match with a Tag Team Turmoil match.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "f021",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Handshake Segment",
+      "desc": "Book a respectful pre-match handshake segment.",
+      "cost": { "heat": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f022",
+      "cardType": "face",
+      "rarity": "common",
+      "title": "Second Chance",
+      "desc": "Reinsert a losing superstar into another match.",
+      "cost": { "hype": 1 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f023",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Champ vs Champ",
+      "desc": "Book two champions in a non-title match.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f024",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Open Tag Titles",
+      "desc": "Tag champions must defend against a random team.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f025",
+      "cardType": "face",
+      "rarity": "rare",
+      "title": "Open Midcard Title",
+      "desc": "Midcard champion must defend in an open challenge.",
+      "cost": { "heat": 2 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "f026",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "No Interference Night",
+      "desc": "All matches must be played clean with no run-ins.",
+      "cost": { "heat": 3 },
+      "duration": 1,
+      "use": "This show"
+    },
+    {
+      "id": "f027",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Underdog Spotlight",
+      "desc": "Feature at least one lower-card superstar in a major match.",
+      "cost": { "hype": 2 },
+      "duration": 1,
+      "use": "This show"
+    },
+    {
+      "id": "f028",
+      "cardType": "face",
+      "rarity": "epic",
+      "title": "Main Event Debut",
+      "desc": "A non-main event star must headline the show.",
+      "cost": { "hype": 3 },
+      "duration": 1,
+      "use": "This show"
+    },
+    {
+      "id": "f029",
+      "cardType": "face",
+      "rarity": "legendary",
+      "title": "Dream Match",
+      "desc": "Book two superstars who have never faced each other.",
+      "cost": { "hype": 4 },
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "f030",
+      "cardType": "face",
+      "rarity": "legendary",
+      "title": "Career Defining Match",
+      "desc": "Main event must feature a rising star.",
+      "cost": { "hype": 4 },
+      "duration": 1,
+      "use": "This show"
+    },
+
+    {
+      "id": "h001",
       "cardType": "heel",
       "rarity": "common",
       "title": "Lost Luggage",
-      "desc": "A superstar arrives without their gear and must compete in street clothes.",
-      "cost": {},
+      "desc": "A random superstar must wear alternate or random gear.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c002",
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Under the Weather",
-      "desc": "A minor illness lowers performance for 1 show.",
-      "cost": { "heat": 1 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c003",
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Fan Gift",
-      "desc": "A small morale boost for a superstar (+1 crowd reaction for 1 show).",
-      "cost": { "hype": 1 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c004",
+      "id": "h002",
       "cardType": "heel",
       "rarity": "common",
-      "title": "Bad Promo",
-      "desc": "A poor promo hurts heat slightly for 1 show.",
-      "cost": {},
+      "title": "Late Arrival",
+      "desc": "Remove a superstar from their match.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c005",
+      "id": "h003",
       "cardType": "heel",
       "rarity": "common",
-      "title": "Travel Delay",
-      "desc": "Late arrival reduces match readiness this show.",
-      "cost": {},
+      "title": "Match Cancelled",
+      "desc": "Cancel one match.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c006",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Underdog Push",
-      "desc": "Short-term push: +3 momentum for the next 2 shows.",
-      "cost": { "heat": 2 },
-      "duration": 2,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c007",
-      "cardType": "heel",
-      "rarity": "rare",
-      "title": "Sneak Attack",
-      "desc": "Interfere to injure opponent, opponent suffers -2 performance for 2 shows.",
-      "cost": {},
-      "duration": 2,
-      "use": "Immediately"
-    },
-    {
-      "id": "c008",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Title Scramble",
-      "desc": "Make a mid-card title open for a scramble match this show.",
-      "cost": { "heat": 1 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c009",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Rocket Push",
-      "desc": "A big crowd moment: +4 momentum for 1 show but increases scrutiny.",
-      "cost": { "heat": 3 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c010",
+      "id": "h004",
       "cardType": "heel",
       "rarity": "common",
       "title": "Wardrobe Mishap",
-      "desc": "Outfit problem leads to a flub; -1 performance this show.",
-      "cost": {},
+      "desc": "Force a superstar into mismatched attire.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c011",
-      "cardType": "heel",
-      "rarity": "epic",
-      "title": "Medical Suspension",
-      "desc": "A medical suspension sidelines a rival for 3 shows.",
-      "cost": {},
-      "duration": 3,
-      "use": "Immediately"
-    },
-    {
-      "id": "c012",
-      "cardType": "face",
-      "rarity": "epic",
-      "title": "Extreme Rules Month",
-      "desc": "All matches this month use hardcore rules; some superstars gain advantage.",
-      "cost": { "heat": 2 },
-      "duration": 4,
-      "use": "Within 2 weeks"
-    },
-    {
-      "id": "c013",
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Local Hero Boost",
-      "desc": "A hometown crowd gives a small boost this show.",
-      "cost": { "hype": 1 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c014",
+      "id": "h005",
       "cardType": "heel",
       "rarity": "common",
-      "title": "Logistics Mix-Up",
-      "desc": "Promo materials delayed; minor show quality drop.",
-      "cost": {},
+      "title": "Music Failure",
+      "desc": "A superstar enters without their theme music.",
       "duration": 1,
       "use": "Immediately"
     },
+
     {
-      "id": "c015",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Superstar Starter",
-      "desc": "Give a rookie a spotlight match with potential long-term gain.",
-      "cost": { "heat": 2 },
-      "duration": 2,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c016",
+      "id": "h006",
       "cardType": "heel",
       "rarity": "rare",
-      "title": "Controversial Angle",
-      "desc": "A controversial storyline generates heat but risks penalties.",
-      "cost": {},
-      "duration": 3,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c017",
-      "cardType": "heel",
-      "rarity": "common",
-      "title": "Equipment Failure",
-      "desc": "Ring equipment glitch causes minor chaos, affecting match pacing.",
-      "cost": {},
+      "title": "Injury Angle",
+      "desc": "Remove a random superstar from the show.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c018",
-      "cardType": "face",
-      "rarity": "epic",
-      "title": "Main Event Elevation",
-      "desc": "Promote a mid-card act to main event status for 2 shows.",
-      "cost": { "heat": 4 },
-      "duration": 2,
-      "use": "Within 1 week"
+      "id": "h007",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Card Shuffle",
+      "desc": "Swap participants between two matches.",
+      "duration": 1,
+      "use": "Immediately"
     },
     {
-      "id": "c019",
+      "id": "h008",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Referee Error",
+      "desc": "Force a DQ or count-out finish.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h009",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Double Booking",
+      "desc": "One superstar must compete twice.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h010",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Forced Tag Match",
+      "desc": "Convert a singles match into a tag match.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "h011",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Unplanned Interference",
+      "desc": "Add a random run-in to a match.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h012",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Announce Table Break",
+      "desc": "A match must include a table spot.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h013",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "No Show",
+      "desc": "A booked superstar cannot compete.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h014",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Random Replacement",
+      "desc": "Replace one superstar with another random one.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h015",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Time Cut",
+      "desc": "End a match early.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "h016",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Main Event Scrapped",
+      "desc": "Replace the main event entirely.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h017",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Triple Booking",
+      "desc": "A superstar must appear in three matches.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h018",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Faction Chaos",
+      "desc": "All faction members must interfere in matches.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h019",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Sudden Heel Turn",
+      "desc": "A superstar must betray their ally mid-match.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h020",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Weapon Overload",
+      "desc": "A match must include multiple weapon spots.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "h021",
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Slippery Ring",
+      "desc": "A match must be played with frequent interruptions.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h022",
+      "cardType": "heel",
+      "rarity": "common",
+      "title": "Mic Cut",
+      "desc": "A promo segment is cancelled.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h023",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Champion Absent",
+      "desc": "A champion cannot appear this show.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h024",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Stipulation Removed",
+      "desc": "Strip a match of its stipulation.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h025",
+      "cardType": "heel",
+      "rarity": "rare",
+      "title": "Wrong Opponent",
+      "desc": "Swap one superstar into the wrong match.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+
+    {
+      "id": "h026",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Broadcast Issues",
+      "desc": "Skip one match entirely.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h027",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Backstage Brawl",
+      "desc": "Turn a match into a backstage brawl.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h028",
+      "cardType": "heel",
+      "rarity": "epic",
+      "title": "Ambush Attack",
+      "desc": "A superstar must be attacked before their match.",
+      "duration": 1,
+      "use": "Immediately"
+    },
+    {
+      "id": "h029",
       "cardType": "heel",
       "rarity": "legendary",
-      "title": "Power Play",
-      "desc": "Executive interference grants a dominant champion run for 4 shows.",
-      "cost": {},
-      "duration": 4,
-      "use": "Immediately"
-    },
-    {
-      "id": "c020",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Surprise Debut",
-      "desc": "A surprise arrival shakes up the roster this show.",
-      "cost": { "hype": 2 },
+      "title": "Roster Chaos",
+      "desc": "Reshuffle at least three matches.",
       "duration": 1,
       "use": "Immediately"
     },
     {
-      "id": "c021",
-      "cardType": "face",
-      "rarity": "common",
-      "title": "Training Montage",
-      "desc": "A week of focused training improves performance next show.",
-      "cost": { "heat": 1 },
-      "duration": 1,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c022",
+      "id": "h030",
       "cardType": "heel",
-      "rarity": "common",
-      "title": "Media Day Gone Wrong",
-      "desc": "An awkward interview reduces crowd reaction for a show.",
-      "cost": {},
-      "duration": 1,
-      "use": "Immediately"
-    },
-    {
-      "id": "c023",
-      "cardType": "heel",
-      "rarity": "epic",
-      "title": "Brand Split Advantage",
-      "desc": "Shifting the roster favors certain superstars for 3 shows.",
-      "cost": {},
-      "duration": 3,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c024",
-      "cardType": "face",
       "rarity": "legendary",
-      "title": "Household Name",
-      "desc": "A star-making moment that gives sustained momentum for 5 shows.",
-      "cost": { "hype": 4 },
-      "duration": 5,
-      "use": "Within 2 weeks"
-    },
-    {
-      "id": "c025",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Match Type Switch",
-      "desc": "Change a scheduled match to a specialty match this show.",
-      "cost": { "heat": 1 },
+      "title": "Total Breakdown",
+      "desc": "Rebook the entire show randomly.",
       "duration": 1,
       "use": "Immediately"
     },
-    {
-      "id": "c026",
-      "cardType": "face",
-      "rarity": "rare",
-      "title": "Sponsor Boost",
-      "desc": "A sponsor gives extra exposure; +2 momentum for 2 shows.",
-      "cost": { "hype": 2 },
-      "duration": 2,
-      "use": "Within 1 week"
-    },
-    {
-      "id": "c027",
-      "cardType": "heel",
-      "rarity": "common",
-      "title": "Cheap Shot",
-      "desc": "A backstage attack tanks the opponent for the show.",
-      "cost": {},
-      "duration": 1,
-      "use": "Immediately"
-    },
-    {
-      "id": "c028",
-      "cardType": "face",
-      "rarity": "epic",
-      "title": "Venue Controversy",
-      "desc": "A venue incident causes a PR hit; show quality down for 3 shows.",
-      "cost": { "heat": 3 },
-      "duration": 3,
-      "use": "Within 1 week"
-    },
+
     {
       "id": "p001",
       "cardType": "promo",
       "rarity": "common",
-      "title": "Social Media Blitz",
-      "desc": "Generate buzz online for your promotion.",
+      "title": "Social Media Push",
+      "desc": "Online buzz builds.",
       "grants": { "hype": 2 },
       "use": "Immediately"
     },
     {
       "id": "p002",
       "cardType": "promo",
-      "rarity": "rare",
-      "title": "Press Tour",
-      "desc": "A major media appearance that boosts visibility.",
-      "grants": { "clout": 2, "hype": 1 },
+      "rarity": "common",
+      "title": "Backstage Interview",
+      "desc": "Quick promo segment.",
+      "grants": { "heat": 1, "hype": 1 },
       "use": "Immediately"
     },
     {
       "id": "p003",
       "cardType": "promo",
-      "rarity": "epic",
-      "title": "Merchandise Deal",
-      "desc": "Secure a lucrative merchandising contract.",
-      "grants": { "clout": 3, "hype": 2 },
+      "rarity": "common",
+      "title": "Highlight Package",
+      "desc": "Recap builds interest.",
+      "grants": { "hype": 1 },
       "use": "Immediately"
     },
     {
       "id": "p004",
       "cardType": "promo",
+      "rarity": "common",
+      "title": "Local Advertising",
+      "desc": "Promote the show locally.",
+      "grants": { "hype": 1, "clout": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p005",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Crowd Interaction",
+      "desc": "Fan engagement segment.",
+      "grants": { "heat": 1 },
+      "use": "Immediately"
+    },
+
+    {
+      "id": "p006",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Contract Signing",
+      "desc": "Builds hype for a feud.",
+      "grants": { "heat": 2, "clout": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p007",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Press Conference",
+      "desc": "Media attention increases.",
+      "grants": { "clout": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p008",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Viral Clip",
+      "desc": "A moment spreads online.",
+      "grants": { "hype": 3 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p009",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Talk Show Spot",
+      "desc": "Mainstream exposure.",
+      "grants": { "clout": 2, "hype": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p010",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Sponsor Deal",
+      "desc": "Brand partnership.",
+      "grants": { "clout": 2 },
+      "use": "Immediately"
+    },
+
+    {
+      "id": "p011",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Hype Package",
+      "desc": "Build anticipation.",
+      "grants": { "hype": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p012",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Face-Off Segment",
+      "desc": "Tension rises.",
+      "grants": { "heat": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p013",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Behind the Scenes",
+      "desc": "Exclusive content.",
+      "grants": { "clout": 1, "hype": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p014",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Fan Event",
+      "desc": "Meet and greet boost.",
+      "grants": { "hype": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p015",
+      "cardType": "promo",
+      "rarity": "rare",
+      "title": "Special Announcement",
+      "desc": "Excitement builds.",
+      "grants": { "heat": 2, "hype": 1 },
+      "use": "Immediately"
+    },
+
+    {
+      "id": "p016",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Pipe Bomb Promo",
+      "desc": "A shocking promo shakes things up.",
+      "grants": { "heat": 3, "hype": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p017",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Major Sponsorship",
+      "desc": "Big brand deal.",
+      "grants": { "clout": 3, "hype": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p018",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Documentary Feature",
+      "desc": "Long-form exposure.",
+      "grants": { "clout": 3 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p019",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "International Tour",
+      "desc": "Global reach expands.",
+      "grants": { "hype": 3, "clout": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p020",
+      "cardType": "promo",
+      "rarity": "epic",
+      "title": "Cross Promotion",
+      "desc": "Collaborate with another brand.",
+      "grants": { "clout": 2, "heat": 2 },
+      "use": "Immediately"
+    },
+
+    {
+      "id": "p021",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Quick Promo",
+      "desc": "Short segment.",
+      "grants": { "heat": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p022",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Social Clip",
+      "desc": "Online post.",
+      "grants": { "hype": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p023",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Crowd Poll",
+      "desc": "Audience engagement.",
+      "grants": { "heat": 1, "hype": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p024",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Replay Package",
+      "desc": "Highlight replay.",
+      "grants": { "hype": 1 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p025",
+      "cardType": "promo",
+      "rarity": "common",
+      "title": "Arena Promo",
+      "desc": "Live mic segment.",
+      "grants": { "heat": 1 },
+      "use": "Immediately"
+    },
+
+    {
+      "id": "p026",
+      "cardType": "promo",
       "rarity": "legendary",
-      "title": "Global Expansion",
-      "desc": "Expand your brand internationally.",
-      "grants": { "clout": 4, "hype": 3, "heat": 2 },
+      "title": "Viral Moment",
+      "desc": "Explodes across media.",
+      "grants": { "hype": 4, "clout": 2 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p027",
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Global Deal",
+      "desc": "Massive exposure.",
+      "grants": { "clout": 4, "hype": 3 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p028",
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Mainstream Breakthrough",
+      "desc": "Crosses into pop culture.",
+      "grants": { "clout": 5, "hype": 3 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p029",
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Cultural Moment",
+      "desc": "Huge attention spike.",
+      "grants": { "hype": 5 },
+      "use": "Immediately"
+    },
+    {
+      "id": "p030",
+      "cardType": "promo",
+      "rarity": "legendary",
+      "title": "Global Spotlight",
+      "desc": "Worldwide attention.",
+      "grants": { "hype": 5, "clout": 3, "heat": 2 },
       "use": "Immediately"
     }
   ]
