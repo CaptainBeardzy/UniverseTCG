@@ -175,6 +175,7 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
+  min-height: 100px;
 }
 
 </style>
@@ -255,8 +256,8 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
     <div id="hand-grid-overlay" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px;"></div>
 
     <div class="action-row" style="margin-top:12px;">
-      <button id="play-card-btn-overlay" onclick="playSelectedCard()" style="display:none; background:linear-gradient(135deg,#2a4a8a,#1a2a5a); border:2px solid #4a8af4; border-radius:12px; padding:10px 28px; color:#4a8af4;">▶ Play Card</button>
-      <button id="discard-card-btn-overlay" onclick="discardSelectedCard()" style="display:none; background:linear-gradient(135deg,#6a2a2a,#4a1a1a); border:2px solid #f44; border-radius:12px; padding:10px 28px; color:#f44;">🗑 Discard</button>
+      <button id="play-card-btn-overlay" style="display:none; background:linear-gradient(135deg,#2a4a8a,#1a2a5a); border:2px solid #4a8af4; border-radius:12px; padding:10px 28px; color:#4a8af4;">▶ Play Card</button>
+      <button id="discard-card-btn-overlay" style="display:none; background:linear-gradient(135deg,#6a2a2a,#4a1a1a); border:2px solid #f44; border-radius:12px; padding:10px 28px; color:#f44;">🗑 Discard</button>
       <div id="resource-warning-overlay" style="color:#f84; margin-left:8px; display:none;"></div>
     </div>
   </div>
@@ -267,7 +268,7 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
   <div id="active-overlay-content" class="overlay-content">
     <button class="close-btn" onclick="hideOverlay('active-overlay')">✕</button>
     <h2>Active Cards</h2>
-    <div id="active-cards-overlay" style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:10px;"></div>
+    <div id="active-cards-overlay"></div>
   </div>
 </div>
 
@@ -314,11 +315,6 @@ function showOverlay(id) {
 function hideOverlay(id) {
   document.getElementById(id).classList.remove('active');
   currentOverlay = null;
-  
-  // If we were on the play screen, refresh it
-  if (document.getElementById('play-screen').classList.contains('active')) {
-    renderPlayScreen();
-  }
   
   // Update continue button state in case anything changed
   updateContinueButtonState();
@@ -650,7 +646,7 @@ async function discardSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
   // animate selected card removing
-  const cards = document.querySelectorAll('.card.selected');
+  const cards = document.querySelectorAll('#hand-grid-overlay .card.selected');
   let targetEl = null;
   cards.forEach(el => { targetEl = el; });
   if (targetEl) { targetEl.classList.add('discarding'); await sleep(650); }
@@ -866,6 +862,12 @@ function renderPlayScreen() {
 updateResourceDisplay();
 updateHandCount();
 loadCards();
+
+// Add event listeners for overlay buttons
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('play-card-btn-overlay').addEventListener('click', playSelectedCard);
+  document.getElementById('discard-card-btn-overlay').addEventListener('click', discardSelectedCard);
+});
 
 </script>
 </body>
