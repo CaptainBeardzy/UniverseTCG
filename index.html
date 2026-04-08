@@ -15,6 +15,7 @@
   --promo: #a888ff;
   --glass: rgba(255, 255, 255, 0.03);
   --border: rgba(255, 255, 255, 0.1);
+  --expire-red: #ff4d4d;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -34,7 +35,7 @@ body {
 .resource-group { display: flex; gap: 6px; }
 .pill {
   background: var(--glass); border: 1px solid var(--border); border-radius: 10px;
-  padding: 4px 8px; display: flex; flex-direction: column; align-items: center; min-width: 58px;
+  padding: 4px 8px; display: flex; flex-direction: column; align-items: center; min-width: 65px;
 }
 .pill .label { font-size: 7px; text-transform: uppercase; color: var(--text-dim); font-weight: 800; }
 .pill .val { font-size: 14px; font-weight: 800; }
@@ -42,7 +43,6 @@ body {
 .pill.hype .val { color: #fa0; }
 .pill.clout .val { color: var(--promo); }
 
-/* --- HUD Right --- */
 .stats-group { text-align: right; }
 .show-tag { color: var(--accent); font-weight: 900; font-size: 11px; letter-spacing: 1px; }
 .pack-count { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
@@ -67,7 +67,7 @@ body {
 .view-section.active { display: block; animation: fadeIn 0.3s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- CARD DESIGN 2.5 --- */
+/* --- CARD DESIGN 3.0 --- */
 .card { width: 110px; height: 180px; perspective: 1000px; position: relative; }
 @media (min-width: 600px) { .card { width: 150px; height: 240px; } }
 
@@ -96,8 +96,8 @@ body {
 .card-footer { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--glass); }
 .resource-line { display: flex; gap: 4px; flex-wrap: wrap; font-size: 9px; font-weight: 700; align-items: center; }
 .res-tag { 
-  padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.3);
-  display: flex; align-items: center; gap: 2px;
+  padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.3);
+  display: flex; align-items: center; gap: 3px;
 }
 .res-tag.plus { color: #4f4; border: 1px solid rgba(0,255,0,0.2); }
 .res-tag.minus { color: var(--heel); border: 1px solid rgba(255,0,0,0.2); }
@@ -112,7 +112,7 @@ body {
   padding: 12px 16px; margin-top: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease;
 }
-.toast.error { border-left-color: var(--heel); }
+.toast.error { border-left-color: var(--expire-red); }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 /* --- MISC --- */
@@ -126,7 +126,7 @@ body {
 
 .overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000;
-  display: none; flex-direction: column; padding: 20px;
+  display: none; flex-direction: column;
 }
 .overlay.active { display: flex; }
 
@@ -140,6 +140,36 @@ body {
 #cards-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 30px 0; }
 
 .use-window { font-size: 8px; background: rgba(0,0,0,0.4); padding: 2px 4px; border-radius: 4px; align-self: flex-start; margin-top: 4px; }
+
+/* --- OVERLAY CLOSE BUTTON --- */
+.close-overlay-btn {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: rgba(255,255,255,0.1); border: 1px solid var(--border);
+  color: #fff; padding: 10px 20px; border-radius: 30px;
+  font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;
+  z-index: 2100;
+}
+.close-overlay-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* --- ANIMATIONS --- */
+@keyframes pulseRed {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+}
+.expire-pulse { animation: pulseRed 0.6s ease; }
+
+@keyframes tickFlash {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.tick-flash { animation: tickFlash 0.4s ease; }
+
+@keyframes discardSlide {
+  to { opacity: 0; transform: translateY(20px); }
+}
+.discard-animation { animation: discardSlide 0.5s forwards; }
 </style>
 </head>
 <body>
@@ -159,20 +189,17 @@ body {
 </header>
 
 <main id="app-viewport">
-  <!-- Prowl Screen -->
   <section id="view-packs" class="view-section active">
     <h3 style="text-align:center; margin-bottom:15px; letter-spacing:1px;">GET NEW TALENT</h3>
     <div id="pack-list" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
   </section>
 
-  <!-- Reveal Screen -->
   <section id="view-reveal" class="view-section">
     <h2 style="text-align:center; color:var(--accent); font-size:16px;">UNBOXING...</h2>
     <div id="cards-row"></div>
     <button id="add-to-hand-btn" class="btn-primary" style="display:none" onclick="addCardsToHand()">Continue</button>
   </section>
 
-  <!-- Transition Screen -->
   <section id="view-transition" class="view-section" style="text-align:center; padding-top:60px;">
     <div style="font-size:40px; margin-bottom:20px;">🎬</div>
     <h2 id="trans-title" style="color:var(--accent);">Preparing Results...</h2>
@@ -199,13 +226,14 @@ body {
 
 <!-- HAND OVERLAY -->
 <div id="hand-overlay" class="overlay">
-  <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+  <div style="padding:20px;">
     <h3>BACKSTAGE HAND <span id="hand-slots" style="font-size:12px; color:var(--text-dim)"></span></h3>
-    <button onclick="hideOverlay('hand-overlay')" style="color:#fff; background:none; border:none; font-size:20px;">✕</button>
+    <div id="hand-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; padding:10px 0 100px;"></div>
   </div>
-  <div id="hand-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; padding-bottom:120px;"></div>
-  
-  <div id="hand-actions" style="position:fixed; bottom:0; left:0; right:0; background:var(--bg-panel); padding:20px; display:none; gap:10px; border-top:1px solid var(--border);">
+  <button class="close-overlay-btn" onclick="hideOverlay('hand-overlay')">
+    <span>⌄</span> Put Away
+  </button>
+  <div id="hand-actions" style="position:fixed; bottom:80px; left:20px; right:20px; background:var(--bg-panel); padding:15px; display:none; gap:10px; border-radius:12px; border:1px solid var(--border);">
     <button id="play-btn" class="btn-primary" style="flex:1" onclick="playSelectedCard()">Play Card</button>
     <button id="discard-btn" class="btn-primary" style="flex:1; background:var(--heel)" onclick="discardSelectedCard()">Discard</button>
   </div>
@@ -213,11 +241,13 @@ body {
 
 <!-- ACTIVE OVERLAY -->
 <div id="active-overlay" class="overlay">
-  <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+  <div style="padding:20px;">
     <h3>ACTIVE SHOW EFFECTS</h3>
-    <button onclick="hideOverlay('active-overlay')" style="color:#fff; background:none; border:none; font-size:20px;">✕</button>
+    <div id="active-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto; padding:10px 0 100px;"></div>
   </div>
-  <div id="active-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; overflow-y:auto;"></div>
+  <button class="close-overlay-btn" onclick="hideOverlay('active-overlay')">
+    <span>⌄</span> Close Effects
+  </button>
 </div>
 
 <script>
@@ -318,7 +348,7 @@ function flip(el, card) {
       e.stopPropagation();
       Object.entries(card.grants||{}).forEach(([r,v]) => {
         resources[r] += v;
-        toast(`+${v} ${r.toUpperCase()}`);
+        toast(`+${v} ${r.charAt(0).toUpperCase()+r.slice(1)}`);
       });
       promoResolved++;
       el.style.opacity = '0.3';
@@ -438,9 +468,9 @@ function createCardUI(card) {
   
   let resourceHTML = '';
   if (card.cardType === 'promo') {
-    resourceHTML = Object.entries(card.grants||{}).map(([r,v]) => `<span class="res-tag plus">+${v} ${r[0].toUpperCase()}</span>`).join('');
+    resourceHTML = Object.entries(card.grants||{}).map(([r,v]) => `<span class="res-tag plus">+${v} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`).join('');
   } else {
-    resourceHTML = Object.entries(card.cost||{}).map(([r,v]) => `<span class="res-tag minus">-${v} ${r[0].toUpperCase()}</span>`).join('');
+    resourceHTML = Object.entries(card.cost||{}).map(([r,v]) => `<span class="res-tag minus">-${v} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`).join('');
   }
 
   el.innerHTML = `
@@ -468,7 +498,7 @@ function switchView(id, btn) {
   if(btn) btn.classList.add('active');
 }
 
-// --- TRANSITION ---
+// --- TRANSITION WITH ANIMATIONS ---
 async function goToNextShow() {
   const size = hand.filter(h => !(h.card.cardType==='heel' && h.card.use.includes('Immed'))).length;
   if(size > HAND_LIMIT) return toast("Hand is full! Discard to end week.", true);
@@ -479,15 +509,62 @@ async function goToNextShow() {
   
   await new Promise(r=>setTimeout(r, 1200));
 
-  activeCards.forEach(ac => { if(ac.duration !== null) ac.duration--; });
-  activeCards = activeCards.filter(ac => ac.duration === null || ac.duration > 0);
-  
-  hand.forEach(h => {
-    if(h.useWindow !== null) h.useWindow--;
-    if(h.useWindow === 0 && h.card.cardType === 'heel') h.card.use = 'Immediately';
-  });
-  hand = hand.filter(h => h.useWindow === null || h.useWindow > 0 || h.card.use === 'Immediately');
+  // --- ACTIVE CARD ANIMATION ---
+  const activeGrid = document.getElementById('transition-cards-area');
+  activeGrid.innerHTML = '';
+  const promises = [];
 
+  activeCards.forEach((ac, i) => {
+    const el = createCardUI(ac.card);
+    el.classList.add('flipped');
+    activeGrid.appendChild(el);
+
+    if (ac.duration !== null) {
+      ac.duration--;
+      if (ac.duration <= 0) {
+        el.classList.add('expire-pulse');
+        promises.push(new Promise(r => {
+          setTimeout(() => {
+            el.classList.add('discard-animation');
+            setTimeout(() => el.remove(), 500);
+            r();
+          }, 600);
+        }));
+      } else {
+        el.classList.add('tick-flash');
+        setTimeout(() => el.classList.remove('tick-flash'), 400);
+      }
+    }
+  });
+
+  activeCards = activeCards.filter(ac => ac.duration === null || ac.duration > 0);
+
+  // --- HAND CARD DISCARD ANIMATION ---
+  const handToRemove = [];
+  hand.forEach((h, i) => {
+    if(h.useWindow !== null) h.useWindow--;
+    if(h.useWindow === 0 && h.card.cardType === 'face') {
+      const el = document.createElement('div');
+      el.style.width = '80px'; el.style.height = '120px';
+      el.style.background = '#1a1a2e'; el.style.border = '1px solid var(--border)';
+      el.style.borderRadius = '8px'; el.style.display = 'flex'; el.style.alignItems = 'center';
+      el.style.justifyContent = 'center'; el.style.fontSize = '10px'; el.style.margin = '0 4px';
+      el.textContent = h.card.title.substring(0, 10) + '...';
+      activeGrid.appendChild(el);
+      
+      el.classList.add('discard-animation');
+      handToRemove.push(h);
+      promises.push(new Promise(r => setTimeout(() => { el.remove(); r(); }, 500)));
+    }
+    
+    if(h.useWindow === 0 && h.card.cardType === 'heel') {
+       h.card.use = 'Immediately';
+    }
+  });
+
+  hand = hand.filter(h => !handToRemove.includes(h) && (h.useWindow === null || h.useWindow > 0 || h.card.use === 'Immediately'));
+
+  await Promise.all(promises);
   document.getElementById('finish-trans-btn').style.display = 'block';
   document.getElementById('trans-msg').textContent = "Weekly Prep Complete. 1 New Pack Awarded.";
 }
