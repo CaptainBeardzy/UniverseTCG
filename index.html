@@ -39,8 +39,8 @@ body {
   padding: 4px 14px;
   font-size: 14px;
   font-weight: 700;
+  transition: background 0.6s;
 }
-#energy-icon { font-size: 16px; }
 #energy-value { color: #4af; min-width: 28px; text-align: center; }
 #show-counter {
   background: #1a1a2e;
@@ -101,15 +101,13 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
-.screen { display: none; width: 100%; max-width: 900px; padding: 20px; }
+.screen { display: none; width: 100%; max-width: 960px; padding: 20px; }
 .screen.active { display: flex; flex-direction: column; align-items: center; }
 
 /* ── PACK SCREEN ── */
 #pack-screen h2 { font-size: 22px; color: #e8c84a; margin-bottom: 6px; }
 #pack-screen p { font-size: 13px; color: #888; margin-bottom: 24px; }
 #pack-list { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-
 .pack-card {
   background: linear-gradient(145deg, #1a1a2e, #0f0f1e);
   border: 2px solid #333;
@@ -124,7 +122,6 @@ body {
 .pack-card .pack-icon { font-size: 40px; margin-bottom: 10px; }
 .pack-card .pack-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
 .pack-card .pack-desc { font-size: 11px; color: #888; }
-
 #pack-locked-msg {
   margin-top: 20px;
   background: #1a1010;
@@ -140,16 +137,9 @@ body {
 /* ── REVEAL SCREEN ── */
 #reveal-screen { gap: 20px; }
 #reveal-screen h2 { font-size: 18px; color: #e8c84a; }
-#cards-row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 10px 0;
-}
+#cards-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 10px 0; }
 #flip-hint { font-size: 13px; color: #888; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
 #continue-btn {
   display: none;
   background: linear-gradient(135deg, #2a6a2a, #1a4a1a);
@@ -164,63 +154,76 @@ body {
 }
 #continue-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(80,255,80,0.3); }
 
-/* ── HAND MODAL ── */
-#hand-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-}
-#hand-modal.open { display: flex; }
-#hand-modal-inner {
-  background: #0f0f1e;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 24px;
-  width: 90%;
-  max-width: 860px;
-  max-height: 85vh;
-  overflow-y: auto;
-}
-#hand-modal-inner h2 { font-size: 18px; color: #e8c84a; margin-bottom: 16px; }
-#hand-cards-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-#hand-modal-close {
-  margin-top: 20px;
-  background: #222;
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 8px 24px;
-  color: #aaa;
-  cursor: pointer;
-  font-size: 13px;
-}
-#hand-modal-close:hover { background: #333; }
-
 /* ── PLAY SCREEN ── */
-#play-screen { gap: 16px; }
+#play-screen { gap: 14px; }
 #play-screen h2 { font-size: 18px; color: #e8c84a; }
-#play-instructions {
+#play-status {
   font-size: 13px;
   color: #888;
   text-align: center;
-  max-width: 500px;
+  max-width: 560px;
   line-height: 1.6;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #111;
+  border: 1px solid #222;
 }
-#immediate-cards-grid {
+#play-status.overflow {
+  color: #f84;
+  border-color: #a44;
+  background: #1a0f0f;
+}
+#hand-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin: 8px 0;
+  margin: 4px 0;
 }
+#hand-capacity {
+  font-size: 11px;
+  color: #666;
+}
+#hand-capacity.over { color: #f84; font-weight: 700; }
+
+.action-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#play-card-btn {
+  display: none;
+  background: linear-gradient(135deg, #2a4a8a, #1a2a5a);
+  border: 2px solid #4a8af4;
+  border-radius: 12px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a8af4;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#play-card-btn:hover:not(:disabled) { transform: scale(1.04); box-shadow: 0 4px 20px rgba(74,138,244,0.3); }
+#play-card-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+#discard-card-btn {
+  display: none;
+  background: linear-gradient(135deg, #6a2a2a, #4a1a1a);
+  border: 2px solid #f44;
+  border-radius: 12px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f44;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#discard-card-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(255,80,80,0.3); }
+
+#energy-warning { font-size: 12px; color: #f84; display: none; text-align: center; }
+
 #next-show-btn {
   display: none;
   background: linear-gradient(135deg, #6a2a6a, #4a1a4a);
@@ -238,15 +241,20 @@ body {
 /* ── TRANSITION SCREEN ── */
 #transition-screen { gap: 16px; }
 #transition-screen h2 { font-size: 20px; color: #e8c84a; }
-#transition-cards-area {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin: 10px 0;
-  min-height: 120px;
-}
+#transition-cards-area { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 10px 0; min-height: 120px; }
 #transition-msg { font-size: 14px; color: #aaa; text-align: center; }
+#transition-done-btn {
+  display: none;
+  background: #1a1a2e;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 10px 28px;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 13px;
+  margin-top: 10px;
+}
+#transition-done-btn:hover { background: #2a2a4a; }
 
 /* ── CARD STYLES ── */
 .card {
@@ -257,6 +265,7 @@ body {
   cursor: pointer;
   perspective: 800px;
   flex-shrink: 0;
+  transition: transform 0.2s;
 }
 .card-inner {
   width: 100%;
@@ -290,21 +299,14 @@ body {
   gap: 4px;
   border: 2px solid #444;
 }
-
-/* Rarity colours */
 .card-back.common  { background: linear-gradient(160deg,#1a1a2e,#111); border-color: #555; }
 .card-back.rare    { background: linear-gradient(160deg,#0d1a2e,#0a1020); border-color: #4a8af4; }
 .card-back.epic    { background: linear-gradient(160deg,#1a0d2e,#120a20); border-color: #9b59b6; }
 .card-back.legendary { background: linear-gradient(160deg,#2e1a00,#1a0f00); border-color: #e8c84a; }
 
 .card-rarity-badge {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 4px;
-  align-self: flex-start;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 2px 6px; border-radius: 4px; align-self: flex-start;
 }
 .common .card-rarity-badge  { background: #333; color: #aaa; }
 .rare .card-rarity-badge    { background: #1a3a6a; color: #4a8af4; }
@@ -319,6 +321,22 @@ body {
 .energy-pos { color: #f88; }
 .energy-neg { color: #4f4; }
 .energy-zero { color: #888; }
+
+/* Use window badge on hand cards */
+.use-badge {
+  position: absolute;
+  bottom: 6px; right: 6px;
+  background: #2a2a4a;
+  border: 1px solid #4a4aaa;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 9px;
+  color: #aaf;
+  z-index: 3;
+  pointer-events: none;
+}
+.use-badge.immediate { background: #2a1a1a; border-color: #a44; color: #f88; }
+.use-badge.urgent { background: #3a2a00; border-color: #a84; color: #fa8; }
 
 /* Duration overlay on active cards */
 .card.active-card .duration-overlay {
@@ -338,8 +356,17 @@ body {
 }
 .card.active-card.permanent-card .duration-overlay { font-size: 22px; }
 
-/* Selected card highlight */
+/* Selected */
 .card.selected .card-back { border-color: #fff !important; box-shadow: 0 0 16px rgba(255,255,255,0.4); }
+
+/* Overflow: discardable cards pulse up, others dim */
+.card.discardable {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 24px rgba(255,80,80,0.4);
+  cursor: pointer;
+}
+.card.discardable .card-back { border-color: #f44 !important; }
+.card.dimmed { opacity: 0.35; pointer-events: none; }
 
 /* Discard animation */
 @keyframes discardAnim {
@@ -347,7 +374,7 @@ body {
   50% { transform: scale(1.1) rotate(8deg); opacity: 0.6; }
   100% { transform: scale(0) rotate(20deg); opacity: 0; }
 }
-.card.discarding { animation: discardAnim 0.6s ease forwards; }
+.card.discarding { animation: discardAnim 0.6s ease forwards; pointer-events: none; }
 
 /* Tick-down animation */
 @keyframes tickDown {
@@ -357,50 +384,17 @@ body {
 }
 .duration-overlay.ticking { animation: tickDown 0.5s ease; }
 
-/* Play card button */
-#play-card-btn {
-  display: none;
-  background: linear-gradient(135deg, #2a4a8a, #1a2a5a);
-  border: 2px solid #4a8af4;
-  border-radius: 12px;
-  padding: 10px 28px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #4a8af4;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-#play-card-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(74,138,244,0.3); }
-#play-card-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-#energy-warning {
-  font-size: 12px;
-  color: #f84;
-  display: none;
-  text-align: center;
-}
-
 /* Flash overlay */
 #flash {
-  position: fixed;
-  inset: 0;
-  background: white;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 9999;
+  position: fixed; inset: 0;
+  background: white; opacity: 0;
+  pointer-events: none; z-index: 9999;
   transition: opacity 0.15s;
 }
 
-/* Loading / error */
-#loading-msg, #error-msg {
-  font-size: 14px;
-  color: #888;
-  text-align: center;
-  padding: 40px;
-}
+#loading-msg, #error-msg { font-size: 14px; color: #888; text-align: center; padding: 40px; }
 #error-msg { color: #f84; display: none; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: #111; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
@@ -414,12 +408,12 @@ body {
 <div id="top-bar">
   <h1>⚡ CHAOS PACKS</h1>
   <div id="energy-display">
-    <span id="energy-icon">⚡</span>
+    <span>⚡</span>
     <span id="energy-value">10</span>
     <span style="color:#555;font-size:11px">ENERGY</span>
   </div>
   <div id="show-counter">Show #<span id="show-num">1</span></div>
-  <button id="hand-btn" onclick="openHandModal()">🃏 Hand (<span id="hand-count">0</span>)</button>
+  <button id="hand-btn" onclick="showScreen('play-screen'); renderPlayScreen();">🃏 Hand (<span id="hand-count">0</span>)</button>
 </div>
 
 <!-- ACTIVE CARDS BAR -->
@@ -456,33 +450,25 @@ body {
 
   <!-- PLAY SCREEN -->
   <div id="play-screen" class="screen">
-    <h2>This Week's Show</h2>
-    <p id="play-instructions">Play all <strong style="color:#f88">immediate-use</strong> cards before continuing to the next show.</p>
-    <div id="immediate-cards-grid"></div>
-    <button id="play-card-btn" onclick="playSelectedCard()">▶ Play Card</button>
+    <h2>Your Hand <span id="hand-capacity" style="font-size:13px;font-weight:400;color:#666;margin-left:8px"></span></h2>
+    <div id="play-status"></div>
+    <div id="hand-grid"></div>
+    <div class="action-row">
+      <button id="play-card-btn" onclick="playSelectedCard()">▶ Play Card</button>
+      <button id="discard-card-btn" onclick="discardSelectedCard()">🗑 Discard</button>
+    </div>
     <div id="energy-warning">Not enough energy to play this card!</div>
     <button id="next-show-btn" onclick="goToNextShow()">➡ Continue to Next Show</button>
   </div>
 
   <!-- TRANSITION SCREEN -->
   <div id="transition-screen" class="screen">
-    <h2 id="transition-title">Advancing to Show #<span id="next-show-num">2</span>…</h2>
+    <h2>Advancing to Show #<span id="next-show-num">2</span>…</h2>
     <p id="transition-msg">Updating durations…</p>
     <div id="transition-cards-area"></div>
-    <button id="transition-done-btn" style="display:none;background:#1a1a2e;border:1px solid #444;border-radius:10px;padding:10px 28px;color:#aaa;cursor:pointer;font-size:13px;margin-top:10px;" onclick="finishTransition()">Continue ▶</button>
+    <button id="transition-done-btn" onclick="finishTransition()">Continue ▶</button>
   </div>
 
-</div>
-
-<!-- HAND MODAL -->
-<div id="hand-modal">
-  <div id="hand-modal-inner">
-    <h2>🃏 Your Hand</h2>
-    <div id="hand-cards-grid"></div>
-    <div style="text-align:center">
-      <button id="hand-modal-close" onclick="closeHandModal()">Close</button>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -492,14 +478,42 @@ body {
 let cardData = [];
 let energy = 10;
 let showNumber = 1;
-let hand = [];          // { card, useWindow (null or number) }
-let activeCards = [];   // { card, duration (null=permanent or number) }
+let hand = [];        // { card, useWindow (null=immediate, or number) }
+let activeCards = []; // { card, duration (null=permanent, or number) }
 let drawnCards = [];
 let flippedCount = 0;
-let selectedHandCard = null;
+let selectedHandItem = null;
 let activeBarExpanded = false;
+let inOverflow = false;
 
+const HAND_LIMIT = 5;
 const rarityWeights = { common: 50, rare: 30, epic: 15, legendary: 5 };
+
+// ══════════════════════════════════════════
+//  HAND CAPACITY
+// ══════════════════════════════════════════
+// Immediate bad cards (positive energy, immediate use) are FREE — don't count toward limit
+function countedHandSize() {
+  return hand.filter(h => !isFreeSlot(h)).length;
+}
+function isFreeSlot(h) {
+  return isImmediate(h.card) && h.card.energy > 0;
+}
+function isImmediate(card) {
+  return card.use === 'Immediately';
+}
+function isBadCard(card) {
+  return card.energy > 0;
+}
+function isOverCapacity() {
+  return countedHandSize() > HAND_LIMIT;
+}
+// Cards eligible to be discarded during overflow: positive energy (good cards = negative energy) or non-immediate
+function isDiscardEligible(h) {
+  // Can discard: good cards (negative energy) OR non-immediate bad cards
+  // Cannot discard: immediate bad cards (they're free slots and must be played)
+  return !isFreeSlot(h) && !(isImmediate(h.card) && isBadCard(h.card));
+}
 
 // ══════════════════════════════════════════
 //  LOAD PACKS
@@ -507,19 +521,17 @@ const rarityWeights = { common: 50, rare: 30, epic: 15, legendary: 5 };
 async function loadCards() {
   try {
     const res = await fetch('packs.json');
-    if (!res.ok) throw new Error('packs.json not found');
+    if (!res.ok) throw new Error();
     const packsIndex = await res.json();
-
     const packPromises = packsIndex.packs.map(path => fetch(path).then(r => r.json()));
     cardData = await Promise.all(packPromises);
-
     document.getElementById('loading-msg').style.display = 'none';
     buildPackUI();
   } catch (e) {
     document.getElementById('loading-msg').style.display = 'none';
     const err = document.getElementById('error-msg');
     err.style.display = 'block';
-    err.textContent = 'Could not load packs. Run this from a local server or GitHub Pages with packs.json in the root.';
+    err.textContent = 'Could not load packs. Run from a local server or GitHub Pages with packs.json in the root.';
   }
 }
 
@@ -543,30 +555,20 @@ function updateEnergyDisplay() {
   el.textContent = energy;
   el.style.color = energy >= 0 ? '#4af' : '#f44';
 }
-
 function applyEnergy(amount) {
   energy += amount;
   updateEnergyDisplay();
-  // flash the energy display
   const disp = document.getElementById('energy-display');
   disp.style.transition = 'none';
-  disp.style.background = amount > 0 ? '#2a1a1a' : '#1a2a1a';
+  disp.style.background = amount < 0 ? '#2a1a1a' : '#1a2a1a';
   setTimeout(() => { disp.style.transition = 'background 0.6s'; disp.style.background = '#1a1a2e'; }, 50);
 }
 
 // ══════════════════════════════════════════
 //  PACK OPENING
 // ══════════════════════════════════════════
-function hasUnplayedImmediateCards() {
-  return hand.some(h => isImmediate(h.card));
-}
-
-function isImmediate(card) {
-  return card.use === 'Immediately';
-}
-
 function openPack(packIndex) {
-  if (hasUnplayedImmediateCards()) {
+  if (hand.some(h => isImmediate(h.card))) {
     document.getElementById('pack-locked-msg').style.display = 'block';
     return;
   }
@@ -583,8 +585,8 @@ function openPack(packIndex) {
   const row = document.getElementById('cards-row');
   row.innerHTML = '';
   drawnCards.forEach((card, i) => {
-    const el = buildCardElement(card, false);
-    el.onclick = () => flipCard(el, card, i);
+    const el = buildCardElement(card);
+    el.onclick = () => flipCard(el, card);
     row.appendChild(el);
   });
 
@@ -597,8 +599,7 @@ function drawCards(pack, count) {
   for (let i = 0; i < count; i++) {
     const rarity = weightedRarity();
     const rarityPool = pool.filter(c => c.rarity === rarity);
-    const fallback = pool;
-    const source = rarityPool.length ? rarityPool : fallback;
+    const source = rarityPool.length ? rarityPool : pool;
     drawn.push(source[Math.floor(Math.random() * source.length)]);
   }
   return drawn;
@@ -614,18 +615,16 @@ function weightedRarity() {
   return 'common';
 }
 
-function flipCard(el, card, idx) {
+function flipCard(el, card) {
   if (el.classList.contains('flipped')) return;
   el.classList.add('flipped');
   flippedCount++;
-
   if (card.rarity === 'legendary') {
     const flash = document.getElementById('flash');
     flash.style.background = 'rgba(232,200,74,0.5)';
     flash.style.opacity = '0.7';
     setTimeout(() => { flash.style.opacity = '0'; flash.style.background = 'white'; }, 200);
   }
-
   if (flippedCount === drawnCards.length) {
     setTimeout(() => {
       document.getElementById('flip-hint').style.display = 'none';
@@ -639,8 +638,7 @@ function flipCard(el, card, idx) {
 // ══════════════════════════════════════════
 function addCardsToHand() {
   drawnCards.forEach(card => {
-    const useWindow = parseUseWindow(card.use);
-    hand.push({ card, useWindow });
+    hand.push({ card, useWindow: parseUseWindow(card.use) });
   });
   updateHandCount();
   showScreen('play-screen');
@@ -648,7 +646,7 @@ function addCardsToHand() {
 }
 
 function parseUseWindow(use) {
-  if (!use || use === 'Immediately') return null; // null = immediate
+  if (!use || use === 'Immediately') return null;
   const match = use.match(/(\d+)/);
   return match ? parseInt(match[1]) : null;
 }
@@ -658,74 +656,145 @@ function updateHandCount() {
 }
 
 // ══════════════════════════════════════════
-//  PLAY SCREEN
+//  PLAY SCREEN — unified hand view
 // ══════════════════════════════════════════
 function renderPlayScreen() {
-  selectedHandCard = null;
+  selectedHandItem = null;
+  inOverflow = isOverCapacity();
+
   document.getElementById('play-card-btn').style.display = 'none';
+  document.getElementById('discard-card-btn').style.display = 'none';
   document.getElementById('energy-warning').style.display = 'none';
 
-  const immediates = hand.filter(h => isImmediate(h.card));
-  const grid = document.getElementById('immediate-cards-grid');
-  grid.innerHTML = '';
+  // Capacity label
+  const capEl = document.getElementById('hand-capacity');
+  const counted = countedHandSize();
+  capEl.textContent = `(${counted}/${HAND_LIMIT} slots used)`;
+  capEl.className = counted > HAND_LIMIT ? 'over' : '';
 
-  if (immediates.length === 0) {
-    grid.innerHTML = '<p style="color:#4f4;font-size:13px">✅ All immediate cards played. Ready to continue!</p>';
+  // Status message
+  const statusEl = document.getElementById('play-status');
+  const immediates = hand.filter(h => isImmediate(h.card));
+
+  if (inOverflow) {
+    statusEl.className = 'overflow';
+    statusEl.innerHTML = `⚠️ Hand is over capacity! Discard a card to continue. <br><small>Highlighted cards are eligible to discard.</small>`;
+    document.getElementById('next-show-btn').style.display = 'none';
+  } else if (immediates.length > 0) {
+    statusEl.className = '';
+    statusEl.innerHTML = `Play all <strong style="color:#f88">immediate-use</strong> cards before continuing to the next show.`;
+    document.getElementById('next-show-btn').style.display = 'none';
+  } else if (hand.length === 0) {
+    statusEl.className = '';
+    statusEl.innerHTML = `Hand is empty. Open a new pack!`;
     document.getElementById('next-show-btn').style.display = 'inline-block';
   } else {
-    document.getElementById('next-show-btn').style.display = 'none';
-    immediates.forEach(h => {
-      const el = buildCardElement(h.card, true);
-      el.classList.add('flipped');
-      el.onclick = () => selectImmediateCard(el, h);
-      grid.appendChild(el);
-    });
+    statusEl.className = '';
+    statusEl.innerHTML = `All immediate cards played. Ready to continue, or play optional cards from your hand.`;
+    document.getElementById('next-show-btn').style.display = 'inline-block';
   }
+
+  // Render all hand cards
+  const grid = document.getElementById('hand-grid');
+  grid.innerHTML = '';
+
+  if (hand.length === 0) return;
+
+  hand.forEach(h => {
+    const el = buildCardElement(h.card);
+    el.classList.add('flipped');
+
+    // Use window badge
+    const badge = document.createElement('div');
+    badge.className = 'use-badge';
+    if (isImmediate(h.card)) {
+      badge.classList.add('immediate');
+      badge.textContent = '⚡ Immediate';
+    } else if (h.useWindow !== null) {
+      badge.textContent = `Use within ${h.useWindow}w`;
+      if (h.useWindow <= 1) badge.classList.add('urgent');
+    }
+    el.appendChild(badge);
+
+    if (inOverflow) {
+      const eligible = isDiscardEligible(h);
+      el.classList.toggle('discardable', eligible);
+      el.classList.toggle('dimmed', !eligible);
+      if (eligible) {
+        el.onclick = () => selectCard(el, h, 'discard');
+      }
+    } else {
+      el.onclick = () => selectCard(el, h, 'play');
+    }
+
+    grid.appendChild(el);
+  });
 }
 
-function selectImmediateCard(el, handItem) {
-  // deselect all
-  document.querySelectorAll('#immediate-cards-grid .card').forEach(c => c.classList.remove('selected'));
+function selectCard(el, handItem, mode) {
+  document.querySelectorAll('#hand-grid .card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
-  selectedHandCard = handItem;
+  selectedHandItem = handItem;
 
-  const canAfford = energy >= handItem.card.energy;
-  const btn = document.getElementById('play-card-btn');
-  const warn = document.getElementById('energy-warning');
-  btn.style.display = 'inline-block';
-  btn.disabled = !canAfford;
-  warn.style.display = canAfford ? 'none' : 'block';
+  if (mode === 'discard') {
+    document.getElementById('play-card-btn').style.display = 'none';
+    document.getElementById('discard-card-btn').style.display = 'inline-block';
+    document.getElementById('energy-warning').style.display = 'none';
+  } else {
+    const canAfford = energy >= handItem.card.energy;
+    document.getElementById('play-card-btn').style.display = 'inline-block';
+    document.getElementById('play-card-btn').disabled = !canAfford;
+    document.getElementById('discard-card-btn').style.display = 'none';
+    document.getElementById('energy-warning').style.display = canAfford ? 'none' : 'block';
+  }
 }
 
 function playSelectedCard() {
-  if (!selectedHandCard) return;
-  const h = selectedHandCard;
-  const card = h.card;
+  if (!selectedHandItem) return;
+  const h = selectedHandItem;
+  if (energy < h.card.energy) return;
 
-  if (energy < card.energy) return;
+  applyEnergy(-h.card.energy);
+  removeFromHand(h);
 
-  // Apply energy (energy field: positive = costs energy for bad cards, negative = gives energy for good cards)
-  // We subtract the energy value: positive energy cards cost energy, negative give energy
-  applyEnergy(-card.energy);
-
-  // Remove from hand
-  hand = hand.filter(item => item !== h);
-  updateHandCount();
-
-  // If card has a duration, add to active
-  const dur = parseDuration(card.duration);
+  const dur = parseDuration(h.card.duration);
   if (dur !== 0) {
-    activeCards.push({ card, duration: dur });
+    activeCards.push({ card: h.card, duration: dur });
     updateActiveBar();
   }
 
-  selectedHandCard = null;
+  selectedHandItem = null;
+  updateHandCount();
   renderPlayScreen();
+}
+
+async function discardSelectedCard() {
+  if (!selectedHandItem) return;
+  const h = selectedHandItem;
+
+  // Find the element and animate
+  const cards = document.querySelectorAll('#hand-grid .card');
+  let targetEl = null;
+  cards.forEach(el => { if (el.classList.contains('selected')) targetEl = el; });
+
+  if (targetEl) {
+    targetEl.classList.add('discarding');
+    await sleep(650);
+  }
+
+  removeFromHand(h);
+  selectedHandItem = null;
+  updateHandCount();
+  renderPlayScreen();
+}
+
+function removeFromHand(h) {
+  hand = hand.filter(item => item !== h);
 }
 
 function parseDuration(dur) {
   if (!dur) return 0;
-  if (dur === 'Permanent') return null; // null = permanent
+  if (dur === 'Permanent') return null;
   const match = dur.match(/(\d+)/);
   return match ? parseInt(match[1]) : 1;
 }
@@ -745,10 +814,9 @@ function updateActiveBar() {
   label.textContent = `${activeCards.length} card${activeCards.length > 1 ? 's' : ''} active`;
 
   activeCards.forEach(ac => {
-    const el = buildCardElement(ac.card, true);
+    const el = buildCardElement(ac.card);
     el.classList.add('flipped', 'active-card');
     if (ac.duration === null) el.classList.add('permanent-card');
-
     const overlay = document.createElement('div');
     overlay.className = 'duration-overlay';
     overlay.textContent = ac.duration === null ? '∞' : ac.duration;
@@ -759,10 +827,8 @@ function updateActiveBar() {
 
 function toggleActiveBar() {
   activeBarExpanded = !activeBarExpanded;
-  const bar = document.getElementById('active-bar');
-  const toggle = document.getElementById('active-toggle');
-  bar.classList.toggle('expanded', activeBarExpanded);
-  toggle.textContent = activeBarExpanded ? '▲ collapse' : '▼ expand';
+  document.getElementById('active-bar').classList.toggle('expanded', activeBarExpanded);
+  document.getElementById('active-toggle').textContent = activeBarExpanded ? '▲ collapse' : '▼ expand';
 }
 
 // ══════════════════════════════════════════
@@ -775,32 +841,30 @@ function goToNextShow() {
 
 async function runTransition() {
   const nextShow = showNumber + 1;
-  document.getElementById('transition-title').innerHTML = `Advancing to Show #${nextShow}…`;
+  document.getElementById('next-show-num').textContent = nextShow;
   document.getElementById('transition-msg').textContent = 'Updating durations…';
   document.getElementById('transition-done-btn').style.display = 'none';
 
   const area = document.getElementById('transition-cards-area');
   area.innerHTML = '';
 
-  // Collect all cards to show in transition
-  const allTransitionCards = [
+  const allItems = [
     ...activeCards.map(ac => ({ source: 'active', item: ac })),
     ...hand.filter(h => !isImmediate(h.card)).map(h => ({ source: 'hand', item: h }))
   ];
 
-  if (allTransitionCards.length === 0) {
-    document.getElementById('transition-msg').textContent = 'No active cards to update.';
-    await sleep(800);
+  if (allItems.length === 0) {
+    document.getElementById('transition-msg').textContent = 'No cards to update.';
+    await sleep(600);
     completeTransition(nextShow);
     return;
   }
 
-  // Render all cards
   const cardEls = [];
-  allTransitionCards.forEach(({ source, item }) => {
-    const card = item.card;
-    const el = buildCardElement(card, true);
+  allItems.forEach(({ source, item }) => {
+    const el = buildCardElement(item.card);
     el.classList.add('flipped');
+
     if (source === 'active') {
       el.classList.add('active-card');
       if (item.duration === null) el.classList.add('permanent-card');
@@ -809,12 +873,12 @@ async function runTransition() {
       overlay.textContent = item.duration === null ? '∞' : item.duration;
       el.appendChild(overlay);
     } else {
-      // hand card — show use window
       const badge = document.createElement('div');
-      badge.style.cssText = 'position:absolute;bottom:6px;right:6px;background:#2a2a4a;border:1px solid #4a4aaa;border-radius:6px;padding:2px 6px;font-size:9px;color:#aaf;z-index:3;';
-      badge.textContent = item.useWindow !== null ? `Use in ${item.useWindow}w` : 'Immediate';
+      badge.className = 'use-badge';
+      badge.textContent = item.useWindow !== null ? `Use in ${item.useWindow}w` : '';
       el.appendChild(badge);
     }
+
     area.appendChild(el);
     cardEls.push({ el, source, item });
   });
@@ -823,13 +887,12 @@ async function runTransition() {
   document.getElementById('transition-msg').textContent = 'Ticking down durations…';
   await sleep(400);
 
-  // Tick down each card
   const toDiscard = [];
   const toForce = [];
 
   for (const { el, source, item } of cardEls) {
     if (source === 'active') {
-      if (item.duration === null) continue; // permanent
+      if (item.duration === null) continue;
       item.duration -= 1;
       const overlay = el.querySelector('.duration-overlay');
       if (overlay) {
@@ -839,15 +902,13 @@ async function runTransition() {
       }
       if (item.duration <= 0) toDiscard.push({ el, source, item });
     } else {
-      // hand card
-      if (item.useWindow === null) continue; // immediate, shouldn't be here
+      if (item.useWindow === null) continue;
       item.useWindow -= 1;
-      const badge = el.querySelector('div[style]');
+      const badge = el.querySelector('.use-badge');
       if (badge) badge.textContent = item.useWindow > 0 ? `Use in ${item.useWindow}w` : 'Use in 0w';
 
       if (item.useWindow <= 0) {
-        // Check if negative card (positive energy = bad card) → force immediate
-        if (item.card.energy > 0) {
+        if (isBadCard(item.card)) {
           toForce.push({ el, source, item });
         } else {
           toDiscard.push({ el, source, item });
@@ -859,29 +920,26 @@ async function runTransition() {
 
   await sleep(500);
 
-  // Force immediate on negative cards at 0
   if (toForce.length > 0) {
     document.getElementById('transition-msg').textContent = '⚠️ Some cards are now FORCED immediate use!';
     toForce.forEach(({ el, item }) => {
-      item.useWindow = null; // mark as immediate
+      item.useWindow = null;
       item.card = { ...item.card, use: 'Immediately' };
       el.style.border = '2px solid #f84';
       el.style.boxShadow = '0 0 12px rgba(255,136,0,0.6)';
+      const badge = el.querySelector('.use-badge');
+      if (badge) { badge.textContent = '⚡ Immediate'; badge.classList.add('immediate'); }
     });
-    await sleep(1000);
+    await sleep(1200);
   }
 
-  // Discard cards at 0
   if (toDiscard.length > 0) {
     document.getElementById('transition-msg').textContent = '🗑️ Discarding expired cards…';
     for (const { el, source, item } of toDiscard) {
       el.classList.add('discarding');
       await sleep(200);
-      if (source === 'active') {
-        activeCards = activeCards.filter(ac => ac !== item);
-      } else {
-        hand = hand.filter(h => h !== item);
-      }
+      if (source === 'active') activeCards = activeCards.filter(ac => ac !== item);
+      else hand = hand.filter(h => h !== item);
     }
     await sleep(700);
   }
@@ -905,42 +963,13 @@ function finishTransition() {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ══════════════════════════════════════════
-//  HAND MODAL
-// ══════════════════════════════════════════
-function openHandModal() {
-  const grid = document.getElementById('hand-cards-grid');
-  grid.innerHTML = '';
-  if (hand.length === 0) {
-    grid.innerHTML = '<p style="color:#888;font-size:13px">Your hand is empty.</p>';
-  } else {
-    hand.forEach(h => {
-      const el = buildCardElement(h.card, true);
-      el.classList.add('flipped');
-      // Show use window badge
-      const badge = document.createElement('div');
-      badge.style.cssText = 'position:absolute;bottom:6px;right:6px;background:#2a2a4a;border:1px solid #4a4aaa;border-radius:6px;padding:2px 6px;font-size:9px;color:#aaf;z-index:3;';
-      badge.textContent = isImmediate(h.card) ? '⚡ Immediate' : (h.useWindow !== null ? `Use within ${h.useWindow}w` : '');
-      el.appendChild(badge);
-      grid.appendChild(el);
-    });
-  }
-  document.getElementById('hand-modal').classList.add('open');
-}
-
-function closeHandModal() {
-  document.getElementById('hand-modal').classList.remove('open');
-}
-
-// ══════════════════════════════════════════
 //  CARD BUILDER
 // ══════════════════════════════════════════
-function buildCardElement(card, showBack) {
+function buildCardElement(card) {
   const el = document.createElement('div');
   el.className = 'card';
-
   const energyClass = card.energy > 0 ? 'energy-pos' : card.energy < 0 ? 'energy-neg' : 'energy-zero';
   const energyLabel = card.energy > 0 ? `⚡ Costs ${card.energy}` : card.energy < 0 ? `⚡ +${Math.abs(card.energy)}` : '⚡ 0';
-
   el.innerHTML = `
     <div class="card-inner">
       <div class="card-front">📦</div>
@@ -956,8 +985,6 @@ function buildCardElement(card, showBack) {
         </div>
       </div>
     </div>`;
-
-  if (showBack) el.classList.add('flipped');
   return el;
 }
 
