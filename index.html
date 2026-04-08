@@ -615,7 +615,7 @@ function selectCardOverlay(el, handItem, mode) {
 }
 
 // PLAY / DISCARD FROM OVERLAY
-function playSelectedCard() {
+async function playSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
   if (!canAffordCard(h.card)) return;
@@ -624,7 +624,14 @@ function playSelectedCard() {
   // determine duration: if >0 or null (permanent) => becomes active; otherwise it's a one-shot and is discarded
   const dur = parseDuration(h.card.duration);
   
-  // Remove from hand first (this was the missing piece!)
+  // Animate card removal before removing from hand
+  const selectedCardElements = document.querySelectorAll('#hand-grid-overlay .card.selected');
+  if (selectedCardElements.length > 0) {
+    selectedCardElements[0].classList.add('discarding');
+    await sleep(650); // Wait for animation
+  }
+  
+  // Remove from hand first
   removeFromHand(h);
 
   if (dur && dur !== 0) {
@@ -632,7 +639,6 @@ function playSelectedCard() {
     activeCards.push({ card: h.card, duration: dur === null ? null : dur });
     updateActiveBar();
   }
-  // For one-shot cards, they're already removed from hand above
   
   selectedHandItem = null;
   updateHandCount();
@@ -645,11 +651,14 @@ function playSelectedCard() {
 async function discardSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
+  
   // animate selected card removing
-  const cards = document.querySelectorAll('#hand-grid-overlay .card.selected');
-  let targetEl = null;
-  cards.forEach(el => { targetEl = el; });
-  if (targetEl) { targetEl.classList.add('discarding'); await sleep(650); }
+  const selectedCardElements = document.querySelectorAll('#hand-grid-overlay .card.selected');
+  if (selectedCardElements.length > 0) {
+    selectedCardElements[0].classList.add('discarding');
+    await sleep(650); // Wait for animation
+  }
+  
   removeFromHand(h);
   selectedHandItem = null;
   updateHandCount();
@@ -661,6 +670,100 @@ async function discardSelectedCard() {
 
 function removeFromHand(h) { 
   hand = hand.filter(item => item !== h); 
+}
+
+// SELECT CARD IN OVERLAY - Updated to ensure proper selection
+function selectCardOverlay(el, handItem, mode) {
+  // Remove selection from all cards
+  document.querySelectorAll('#hand-grid-overlay .card').forEach(c => c.classList.remove('selected'));
+  
+  // Add selection to clicked card
+  el.classList.add('selected');
+  selectedHandItem = handItem;
+  const warn = document.getElementById('resource-warning-overlay');
+
+  if (mode === 'discard') {
+    document.getElementById('play-card-btn-overlay').style.display = 'none';
+    document.getElementById('discard-card-btn-overlay').style.display = 'inline-block';
+    warn.style.display = 'none';
+  } else {
+    const affordable = canAffordCard(handItem.card);
+    document.getElementById('play-card-btn-overlay').style.display = 'inline-block';
+    document.getElementById('play-card-btn-overlay').disabled = !affordable;
+    document.getElementById('discard-card-btn-overlay').style.display = 'none';
+    if (!affordable) {
+      const missing = Object.entries(handItem.card.cost || {})
+        .filter(([r,v]) => resources[r] < v)
+        .map(([r,v]) => `${v - resources[r]} more ${r}`).join(', ');
+      warn.textContent = `Not enough resources! Need ${missing}.`;
+      warn.style.display = 'block';
+    } else warn.style.display = 'none';
+  }
+}
+
+// RENDER HAND OVERLAY - Ensure proper event binding
+function renderHandOverlay() {
+  selectedHandItem = null;
+  document.getElementById('play-card-btn-overlay').style.display = 'none';
+  document.getElementById('discard-card-btn-overlay').style.display = 'none';
+  document.getElementById('resource-warning-overlay').style.display = 'none';
+
+  const capEl = document.getElementById('hand-capacity-overlay');
+  const counted = countedHandSize();
+  capEl.textContent = `(${counted}/${HAND_LIMIT} slots used)`;
+  capEl.className = counted > HAND_LIMIT ? 'over' : '';
+
+  const statusEl = document.getElementById('play-status-overlay');
+  const immediateHeels = hand.filter(h => h.card.cardType === 'heel' && isImmediate(h.card));
+
+  if (isOverCapacity()) {
+    statusEl.className = 'overflow';
+    statusEl.innerHTML = `⚠️ Hand over capacity! Discard a card to continue.<br><small>Highlighted cards are eligible to discard.</small>`;
+  } else if (immediateHeels.length > 0) {
+    statusEl.className = '';
+    statusEl.innerHTML = `Play all <strong style="color:#f88">immediate Heel cards</strong> before continuing.`;
+  } else if (hand.length === 0) {
+    statusEl.className = '';
+    statusEl.innerHTML = `Hand is empty. Open a new pack!`;
+  } else {
+    statusEl.className = '';
+    statusEl.innerHTML = `All immediate cards resolved. Play optional cards.`;
+  }
+
+  const grid = document.getElementById('hand-grid-overlay'); 
+  grid.innerHTML = '';
+  
+  if (hand.length === 0) return;
+
+  hand.forEach(h => {
+    const el = buildCardElement(h.card);
+    el.classList.add('flipped');
+
+    const badge = document.createElement('div');
+    badge.className = 'use-badge';
+    if (isImmediate(h.card)) { 
+      badge.classList.add('immediate'); 
+      badge.textContent = '⚡ Immediate'; 
+    } else if (h.useWindow !== null) { 
+      badge.textContent = `Use within ${h.useWindow}w`; 
+      if (h.useWindow <= 1) 
+        badge.classList.add(h.card.cardType === 'face' ? 'face-exp' : 'urgent'); 
+    }
+    el.appendChild(badge);
+
+    if (isOverCapacity()) {
+      const eligible = isDiscardEligible(h);
+      el.classList.toggle('discardable', eligible);
+      el.classList.toggle('dimmed', !eligible);
+      if (eligible) {
+        el.onclick = () => selectCardOverlay(el, h, 'discard');
+      }
+    } else {
+      el.onclick = () => selectCardOverlay(el, h, 'play');
+    }
+    
+    grid.appendChild(el);
+  });
 }
 
 // ACTIVE CARDS OVERLAY
