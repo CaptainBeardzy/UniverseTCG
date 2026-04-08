@@ -623,17 +623,17 @@ function playSelectedCard() {
 
   // determine duration: if >0 or null (permanent) => becomes active; otherwise it's a one-shot and is discarded
   const dur = parseDuration(h.card.duration);
-  // remove from hand first to prevent re-use
+  
+  // Remove from hand first (this was the missing piece!)
   removeFromHand(h);
 
   if (dur && dur !== 0) {
     // active effect: add to activeCards (duration may be number or null for permanent)
     activeCards.push({ card: h.card, duration: dur === null ? null : dur });
     updateActiveBar();
-  } else {
-    // one-shot card: discard (already removed)
-    // optionally we could animate, but removal is enough
   }
+  // For one-shot cards, they're already removed from hand above
+  
   selectedHandItem = null;
   updateHandCount();
   if (currentOverlay === 'hand-overlay') {
@@ -659,7 +659,9 @@ async function discardSelectedCard() {
   updateContinueButtonState();
 }
 
-function removeFromHand(h) { hand = hand.filter(item => item !== h); }
+function removeFromHand(h) { 
+  hand = hand.filter(item => item !== h); 
+}
 
 // ACTIVE CARDS OVERLAY
 function renderActiveOverlay() {
