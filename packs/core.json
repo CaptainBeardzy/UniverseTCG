@@ -3,8 +3,6 @@
   "icon": "🎲",
   "desc": "The standard chaos pack. One Heel, one Face, one Promo.",
   "cards": [
-
-    // ── HEEL CARDS (negative events, zero cost, can be forced) ──
     {
       "cardType": "heel",
       "rarity": "common",
@@ -95,8 +93,6 @@
       "duration": "4 Shows",
       "use": "Immediately"
     },
-
-    // ── FACE CARDS (positive events, resource cost, never forced) ──
     {
       "cardType": "face",
       "rarity": "common",
@@ -178,8 +174,6 @@
       "duration": "1 Show",
       "use": "Within 3 weeks"
     },
-
-    // ── PROMO CARDS (utility, auto-resolve, grant resources) ──
     {
       "cardType": "promo",
       "rarity": "common",
