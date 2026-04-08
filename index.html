@@ -6,7 +6,6 @@
 <title>WWE Chaos Packs – Universe Mode</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   background: #0a0a0f;
   font-family: 'Segoe UI', sans-serif;
@@ -20,49 +19,58 @@ body {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 56px;
-  background: rgba(10,10,20,0.95);
+  background: rgba(10,10,20,0.97);
   border-bottom: 1px solid #222;
   display: flex;
   align-items: center;
   padding: 0 16px;
-  gap: 16px;
+  gap: 10px;
   z-index: 1000;
 }
-#top-bar h1 { font-size: 14px; font-weight: 700; color: #e8c84a; letter-spacing: 1px; flex: 1; }
-#energy-display {
+#top-bar h1 { font-size: 13px; font-weight: 700; color: #e8c84a; letter-spacing: 1px; flex: 1; }
+
+.resource-pill {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #1a1a2e;
   border: 1px solid #333;
   border-radius: 20px;
-  padding: 4px 14px;
-  font-size: 14px;
+  padding: 4px 12px;
+  font-size: 13px;
   font-weight: 700;
-  transition: background 0.6s;
+  transition: background 0.5s;
+  min-width: 70px;
+  justify-content: center;
 }
-#energy-value { color: #4af; min-width: 28px; text-align: center; }
+.resource-pill .r-icon { font-size: 14px; }
+.resource-pill .r-val { min-width: 20px; text-align: center; }
+#pill-heat .r-val { color: #f55; }
+#pill-hype .r-val { color: #fa0; }
+#pill-clout .r-val { color: #a8f; }
+
 #show-counter {
   background: #1a1a2e;
   border: 1px solid #333;
   border-radius: 20px;
-  padding: 4px 14px;
-  font-size: 12px;
+  padding: 4px 12px;
+  font-size: 11px;
   color: #aaa;
 }
 #hand-btn {
   background: #2a2a4a;
   border: 1px solid #4a4aaa;
   border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 12px;
+  padding: 6px 12px;
+  font-size: 11px;
   color: #aaf;
   cursor: pointer;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 #hand-btn:hover { background: #3a3a6a; }
 
-/* ── ACTIVE CARDS BAR ── */
+/* ── ACTIVE BAR ── */
 #active-bar {
   position: fixed;
   top: 56px; left: 0; right: 0;
@@ -82,15 +90,13 @@ body {
   cursor: pointer;
   gap: 10px;
 }
-#active-bar-header span { font-size: 12px; color: #4f4; }
-#active-bar-header .label { font-size: 12px; color: #888; flex: 1; }
-#active-bar-header .toggle { font-size: 10px; color: #555; }
+#active-bar-header .ab-label { font-size: 12px; color: #888; flex: 1; }
+#active-bar-header .ab-toggle { font-size: 10px; color: #555; }
 #active-cards-list {
   display: flex;
   gap: 10px;
   padding: 8px 16px 12px;
   overflow-x: auto;
-  flex-wrap: nowrap;
 }
 
 /* ── SCREENS ── */
@@ -168,39 +174,19 @@ body {
   background: #111;
   border: 1px solid #222;
 }
-#play-status.overflow {
-  color: #f84;
-  border-color: #a44;
-  background: #1a0f0f;
-}
-#hand-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin: 4px 0;
-}
-#hand-capacity {
-  font-size: 11px;
-  color: #666;
-}
+#play-status.overflow { color: #f84; border-color: #a44; background: #1a0f0f; }
+#hand-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 4px 0; }
+#hand-capacity { font-size: 11px; color: #666; }
 #hand-capacity.over { color: #f84; font-weight: 700; }
+.action-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
 
-.action-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 #play-card-btn {
   display: none;
   background: linear-gradient(135deg, #2a4a8a, #1a2a5a);
   border: 2px solid #4a8af4;
   border-radius: 12px;
   padding: 10px 28px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 14px; font-weight: 700;
   color: #4a8af4;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -214,15 +200,14 @@ body {
   border: 2px solid #f44;
   border-radius: 12px;
   padding: 10px 28px;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 14px; font-weight: 700;
   color: #f44;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 #discard-card-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(255,80,80,0.3); }
 
-#energy-warning { font-size: 12px; color: #f84; display: none; text-align: center; }
+#resource-warning { font-size: 12px; color: #f84; display: none; text-align: center; }
 
 #next-show-btn {
   display: none;
@@ -230,8 +215,7 @@ body {
   border: 2px solid #f4f;
   border-radius: 12px;
   padding: 12px 32px;
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 15px; font-weight: 700;
   color: #f4f;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -259,7 +243,7 @@ body {
 /* ── CARD STYLES ── */
 .card {
   width: 150px;
-  height: 260px;
+  height: 270px;
   border-radius: 12px;
   position: relative;
   cursor: pointer;
@@ -268,8 +252,7 @@ body {
   transition: transform 0.2s;
 }
 .card-inner {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
@@ -277,8 +260,7 @@ body {
 }
 .card.flipped .card-inner { transform: rotateY(180deg); }
 .card-front, .card-back {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   border-radius: 12px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -286,43 +268,65 @@ body {
 .card-front {
   background: linear-gradient(145deg, #1a1a3a, #0d0d20);
   border: 2px solid #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 36px;
 }
 .card-back {
   transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  padding: 10px 8px;
-  gap: 4px;
+  display: flex; flex-direction: column;
+  padding: 10px 8px; gap: 4px;
   border: 2px solid #444;
 }
-.card-back.common  { background: linear-gradient(160deg,#1a1a2e,#111); border-color: #555; }
-.card-back.rare    { background: linear-gradient(160deg,#0d1a2e,#0a1020); border-color: #4a8af4; }
-.card-back.epic    { background: linear-gradient(160deg,#1a0d2e,#120a20); border-color: #9b59b6; }
-.card-back.legendary { background: linear-gradient(160deg,#2e1a00,#1a0f00); border-color: #e8c84a; }
+
+/* Card type themes */
+.card-back.heel.common  { background: linear-gradient(160deg,#1e0a0a,#120606); border-color: #6a2a2a; }
+.card-back.heel.rare    { background: linear-gradient(160deg,#2a0a0a,#1a0606); border-color: #c0392b; }
+.card-back.heel.epic    { background: linear-gradient(160deg,#3a0a0a,#220606); border-color: #e74c3c; }
+.card-back.heel.legendary { background: linear-gradient(160deg,#4a0a0a,#2a0606); border-color: #ff6b6b; }
+
+.card-back.face.common  { background: linear-gradient(160deg,#0a1e0a,#060c06); border-color: #2a6a2a; }
+.card-back.face.rare    { background: linear-gradient(160deg,#0a2a0a,#061a06); border-color: #27ae60; }
+.card-back.face.epic    { background: linear-gradient(160deg,#0a3a0a,#062206); border-color: #2ecc71; }
+.card-back.face.legendary { background: linear-gradient(160deg,#0a4a0a,#062a06); border-color: #55ff55; }
+
+.card-back.promo.common  { background: linear-gradient(160deg,#0a0a1e,#06060c); border-color: #2a2a8a; }
+.card-back.promo.rare    { background: linear-gradient(160deg,#0a0a2a,#06061a); border-color: #8e44ad; }
+.card-back.promo.epic    { background: linear-gradient(160deg,#0a0a3a,#060622); border-color: #9b59b6; }
+.card-back.promo.legendary { background: linear-gradient(160deg,#1a0a2a,#0f0618); border-color: #e8c84a; }
+
+.card-type-label {
+  font-size: 8px; font-weight: 900; letter-spacing: 2px;
+  text-transform: uppercase; padding: 2px 6px; border-radius: 4px;
+  align-self: flex-start; margin-bottom: 2px;
+}
+.heel .card-type-label  { background: #4a1010; color: #f88; }
+.face .card-type-label  { background: #104a10; color: #8f8; }
+.promo .card-type-label { background: #1a1040; color: #aaf; }
 
 .card-rarity-badge {
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; padding: 2px 6px; border-radius: 4px; align-self: flex-start;
+  font-size: 8px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 1px 5px; border-radius: 3px;
+  align-self: flex-start;
 }
 .common .card-rarity-badge  { background: #333; color: #aaa; }
 .rare .card-rarity-badge    { background: #1a3a6a; color: #4a8af4; }
 .epic .card-rarity-badge    { background: #2a1a4a; color: #9b59b6; }
 .legendary .card-rarity-badge { background: #3a2a00; color: #e8c84a; }
 
-.card-type { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
-.card-title { font-size: 12px; font-weight: 700; line-height: 1.3; margin: 2px 0; }
+.card-title { font-size: 12px; font-weight: 700; line-height: 1.3; margin: 3px 0; }
 .card-desc { font-size: 9px; color: #bbb; line-height: 1.4; flex: 1; overflow: hidden; }
 .card-meta { font-size: 9px; color: #888; border-top: 1px solid #222; padding-top: 4px; margin-top: 2px; }
-.card-meta span { display: block; }
-.energy-pos { color: #f88; }
-.energy-neg { color: #4f4; }
-.energy-zero { color: #888; }
+.card-meta span { display: block; line-height: 1.6; }
 
-/* Use window badge on hand cards */
+.cost-heat  { color: #f55; }
+.cost-hype  { color: #fa0; }
+.cost-clout { color: #a8f; }
+.cost-free  { color: #666; }
+
+/* Promo glow */
+.card.promo-card .card-back { box-shadow: inset 0 0 20px rgba(168,136,255,0.15); }
+
+/* Use badge */
 .use-badge {
   position: absolute;
   bottom: 6px; right: 6px;
@@ -330,61 +334,64 @@ body {
   border: 1px solid #4a4aaa;
   border-radius: 6px;
   padding: 2px 6px;
-  font-size: 9px;
-  color: #aaf;
-  z-index: 3;
-  pointer-events: none;
+  font-size: 9px; color: #aaf;
+  z-index: 3; pointer-events: none;
 }
 .use-badge.immediate { background: #2a1a1a; border-color: #a44; color: #f88; }
-.use-badge.urgent { background: #3a2a00; border-color: #a84; color: #fa8; }
+.use-badge.urgent    { background: #3a2a00; border-color: #a84; color: #fa8; }
+.use-badge.face-exp  { background: #102a10; border-color: #4a8; color: #8f8; }
 
-/* Duration overlay on active cards */
+/* Duration overlay */
 .card.active-card .duration-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
   background: rgba(0,0,0,0.55);
   border-radius: 12px;
-  font-size: 52px;
-  font-weight: 900;
-  color: #fff;
+  font-size: 52px; font-weight: 900; color: #fff;
   text-shadow: 0 2px 12px #000;
-  pointer-events: none;
-  z-index: 2;
+  pointer-events: none; z-index: 2;
 }
 .card.active-card.permanent-card .duration-overlay { font-size: 22px; }
 
 /* Selected */
 .card.selected .card-back { border-color: #fff !important; box-shadow: 0 0 16px rgba(255,255,255,0.4); }
 
-/* Overflow: discardable cards pulse up, others dim */
-.card.discardable {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 24px rgba(255,80,80,0.4);
-  cursor: pointer;
-}
+/* Overflow states */
+.card.discardable { transform: translateY(-10px); box-shadow: 0 8px 24px rgba(255,80,80,0.4); cursor: pointer; }
 .card.discardable .card-back { border-color: #f44 !important; }
 .card.dimmed { opacity: 0.35; pointer-events: none; }
 
-/* Discard animation */
+/* Animations */
 @keyframes discardAnim {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.1) rotate(8deg); opacity: 0.6; }
+  0%   { transform: scale(1) rotate(0deg); opacity: 1; }
+  50%  { transform: scale(1.1) rotate(8deg); opacity: 0.6; }
   100% { transform: scale(0) rotate(20deg); opacity: 0; }
 }
 .card.discarding { animation: discardAnim 0.6s ease forwards; pointer-events: none; }
 
-/* Tick-down animation */
 @keyframes tickDown {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.4); color: #f84; }
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); color: #f84; }
   100% { transform: scale(1); }
 }
 .duration-overlay.ticking { animation: tickDown 0.5s ease; }
 
-/* Flash overlay */
+/* Promo fly-in animation */
+@keyframes flyToBar {
+  0%   { transform: scale(1) translateY(0); opacity: 1; }
+  60%  { transform: scale(1.15) translateY(-30px); opacity: 0.9; }
+  100% { transform: scale(0.2) translateY(-200px); opacity: 0; }
+}
+.card.flying { animation: flyToBar 0.8s ease forwards; pointer-events: none; }
+
+@keyframes resourcePop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.resource-pill.popping { animation: resourcePop 0.4s ease; }
+
+/* Flash */
 #flash {
   position: fixed; inset: 0;
   background: white; opacity: 0;
@@ -407,21 +414,31 @@ body {
 <!-- TOP BAR -->
 <div id="top-bar">
   <h1>⚡ CHAOS PACKS</h1>
-  <div id="energy-display">
-    <span>⚡</span>
-    <span id="energy-value">10</span>
-    <span style="color:#555;font-size:11px">ENERGY</span>
+  <div class="resource-pill" id="pill-heat" title="Heat – Rivalry Momentum">
+    <span class="r-icon">🔥</span>
+    <span class="r-val" id="res-heat">5</span>
+    <span style="font-size:9px;color:#666">HEAT</span>
+  </div>
+  <div class="resource-pill" id="pill-hype" title="Hype – Fan Excitement">
+    <span class="r-icon">📣</span>
+    <span class="r-val" id="res-hype">5</span>
+    <span style="font-size:9px;color:#666">HYPE</span>
+  </div>
+  <div class="resource-pill" id="pill-clout" title="Clout – Mainstream Reach">
+    <span class="r-icon">🌐</span>
+    <span class="r-val" id="res-clout">5</span>
+    <span style="font-size:9px;color:#666">CLOUT</span>
   </div>
   <div id="show-counter">Show #<span id="show-num">1</span></div>
   <button id="hand-btn" onclick="showScreen('play-screen'); renderPlayScreen();">🃏 Hand (<span id="hand-count">0</span>)</button>
 </div>
 
-<!-- ACTIVE CARDS BAR -->
+<!-- ACTIVE BAR -->
 <div id="active-bar">
   <div id="active-bar-header" onclick="toggleActiveBar()">
-    <span>🟢 ACTIVE</span>
-    <span class="label" id="active-bar-label">No active cards</span>
-    <span class="toggle" id="active-toggle">▼ expand</span>
+    <span style="font-size:12px;color:#4f4">🟢 ACTIVE</span>
+    <span class="ab-label" id="active-bar-label">No active cards</span>
+    <span class="ab-toggle" id="active-toggle">▼ expand</span>
   </div>
   <div id="active-cards-list"></div>
 </div>
@@ -432,12 +449,12 @@ body {
   <!-- PACK SCREEN -->
   <div id="pack-screen" class="screen active">
     <h2>Open a Pack</h2>
-    <p>Draw 3 cards and face the chaos.</p>
+    <p>Every pack contains one Heel, one Face, and one Promo card.</p>
     <div id="pack-list">
       <div id="loading-msg">Loading packs…</div>
       <div id="error-msg"></div>
     </div>
-    <div id="pack-locked-msg">⚠️ Play all immediate-use cards before opening a new pack.</div>
+    <div id="pack-locked-msg">⚠️ Play all immediate-use Heel cards before opening a new pack.</div>
   </div>
 
   <!-- REVEAL SCREEN -->
@@ -457,7 +474,7 @@ body {
       <button id="play-card-btn" onclick="playSelectedCard()">▶ Play Card</button>
       <button id="discard-card-btn" onclick="discardSelectedCard()">🗑 Discard</button>
     </div>
-    <div id="energy-warning">Not enough energy to play this card!</div>
+    <div id="resource-warning"></div>
     <button id="next-show-btn" onclick="goToNextShow()">➡ Continue to Next Show</button>
   </div>
 
@@ -476,43 +493,39 @@ body {
 //  STATE
 // ══════════════════════════════════════════
 let cardData = [];
-let energy = 10;
+let resources = { heat: 5, hype: 5, clout: 5 };
 let showNumber = 1;
-let hand = [];        // { card, useWindow (null=immediate, or number) }
-let activeCards = []; // { card, duration (null=permanent, or number) }
+let hand = [];        // { card, useWindow }
+let activeCards = []; // { card, duration }
 let drawnCards = [];
 let flippedCount = 0;
+let promoResolved = 0;
 let selectedHandItem = null;
 let activeBarExpanded = false;
-let inOverflow = false;
 
 const HAND_LIMIT = 5;
-const rarityWeights = { common: 50, rare: 30, epic: 15, legendary: 5 };
 
 // ══════════════════════════════════════════
 //  HAND CAPACITY
 // ══════════════════════════════════════════
-// Immediate bad cards (positive energy, immediate use) are FREE — don't count toward limit
-function countedHandSize() {
-  return hand.filter(h => !isFreeSlot(h)).length;
-}
+// Immediate Heel cards are free (don't count toward limit)
 function isFreeSlot(h) {
-  return isImmediate(h.card) && h.card.energy > 0;
+  return h.card.cardType === 'heel' && isImmediate(h.card);
 }
 function isImmediate(card) {
   return card.use === 'Immediately';
 }
-function isBadCard(card) {
-  return card.energy > 0;
+function countedHandSize() {
+  return hand.filter(h => !isFreeSlot(h)).length;
 }
 function isOverCapacity() {
   return countedHandSize() > HAND_LIMIT;
 }
-// Cards eligible to be discarded during overflow: positive energy (good cards = negative energy) or non-immediate
+// Eligible to discard: Face cards (positive effect) or non-immediate Heel cards
+// Cannot discard: immediate Heel cards
 function isDiscardEligible(h) {
-  // Can discard: good cards (negative energy) OR non-immediate bad cards
-  // Cannot discard: immediate bad cards (they're free slots and must be played)
-  return !isFreeSlot(h) && !(isImmediate(h.card) && isBadCard(h.card));
+  if (h.card.cardType === 'heel' && isImmediate(h.card)) return false;
+  return true;
 }
 
 // ══════════════════════════════════════════
@@ -523,7 +536,7 @@ async function loadCards() {
     const res = await fetch('packs.json');
     if (!res.ok) throw new Error();
     const packsIndex = await res.json();
-    const packPromises = packsIndex.packs.map(path => fetch(path).then(r => r.json()));
+    const packPromises = packsIndex.packs.map(p => fetch(p).then(r => r.json()));
     cardData = await Promise.all(packPromises);
     document.getElementById('loading-msg').style.display = 'none';
     buildPackUI();
@@ -531,7 +544,7 @@ async function loadCards() {
     document.getElementById('loading-msg').style.display = 'none';
     const err = document.getElementById('error-msg');
     err.style.display = 'block';
-    err.textContent = 'Could not load packs. Run from a local server or GitHub Pages with packs.json in the root.';
+    err.textContent = 'Could not load packs. Run from GitHub Pages with packs.json in the root.';
   }
 }
 
@@ -548,35 +561,56 @@ function buildPackUI() {
 }
 
 // ══════════════════════════════════════════
-//  ENERGY
+//  RESOURCES
 // ══════════════════════════════════════════
-function updateEnergyDisplay() {
-  const el = document.getElementById('energy-value');
-  el.textContent = energy;
-  el.style.color = energy >= 0 ? '#4af' : '#f44';
+function updateResourceDisplay() {
+  ['heat','hype','clout'].forEach(r => {
+    document.getElementById(`res-${r}`).textContent = resources[r];
+  });
 }
-function applyEnergy(amount) {
-  energy += amount;
-  updateEnergyDisplay();
-  const disp = document.getElementById('energy-display');
-  disp.style.transition = 'none';
-  disp.style.background = amount < 0 ? '#2a1a1a' : '#1a2a1a';
-  setTimeout(() => { disp.style.transition = 'background 0.6s'; disp.style.background = '#1a1a2e'; }, 50);
+
+function applyResource(type, amount) {
+  resources[type] = Math.max(0, resources[type] + amount);
+  updateResourceDisplay();
+  const pill = document.getElementById(`pill-${type}`);
+  pill.classList.remove('popping');
+  void pill.offsetWidth;
+  pill.classList.add('popping');
+  setTimeout(() => pill.classList.remove('popping'), 400);
+}
+
+function canAffordCard(card) {
+  if (!card.cost) return true;
+  return Object.entries(card.cost).every(([r, v]) => resources[r] >= v);
+}
+
+function spendCard(card) {
+  if (!card.cost) return;
+  Object.entries(card.cost).forEach(([r, v]) => applyResource(r, -v));
+}
+
+function formatCost(cost) {
+  if (!cost || Object.keys(cost).length === 0) return '<span class="cost-free">Free</span>';
+  return Object.entries(cost).map(([r, v]) => {
+    const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
+    return `<span class="cost-${r}">${icons[r]} ${v} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`;
+  }).join(' ');
 }
 
 // ══════════════════════════════════════════
-//  PACK OPENING
+//  PACK OPENING — guaranteed 1 Heel, 1 Face, 1 Promo
 // ══════════════════════════════════════════
 function openPack(packIndex) {
-  if (hand.some(h => isImmediate(h.card))) {
+  if (hand.some(h => isImmediate(h.card) && h.card.cardType === 'heel')) {
     document.getElementById('pack-locked-msg').style.display = 'block';
     return;
   }
   document.getElementById('pack-locked-msg').style.display = 'none';
 
   const pack = cardData[packIndex];
-  drawnCards = drawCards(pack, 3);
+  drawnCards = drawGuaranteedSet(pack);
   flippedCount = 0;
+  promoResolved = 0;
 
   document.getElementById('reveal-pack-name').textContent = `Opening: ${pack.name}`;
   document.getElementById('continue-btn').style.display = 'none';
@@ -584,7 +618,7 @@ function openPack(packIndex) {
 
   const row = document.getElementById('cards-row');
   row.innerHTML = '';
-  drawnCards.forEach((card, i) => {
+  drawnCards.forEach(card => {
     const el = buildCardElement(card);
     el.onclick = () => flipCard(el, card);
     row.appendChild(el);
@@ -593,39 +627,64 @@ function openPack(packIndex) {
   showScreen('reveal-screen');
 }
 
-function drawCards(pack, count) {
-  const pool = pack.cards;
-  const drawn = [];
-  for (let i = 0; i < count; i++) {
-    const rarity = weightedRarity();
-    const rarityPool = pool.filter(c => c.rarity === rarity);
-    const source = rarityPool.length ? rarityPool : pool;
-    drawn.push(source[Math.floor(Math.random() * source.length)]);
-  }
-  return drawn;
+function drawGuaranteedSet(pack) {
+  const heels  = pack.cards.filter(c => c.cardType === 'heel');
+  const faces  = pack.cards.filter(c => c.cardType === 'face');
+  const promos = pack.cards.filter(c => c.cardType === 'promo');
+
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+  // Shuffle order so it's not always Heel/Face/Promo left-to-right
+  const set = [pick(heels), pick(faces), pick(promos)];
+  return set.sort(() => Math.random() - 0.5);
 }
 
-function weightedRarity() {
-  const total = Object.values(rarityWeights).reduce((a, b) => a + b, 0);
-  let r = Math.random() * total;
-  for (const [rarity, weight] of Object.entries(rarityWeights)) {
-    r -= weight;
-    if (r <= 0) return rarity;
-  }
-  return 'common';
-}
-
-function flipCard(el, card) {
+// ══════════════════════════════════════════
+//  FLIP
+// ══════════════════════════════════════════
+async function flipCard(el, card) {
   if (el.classList.contains('flipped')) return;
   el.classList.add('flipped');
   flippedCount++;
+
   if (card.rarity === 'legendary') {
     const flash = document.getElementById('flash');
     flash.style.background = 'rgba(232,200,74,0.5)';
     flash.style.opacity = '0.7';
     setTimeout(() => { flash.style.opacity = '0'; flash.style.background = 'white'; }, 200);
   }
-  if (flippedCount === drawnCards.length) {
+
+  // Promo cards auto-resolve after a short delay
+  if (card.cardType === 'promo') {
+    await sleep(700);
+    await resolvePromo(el, card);
+  }
+
+  checkAllFlipped();
+}
+
+async function resolvePromo(el, card) {
+  // Fly card up to resource bar
+  el.classList.add('flying');
+  await sleep(850);
+
+  // Grant resources
+  if (card.grants) {
+    for (const [r, v] of Object.entries(card.grants)) {
+      applyResource(r, v);
+    }
+  }
+
+  // Remove from drawn so it doesn't go to hand
+  drawnCards = drawnCards.filter(c => c !== card);
+  promoResolved++;
+  el.style.visibility = 'hidden';
+}
+
+function checkAllFlipped() {
+  const totalNonPromo = drawnCards.length;
+  const allFlipped = flippedCount >= 3; // all 3 were clicked
+  if (allFlipped) {
     setTimeout(() => {
       document.getElementById('flip-hint').style.display = 'none';
       document.getElementById('continue-btn').style.display = 'inline-block';
@@ -637,8 +696,11 @@ function flipCard(el, card) {
 //  ADD TO HAND
 // ══════════════════════════════════════════
 function addCardsToHand() {
+  // Only non-promo cards go to hand (promos already resolved)
   drawnCards.forEach(card => {
-    hand.push({ card, useWindow: parseUseWindow(card.use) });
+    if (card.cardType !== 'promo') {
+      hand.push({ card, useWindow: parseUseWindow(card.use) });
+    }
   });
   updateHandCount();
   showScreen('play-screen');
@@ -656,33 +718,31 @@ function updateHandCount() {
 }
 
 // ══════════════════════════════════════════
-//  PLAY SCREEN — unified hand view
+//  PLAY SCREEN
 // ══════════════════════════════════════════
 function renderPlayScreen() {
   selectedHandItem = null;
-  inOverflow = isOverCapacity();
+  const overflow = isOverCapacity();
 
   document.getElementById('play-card-btn').style.display = 'none';
   document.getElementById('discard-card-btn').style.display = 'none';
-  document.getElementById('energy-warning').style.display = 'none';
+  document.getElementById('resource-warning').style.display = 'none';
 
-  // Capacity label
   const capEl = document.getElementById('hand-capacity');
   const counted = countedHandSize();
   capEl.textContent = `(${counted}/${HAND_LIMIT} slots used)`;
   capEl.className = counted > HAND_LIMIT ? 'over' : '';
 
-  // Status message
   const statusEl = document.getElementById('play-status');
-  const immediates = hand.filter(h => isImmediate(h.card));
+  const immediateHeels = hand.filter(h => h.card.cardType === 'heel' && isImmediate(h.card));
 
-  if (inOverflow) {
+  if (overflow) {
     statusEl.className = 'overflow';
-    statusEl.innerHTML = `⚠️ Hand is over capacity! Discard a card to continue. <br><small>Highlighted cards are eligible to discard.</small>`;
+    statusEl.innerHTML = `⚠️ Hand over capacity! Discard a card to continue.<br><small>Highlighted cards are eligible to discard.</small>`;
     document.getElementById('next-show-btn').style.display = 'none';
-  } else if (immediates.length > 0) {
+  } else if (immediateHeels.length > 0) {
     statusEl.className = '';
-    statusEl.innerHTML = `Play all <strong style="color:#f88">immediate-use</strong> cards before continuing to the next show.`;
+    statusEl.innerHTML = `Play all <strong style="color:#f88">immediate Heel cards</strong> before continuing.`;
     document.getElementById('next-show-btn').style.display = 'none';
   } else if (hand.length === 0) {
     statusEl.className = '';
@@ -690,21 +750,19 @@ function renderPlayScreen() {
     document.getElementById('next-show-btn').style.display = 'inline-block';
   } else {
     statusEl.className = '';
-    statusEl.innerHTML = `All immediate cards played. Ready to continue, or play optional cards from your hand.`;
+    statusEl.innerHTML = `All immediate cards resolved. Play optional cards or continue to the next show.`;
     document.getElementById('next-show-btn').style.display = 'inline-block';
   }
 
-  // Render all hand cards
   const grid = document.getElementById('hand-grid');
   grid.innerHTML = '';
-
   if (hand.length === 0) return;
 
   hand.forEach(h => {
     const el = buildCardElement(h.card);
     el.classList.add('flipped');
 
-    // Use window badge
+    // Badge
     const badge = document.createElement('div');
     badge.className = 'use-badge';
     if (isImmediate(h.card)) {
@@ -712,17 +770,15 @@ function renderPlayScreen() {
       badge.textContent = '⚡ Immediate';
     } else if (h.useWindow !== null) {
       badge.textContent = `Use within ${h.useWindow}w`;
-      if (h.useWindow <= 1) badge.classList.add('urgent');
+      if (h.useWindow <= 1) badge.classList.add(h.card.cardType === 'face' ? 'face-exp' : 'urgent');
     }
     el.appendChild(badge);
 
-    if (inOverflow) {
+    if (overflow) {
       const eligible = isDiscardEligible(h);
       el.classList.toggle('discardable', eligible);
       el.classList.toggle('dimmed', !eligible);
-      if (eligible) {
-        el.onclick = () => selectCard(el, h, 'discard');
-      }
+      if (eligible) el.onclick = () => selectCard(el, h, 'discard');
     } else {
       el.onclick = () => selectCard(el, h, 'play');
     }
@@ -736,25 +792,36 @@ function selectCard(el, handItem, mode) {
   el.classList.add('selected');
   selectedHandItem = handItem;
 
+  const warn = document.getElementById('resource-warning');
+
   if (mode === 'discard') {
     document.getElementById('play-card-btn').style.display = 'none';
     document.getElementById('discard-card-btn').style.display = 'inline-block';
-    document.getElementById('energy-warning').style.display = 'none';
+    warn.style.display = 'none';
   } else {
-    const canAfford = energy >= handItem.card.energy;
+    const affordable = canAffordCard(handItem.card);
     document.getElementById('play-card-btn').style.display = 'inline-block';
-    document.getElementById('play-card-btn').disabled = !canAfford;
+    document.getElementById('play-card-btn').disabled = !affordable;
     document.getElementById('discard-card-btn').style.display = 'none';
-    document.getElementById('energy-warning').style.display = canAfford ? 'none' : 'block';
+    if (!affordable) {
+      const missing = Object.entries(handItem.card.cost || {})
+        .filter(([r, v]) => resources[r] < v)
+        .map(([r, v]) => `${v - resources[r]} more ${r}`)
+        .join(', ');
+      warn.textContent = `Not enough resources! Need ${missing}.`;
+      warn.style.display = 'block';
+    } else {
+      warn.style.display = 'none';
+    }
   }
 }
 
 function playSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
-  if (energy < h.card.energy) return;
+  if (!canAffordCard(h.card)) return;
 
-  applyEnergy(-h.card.energy);
+  spendCard(h.card);
   removeFromHand(h);
 
   const dur = parseDuration(h.card.duration);
@@ -772,15 +839,10 @@ async function discardSelectedCard() {
   if (!selectedHandItem) return;
   const h = selectedHandItem;
 
-  // Find the element and animate
   const cards = document.querySelectorAll('#hand-grid .card');
   let targetEl = null;
   cards.forEach(el => { if (el.classList.contains('selected')) targetEl = el; });
-
-  if (targetEl) {
-    targetEl.classList.add('discarding');
-    await sleep(650);
-  }
+  if (targetEl) { targetEl.classList.add('discarding'); await sleep(650); }
 
   removeFromHand(h);
   selectedHandItem = null;
@@ -788,9 +850,7 @@ async function discardSelectedCard() {
   renderPlayScreen();
 }
 
-function removeFromHand(h) {
-  hand = hand.filter(item => item !== h);
-}
+function removeFromHand(h) { hand = hand.filter(item => item !== h); }
 
 function parseDuration(dur) {
   if (!dur) return 0;
@@ -806,13 +866,8 @@ function updateActiveBar() {
   const list = document.getElementById('active-cards-list');
   const label = document.getElementById('active-bar-label');
   list.innerHTML = '';
-
-  if (activeCards.length === 0) {
-    label.textContent = 'No active cards';
-    return;
-  }
+  if (activeCards.length === 0) { label.textContent = 'No active cards'; return; }
   label.textContent = `${activeCards.length} card${activeCards.length > 1 ? 's' : ''} active`;
-
   activeCards.forEach(ac => {
     const el = buildCardElement(ac.card);
     el.classList.add('flipped', 'active-card');
@@ -864,7 +919,6 @@ async function runTransition() {
   allItems.forEach(({ source, item }) => {
     const el = buildCardElement(item.card);
     el.classList.add('flipped');
-
     if (source === 'active') {
       el.classList.add('active-card');
       if (item.duration === null) el.classList.add('permanent-card');
@@ -878,7 +932,6 @@ async function runTransition() {
       badge.textContent = item.useWindow !== null ? `Use in ${item.useWindow}w` : '';
       el.appendChild(badge);
     }
-
     area.appendChild(el);
     cardEls.push({ el, source, item });
   });
@@ -895,22 +948,20 @@ async function runTransition() {
       if (item.duration === null) continue;
       item.duration -= 1;
       const overlay = el.querySelector('.duration-overlay');
-      if (overlay) {
-        overlay.textContent = item.duration;
-        overlay.classList.add('ticking');
-        setTimeout(() => overlay.classList.remove('ticking'), 500);
-      }
+      if (overlay) { overlay.textContent = item.duration; overlay.classList.add('ticking'); setTimeout(() => overlay.classList.remove('ticking'), 500); }
       if (item.duration <= 0) toDiscard.push({ el, source, item });
     } else {
       if (item.useWindow === null) continue;
       item.useWindow -= 1;
       const badge = el.querySelector('.use-badge');
-      if (badge) badge.textContent = item.useWindow > 0 ? `Use in ${item.useWindow}w` : 'Use in 0w';
+      if (badge) badge.textContent = item.useWindow > 0 ? `Use in ${item.useWindow}w` : 'Expired';
 
       if (item.useWindow <= 0) {
-        if (isBadCard(item.card)) {
+        if (item.card.cardType === 'heel') {
+          // Heel cards become forced immediate
           toForce.push({ el, source, item });
         } else {
+          // Face cards just expire — no punishment
           toDiscard.push({ el, source, item });
         }
       }
@@ -921,7 +972,7 @@ async function runTransition() {
   await sleep(500);
 
   if (toForce.length > 0) {
-    document.getElementById('transition-msg').textContent = '⚠️ Some cards are now FORCED immediate use!';
+    document.getElementById('transition-msg').textContent = '⚠️ Heel cards are now FORCED immediate use!';
     toForce.forEach(({ el, item }) => {
       item.useWindow = null;
       item.card = { ...item.card, use: 'Immediately' };
@@ -956,9 +1007,7 @@ function completeTransition(nextShow) {
   document.getElementById('transition-done-btn').style.display = 'inline-block';
 }
 
-function finishTransition() {
-  showScreen('pack-screen');
-}
+function finishTransition() { showScreen('pack-screen'); }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -968,20 +1017,31 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function buildCardElement(card) {
   const el = document.createElement('div');
   el.className = 'card';
-  const energyClass = card.energy > 0 ? 'energy-pos' : card.energy < 0 ? 'energy-neg' : 'energy-zero';
-  const energyLabel = card.energy > 0 ? `⚡ Costs ${card.energy}` : card.energy < 0 ? `⚡ +${Math.abs(card.energy)}` : '⚡ 0';
+  if (card.cardType === 'promo') el.classList.add('promo-card');
+
+  const typeLabels = { heel: '👿 HEEL', face: '😇 FACE', promo: '🎤 PROMO' };
+  const costHTML = formatCost(card.cost);
+
+  let grantsHTML = '';
+  if (card.grants) {
+    const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
+    grantsHTML = Object.entries(card.grants)
+      .map(([r, v]) => `<span class="cost-${r}">+${v} ${icons[r]} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`)
+      .join(' ');
+  }
+
   el.innerHTML = `
     <div class="card-inner">
       <div class="card-front">📦</div>
-      <div class="card-back ${card.rarity}">
+      <div class="card-back ${card.cardType} ${card.rarity}">
+        <div class="card-type-label">${typeLabels[card.cardType] || card.cardType}</div>
         <div class="card-rarity-badge">${card.rarity}</div>
-        <div class="card-type">${card.type}</div>
         <div class="card-title">${card.title}</div>
         <div class="card-desc">${card.desc}</div>
         <div class="card-meta">
-          <span class="${energyClass}">${energyLabel}</span>
-          <span>⏱ ${card.duration}</span>
-          <span>📋 ${card.use}</span>
+          ${card.cardType === 'promo' ? `<span>${grantsHTML}</span>` : `<span>💰 Cost: ${costHTML}</span>`}
+          ${card.duration ? `<span>⏱ ${card.duration}</span>` : ''}
+          ${card.use ? `<span>📋 ${card.use}</span>` : ''}
         </div>
       </div>
     </div>`;
@@ -999,7 +1059,7 @@ function showScreen(id) {
 // ══════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════
-updateEnergyDisplay();
+updateResourceDisplay();
 loadCards();
 </script>
 </body>
