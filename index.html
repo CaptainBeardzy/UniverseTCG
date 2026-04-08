@@ -513,7 +513,7 @@ function isFreeSlot(h) {
   return h.card.cardType === 'heel' && isImmediate(h.card);
 }
 function isImmediate(card) {
-  return card.use === 'Immediately';
+  return card.use === 'Immediately' || card.use === 'Immediate';
 }
 function countedHandSize() {
   return hand.filter(h => !isFreeSlot(h)).length;
@@ -586,12 +586,14 @@ function applyResource(type, amount) {
 }
 
 function canAffordCard(card) {
-  if (!card.cost) return true;
+  if (card.cardType === 'promo') return true; // Promo cards are free
+  if (!card.cost || Object.keys(card.cost).length === 0) return true;
   return Object.entries(card.cost).every(([r, v]) => resources[r] >= v);
 }
 
 function spendCard(card) {
-  if (!card.cost) return;
+  if (card.cardType === 'promo') return; // Promo cards don't cost anything
+  if (!card.cost || Object.keys(card.cost).length === 0) return;
   Object.entries(card.cost).forEach(([r, v]) => applyResource(r, -v));
 }
 
@@ -607,7 +609,8 @@ function formatCost(cost) {
 //  PACK OPENING — guaranteed 1 Heel, 1 Face, 1 Promo
 // ══════════════════════════════════════════
 function openPack(packIndex) {
-  if (hand.some(h => isImmediate(h.card) && h.card.cardType === 'heel')) {
+  // Check if player has immediate heel cards that need to be played
+  if (hand.some(h => h.card.cardType === 'heel' && isImmediate(h.card))) {
     document.getElementById('pack-locked-msg').style.display = 'block';
     return;
   }
@@ -634,15 +637,29 @@ function openPack(packIndex) {
 }
 
 function drawGuaranteedSet(pack) {
-  const heels  = pack.cards.filter(c => c.cardType === 'heel');
-  const faces  = pack.cards.filter(c => c.cardType === 'face');
-  const promos = pack.cards.filter(c => c.cardType === 'promo');
-
+  // Filter cards by type
+  let heels = pack.cards.filter(c => c.cardType === 'heel');
+  let faces = pack.cards.filter(c => c.cardType === 'face');
+  let promos = pack.cards.filter(c => c.cardType === 'promo');
+  
+  // If we don't have promos, use some neutral cards as promos
+  if (promos.length === 0) {
+    promos = pack.cards.filter(c => c.cardType === 'neutral').slice(0, 5);
+  }
+  
+  // Pick one of each type randomly
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-
-  // Shuffle order so it's not always Heel/Face/Promo left-to-right
-  const set = [pick(heels), pick(faces), pick(promos)];
-  return set.sort(() => Math.random() - 0.5);
+  
+  // Make sure we have at least one of each type
+  if (heels.length > 0 && faces.length > 0 && promos.length > 0) {
+    // Shuffle order so it's not always Heel/Face/Promo left-to-right
+    const set = [pick(heels), pick(faces), pick(promos)];
+    return set.sort(() => Math.random() - 0.5);
+  } else {
+    // Fallback: just pick 3 random cards
+    const shuffled = [...pack.cards].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+  }
 }
 
 // ══════════════════════════════════════════
@@ -714,7 +731,7 @@ function addCardsToHand() {
 }
 
 function parseUseWindow(use) {
-  if (!use || use === 'Immediately') return null;
+  if (!use || use === 'Immediately' || use === 'Immediate') return null;
   const match = use.match(/(\d+)/);
   return match ? parseInt(match[1]) : null;
 }
@@ -1026,15 +1043,12 @@ function buildCardElement(card) {
   if (card.cardType === 'promo') el.classList.add('promo-card');
 
   const typeLabels = { heel: '👿 HEEL', face: '😇 FACE', promo: '🎤 PROMO' };
-  const costHTML = formatCost(card.cost);
-
-  let grantsHTML = '';
-  if (card.grants) {
-    const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
-    grantsHTML = Object.entries(card.grants)
-      .map(([r, v]) => `<span class="cost-${r}">+${v} ${icons[r]} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`)
-      .join(' ');
-  }
+  const costHTML = card.cardType === 'promo' ? 
+    (card.grants ? Object.entries(card.grants).map(([r, v]) => {
+      const icons = { heat: '🔥', hype: '📣', clout: '🌐' };
+      return `<span class="cost-${r}">+${v} ${icons[r]} ${r.charAt(0).toUpperCase()+r.slice(1)}</span>`;
+    }).join(' ') : '<span class="cost-free">Free</span>') : 
+    formatCost(card.cost || {});
 
   el.innerHTML = `
     <div class="card-inner">
@@ -1045,7 +1059,9 @@ function buildCardElement(card) {
         <div class="card-title">${card.title}</div>
         <div class="card-desc">${card.desc}</div>
         <div class="card-meta">
-          ${card.cardType === 'promo' ? `<span>${grantsHTML}</span>` : `<span>💰 Cost: ${costHTML}</span>`}
+          ${card.cardType === 'promo' ? 
+            `<span>🎁 Grants: ${costHTML}</span>` : 
+            `<span>💰 Cost: ${costHTML}</span>`}
           ${card.duration ? `<span>⏱ ${card.duration}</span>` : ''}
           ${card.use ? `<span>📋 ${card.use}</span>` : ''}
         </div>
