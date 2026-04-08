@@ -19,7 +19,6 @@
     color: white;
   }
 
-  /* Particle canvas */
   #particles {
     position: fixed;
     top: 0; left: 0;
@@ -39,14 +38,14 @@
     min-height: 100vh;
   }
 
-  /* ---- PACK SELECTION SCREEN ---- */
+  /* ---- PACK SELECTION ---- */
   #pack-screen h1 {
     font-size: 2.2rem;
     font-weight: 900;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #fff;
-    text-shadow: 0 0 30px #e8c84a;
+    text-shadow: 0 0 30px #4a90d9;
     margin-bottom: 8px;
   }
 
@@ -57,6 +56,14 @@
     letter-spacing: 1px;
   }
 
+  #loading-msg {
+    color: #555;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    animation: pulse 1.5s infinite;
+  }
+
   .pack-container {
     display: flex;
     gap: 30px;
@@ -65,8 +72,8 @@
   }
 
   .pack {
-    width: 140px;
-    height: 200px;
+    width: 160px;
+    height: 220px;
     border-radius: 14px;
     cursor: pointer;
     position: relative;
@@ -76,45 +83,25 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 12px;
+    padding: 16px;
     border: 2px solid transparent;
     overflow: hidden;
-  }
-
-  .pack:hover {
-    transform: translateY(-8px) scale(1.04);
-  }
-
-  .pack-standard {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
     border-color: #4a90d9;
     box-shadow: 0 0 20px rgba(74,144,217,0.3);
   }
-  .pack-standard:hover { box-shadow: 0 0 40px rgba(74,144,217,0.6); }
 
-  .pack-gold {
-    background: linear-gradient(145deg, #2a1a00, #3d2800);
-    border-color: #e8c84a;
-    box-shadow: 0 0 20px rgba(232,200,74,0.3);
+  .pack:hover {
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 0 40px rgba(74,144,217,0.6);
   }
-  .pack-gold:hover { box-shadow: 0 0 40px rgba(232,200,74,0.7); }
 
-  .pack-chaos {
-    background: linear-gradient(145deg, #1a0020, #2d0040);
-    border-color: #c84aff;
-    box-shadow: 0 0 20px rgba(200,74,255,0.3);
-  }
-  .pack-chaos:hover { box-shadow: 0 0 40px rgba(200,74,255,0.7); }
+  .pack-icon { font-size: 2.8rem; margin-bottom: 10px; }
+  .pack-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .pack-desc { font-size: 0.65rem; color: #aaa; margin-top: 6px; line-height: 1.4; }
+  .pack-count { font-size: 0.6rem; margin-top: 10px; padding: 2px 10px; border-radius: 20px; font-weight: 700; letter-spacing: 1px; background: rgba(74,144,217,0.2); color: #4a90d9; }
 
-  .pack-icon { font-size: 2.5rem; margin-bottom: 8px; }
-  .pack-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .pack-desc { font-size: 0.65rem; color: #aaa; margin-top: 4px; }
-  .pack-rarity { font-size: 0.6rem; margin-top: 8px; padding: 2px 8px; border-radius: 20px; font-weight: 700; letter-spacing: 1px; }
-  .pack-standard .pack-rarity { background: rgba(74,144,217,0.2); color: #4a90d9; }
-  .pack-gold .pack-rarity { background: rgba(232,200,74,0.2); color: #e8c84a; }
-  .pack-chaos .pack-rarity { background: rgba(200,74,255,0.2); color: #c84aff; }
-
-  /* ---- OPENING ANIMATION SCREEN ---- */
+  /* ---- OPENING ANIMATION ---- */
   #opening-screen { display: none; }
 
   .pack-opening-wrap {
@@ -125,71 +112,62 @@
     height: 100vh;
   }
 
-  .pack-3d {
-    width: 180px;
-    height: 260px;
-    position: relative;
-    cursor: pointer;
-    perspective: 800px;
-  }
-
-  .pack-3d-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 16px;
-  }
-
-  .pack-face {
+  .pack-rip-top, .pack-rip-bottom {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    left: 0;
     border-radius: 16px;
+    transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    z-index: 10;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    backface-visibility: hidden;
-    font-size: 3rem;
-    font-weight: 900;
-    text-align: center;
-    padding: 20px;
-  }
-
-  .pack-face-front {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
     border: 2px solid #4a90d9;
-    box-shadow: 0 0 40px rgba(74,144,217,0.5), inset 0 0 60px rgba(74,144,217,0.1);
+    box-shadow: 0 0 40px rgba(74,144,217,0.5);
   }
 
-  .pack-face-front.gold-pack {
-    background: linear-gradient(145deg, #2a1a00, #3d2800);
-    border-color: #e8c84a;
-    box-shadow: 0 0 40px rgba(232,200,74,0.6), inset 0 0 60px rgba(232,200,74,0.1);
+  .pack-rip-top {
+    top: 0;
+    height: 130px;
+    border-bottom: none;
+    font-size: 3rem;
+    align-items: flex-start;
+    padding-top: 20px;
   }
 
-  .pack-face-front.chaos-pack {
-    background: linear-gradient(145deg, #1a0020, #2d0040);
-    border-color: #c84aff;
-    box-shadow: 0 0 40px rgba(200,74,255,0.6), inset 0 0 60px rgba(200,74,255,0.1);
-  }
-
-  .pack-label {
-    font-size: 0.75rem;
+  .pack-rip-bottom {
+    bottom: 0;
+    height: 130px;
+    border-top: none;
+    font-size: 0.7rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-top: 10px;
-    opacity: 0.8;
+    color: #aaa;
+    align-items: flex-end;
+    padding-bottom: 18px;
+  }
+
+  .pack-rip-top.ripped { transform: translateY(-140%) rotate(-6deg); }
+  .pack-rip-bottom.ripped { transform: translateY(140%) rotate(4deg); }
+
+  .pack-wrapper {
+    position: relative;
+    width: 180px;
+    height: 260px;
+    cursor: pointer;
   }
 
   .click-hint {
     position: absolute;
-    bottom: -40px;
-    font-size: 0.75rem;
+    bottom: -44px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
     color: #aaa;
     letter-spacing: 2px;
+    white-space: nowrap;
     animation: pulse 1.5s infinite;
   }
 
@@ -198,54 +176,16 @@
     50% { opacity: 1; }
   }
 
-  /* Rip animation */
-  .pack-rip-top, .pack-rip-bottom {
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    border-radius: 16px;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    z-index: 10;
-  }
+  /* ---- CARDS REVEAL ---- */
+  #cards-screen { display: none; }
 
-  .pack-rip-top {
-    top: 0;
-    background: linear-gradient(145deg, #1a1a2e, #16213e);
-    border: 2px solid #4a90d9;
-    border-bottom: none;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 20px;
-    font-size: 2rem;
-  }
-
-  .pack-rip-bottom {
-    bottom: 0;
-    background: linear-gradient(145deg, #16213e, #0d1b2a);
-    border: 2px solid #4a90d9;
-    border-top: none;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 20px;
+  .cards-title {
     font-size: 0.75rem;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: #aaa;
+    margin-bottom: 30px;
   }
-
-  .pack-rip-top.gold { background: linear-gradient(145deg, #2a1a00, #3d2800); border-color: #e8c84a; }
-  .pack-rip-bottom.gold { background: linear-gradient(145deg, #3d2800, #1a0e00); border-color: #e8c84a; }
-  .pack-rip-top.chaos { background: linear-gradient(145deg, #1a0020, #2d0040); border-color: #c84aff; }
-  .pack-rip-bottom.chaos { background: linear-gradient(145deg, #2d0040, #150020); border-color: #c84aff; }
-
-  .pack-rip-top.ripped { transform: translateY(-120%) rotate(-5deg); }
-  .pack-rip-bottom.ripped { transform: translateY(120%) rotate(3deg); }
-
-  /* ---- CARDS REVEAL SCREEN ---- */
-  #cards-screen { display: none; }
 
   .cards-reveal-area {
     display: flex;
@@ -257,8 +197,8 @@
   }
 
   .card {
-    width: 160px;
-    height: 230px;
+    width: 165px;
+    height: 240px;
     border-radius: 14px;
     position: relative;
     cursor: pointer;
@@ -302,73 +242,47 @@
 
   .card-back {
     background: linear-gradient(145deg, #111, #1a1a2e);
-    border: 2px solid #333;
-    font-size: 2rem;
+    border: 2px solid #2a2a4a;
+    font-size: 2.5rem;
   }
 
   .card-back::before {
     content: '';
     position: absolute;
     inset: 6px;
-    border: 1px solid #333;
+    border: 1px solid #2a2a4a;
     border-radius: 10px;
     opacity: 0.5;
   }
 
   .card-front {
     transform: rotateY(180deg);
-    border: 2px solid #555;
   }
 
-  /* Rarity styles */
   .rarity-common .card-front {
     background: linear-gradient(145deg, #1a1a2e, #252540);
-    border-color: #4a90d9;
+    border: 2px solid #4a90d9;
     box-shadow: 0 0 15px rgba(74,144,217,0.3);
   }
 
   .rarity-rare .card-front {
     background: linear-gradient(145deg, #0d2a0d, #1a3d1a);
-    border-color: #4aff6e;
+    border: 2px solid #4aff6e;
     box-shadow: 0 0 20px rgba(74,255,110,0.4);
   }
 
   .rarity-epic .card-front {
     background: linear-gradient(145deg, #1a0030, #2d0050);
-    border-color: #c84aff;
+    border: 2px solid #c84aff;
     box-shadow: 0 0 25px rgba(200,74,255,0.5);
   }
 
   .rarity-legendary .card-front {
     background: linear-gradient(145deg, #2a1500, #3d2000);
-    border-color: #ff9a00;
+    border: 2px solid #ff9a00;
     box-shadow: 0 0 30px rgba(255,154,0,0.6), 0 0 60px rgba(255,154,0,0.2);
   }
 
-  .card-icon { font-size: 2.2rem; margin-bottom: 8px; }
-  .card-type { font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 4px; }
-  .card-title { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 6px; }
-  .card-desc { font-size: 0.6rem; color: #ccc; line-height: 1.4; }
-  .card-rarity-badge {
-    position: absolute;
-    bottom: 10px;
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 20px;
-  }
-
-  .rarity-common .card-rarity-badge { background: rgba(74,144,217,0.2); color: #4a90d9; }
-  .rarity-rare .card-rarity-badge { background: rgba(74,255,110,0.2); color: #4aff6e; }
-  .rarity-epic .card-rarity-badge { background: rgba(200,74,255,0.2); color: #c84aff; }
-  .rarity-legendary .card-rarity-badge { background: rgba(255,154,0,0.2); color: #ff9a00; }
-
-  .card:hover .card-inner { transform: rotateY(180deg) scale(1.03); }
-  .card.flipped:hover .card-inner { transform: rotateY(180deg) scale(1.03); }
-
-  /* Legendary shimmer */
   .rarity-legendary .card-front::after {
     content: '';
     position: absolute;
@@ -383,9 +297,46 @@
     100% { transform: translateX(200%); }
   }
 
-  /* Buttons */
+  .card-icon { font-size: 2.2rem; margin-bottom: 6px; }
+  .card-type { font-size: 0.52rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 4px; }
+  .card-title { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 8px; }
+  .card-desc { font-size: 0.58rem; color: #ccc; line-height: 1.45; }
+  .card-duration {
+    position: absolute;
+    bottom: 28px;
+    font-size: 0.5rem;
+    color: #888;
+    letter-spacing: 1px;
+    font-style: italic;
+  }
+  .card-rarity-badge {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .rarity-common .card-rarity-badge { background: rgba(74,144,217,0.2); color: #4a90d9; }
+  .rarity-rare .card-rarity-badge { background: rgba(74,255,110,0.2); color: #4aff6e; }
+  .rarity-epic .card-rarity-badge { background: rgba(200,74,255,0.2); color: #c84aff; }
+  .rarity-legendary .card-rarity-badge { background: rgba(255,154,0,0.2); color: #ff9a00; }
+
+  .card:not(.flipped):hover { transform: translateY(-4px) scale(1.02); }
+
+  .flip-hint {
+    font-size: 0.65rem;
+    color: #555;
+    letter-spacing: 2px;
+    margin-top: 16px;
+    animation: pulse 2s infinite;
+  }
+
   .btn {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 14px 36px;
     border: none;
     border-radius: 8px;
@@ -395,26 +346,13 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
+    background: linear-gradient(135deg, #4a90d9, #2a60a9);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(74,144,217,0.4);
   }
 
   .btn:hover { transform: scale(1.05); }
 
-  .btn-primary {
-    background: linear-gradient(135deg, #e8c84a, #ff9a00);
-    color: #000;
-    box-shadow: 0 4px 20px rgba(232,200,74,0.4);
-  }
-
-  .btn-secondary {
-    background: transparent;
-    color: #aaa;
-    border: 1px solid #333;
-    margin-top: 12px;
-  }
-
-  .btn-secondary:hover { color: #fff; border-color: #666; }
-
-  /* Flash overlay */
   #flash {
     position: fixed;
     inset: 0;
@@ -425,34 +363,26 @@
     transition: opacity 0.1s;
   }
 
-  /* Title on cards screen */
-  .cards-title {
-    font-size: 0.75rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #aaa;
-    margin-bottom: 30px;
-  }
-
-  .flip-hint {
-    font-size: 0.65rem;
-    color: #555;
-    letter-spacing: 2px;
-    margin-top: 16px;
-    animation: pulse 2s infinite;
-  }
-
-  /* Glow burst on legendary */
   .glow-burst {
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 5;
     opacity: 0;
-    background: radial-gradient(circle at center, rgba(255,154,0,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(255,154,0,0.35) 0%, transparent 70%);
     transition: opacity 0.3s;
   }
   .glow-burst.active { opacity: 1; }
+
+  #error-msg {
+    color: #ff6b6b;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    text-align: center;
+    max-width: 400px;
+    line-height: 1.5;
+    display: none;
+  }
 </style>
 </head>
 <body>
@@ -464,35 +394,18 @@
 <!-- PACK SELECTION -->
 <div class="screen" id="pack-screen">
   <h1>⚡ Chaos Packs</h1>
-  <p>Select a pack to open</p>
-  <div class="pack-container">
-    <div class="pack pack-standard" onclick="selectPack('standard')">
-      <div class="pack-icon">📦</div>
-      <div class="pack-name">Standard</div>
-      <div class="pack-desc">Core chaos events</div>
-      <div class="pack-rarity">Common – Rare</div>
-    </div>
-    <div class="pack pack-gold" onclick="selectPack('gold')">
-      <div class="pack-icon">🏆</div>
-      <div class="pack-name">Gold</div>
-      <div class="pack-desc">Elevated chaos</div>
-      <div class="pack-rarity">Rare – Epic</div>
-    </div>
-    <div class="pack pack-chaos" onclick="selectPack('chaos')">
-      <div class="pack-icon">💀</div>
-      <div class="pack-name">Chaos</div>
-      <div class="pack-desc">Maximum disruption</div>
-      <div class="pack-rarity">Epic – Legendary</div>
-    </div>
-  </div>
+  <p>WWE Universe Mode — Season 1</p>
+  <div class="pack-container" id="packContainer"></div>
+  <div id="loading-msg">LOADING CARDS...</div>
+  <div id="error-msg"></div>
 </div>
 
 <!-- OPENING ANIMATION -->
 <div class="screen" id="opening-screen">
   <div class="pack-opening-wrap">
     <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
-      <div class="pack-3d" id="packVisual" onclick="ripPack()">
-        <div class="pack-rip-top" id="ripTop">🎴</div>
+      <div class="pack-wrapper" id="packWrapper" onclick="ripPack()">
+        <div class="pack-rip-top" id="ripTop">📦</div>
         <div class="pack-rip-bottom" id="ripBottom">WWE Chaos</div>
       </div>
       <div class="click-hint" id="clickHint">CLICK TO OPEN</div>
@@ -505,11 +418,11 @@
   <div class="cards-title">Your Cards</div>
   <div class="cards-reveal-area" id="cardsArea"></div>
   <div class="flip-hint" id="flipHint">CLICK CARDS TO REVEAL</div>
-  <button class="btn btn-primary" id="openAgainBtn" onclick="resetToPackScreen()" style="display:none;">Open Another Pack</button>
+  <button class="btn" id="openAgainBtn" onclick="resetToPackScreen()" style="display:none;">Open Another Pack</button>
 </div>
 
 <script>
-// ---- PARTICLE SYSTEM ----
+// ---- PARTICLES ----
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -552,99 +465,139 @@ window.addEventListener('resize', () => {
 });
 
 // ---- CARD DATA ----
-const cardPool = {
-  standard: [
-    { rarity:'common', icon:'⚔️', type:'Match Type', title:'Last Man Standing', desc:'Next title match must be a Last Man Standing match.', duration:'Use within 3 shows' },
-    { rarity:'common', icon:'🎭', type:'Gimmick Change', title:'New Attitude', desc:'Pick any mid-card heel and turn them face immediately.', duration:'Immediate' },
-    { rarity:'common', icon:'📺', type:'Booking', title:'Squash Week', desc:'Your next show must include one total squash match.', duration:'Next show' },
-    { rarity:'common', icon:'🏷️', type:'Stipulation', title:'No DQ Night', desc:'All matches on next show have No DQ rules.', duration:'Next show' },
-    { rarity:'common', icon:'🎤', type:'Promo', title:'Open Challenge', desc:'Your current champion must issue an open challenge.', duration:'Use within 2 shows' },
-    { rarity:'rare', icon:'📈', type:'Stat Boost', title:'Underdog Push', desc:'Pick a random mid-carder. Boost their overness by 10 for 4 shows.', duration:'4 shows' },
-    { rarity:'rare', icon:'🔄', type:'Booking', title:'Surprise Return', desc:'Bring back a released or inactive superstar for one show.', duration:'Next show' },
-    { rarity:'rare', icon:'🤝', type:'Alliance', title:'Unlikely Partners', desc:'Two rivals must tag together on the next show.', duration:'Next show' },
-  ],
-  gold: [
-    { rarity:'rare', icon:'🏆', type:'Title Change', title:'Cash In Chaos', desc:'A non-champion must challenge for a title this show, unannounced.', duration:'This show' },
-    { rarity:'rare', icon:'🎭', type:'Gimmick Change', title:'Character Overhaul', desc:'Fully redesign one superstar — new name, attire, alignment.', duration:'Permanent' },
-    { rarity:'epic', icon:'🔥', type:'Event', title:'Extreme Rules Month', desc:'All matches for the next 4 shows have extreme rules stipulations.', duration:'4 shows' },
-    { rarity:'epic', icon:'⚡', type:'Stat Boost', title:'Rocket Push', desc:'One random superstar gets a massive overness spike. Book them to win 3 straight.', duration:'3 shows' },
-    { rarity:'epic', icon:'🩺', type:'Injury', title:'Medical Suspension', desc:'Randomly select a main eventer. They are suspended for 2 shows.', duration:'2 shows' },
-    { rarity:'epic', icon:'🎪', type:'Event', title:'Special Attraction', desc:'Book a dream match between two superstars who have never faced each other.', duration:'Next show' },
-  ],
-  chaos: [
-    { rarity:'epic', icon:'💀', type:'Chaos', title:'Brand Invasion', desc:'Three superstars from another brand invade your next show.', duration:'Next show' },
-    { rarity:'epic', icon:'🌀', type:'Chaos', title:'Authority Shift', desc:'Your GM must be replaced. Randomly pick a new one from your roster.', duration:'Permanent' },
-    { rarity:'legendary', icon:'👑', type:'Legendary', title:'Title Scramble', desc:'All titles are vacated. Book a tournament to crown new champions.', duration:'Immediate' },
-    { rarity:'legendary', icon:'🔱', type:'Legendary', title:'Superstar Starter', desc:'Create a brand new superstar from scratch and push them immediately.', duration:'Permanent' },
-    { rarity:'legendary', icon:'💥', type:'Legendary', title:'Faction War', desc:'Two factions must be formed this show and feud for the next 6 shows.', duration:'6 shows' },
-    { rarity:'legendary', icon:'🌟', type:'Legendary', title:'Hall of Fame Moment', desc:'Book the most memorable match of your universe. No restrictions.', duration:'Next PPV' },
-  ]
-};
-
-let currentPackType = 'standard';
+let cardData = null;
+let currentPackKey = null;
 let drawnCards = [];
 let flippedCount = 0;
+let packRipped = false;
 
-function getRandomCards(type) {
-  const pool = cardPool[type];
+// Weighted random draw based on rarityWeights
+function weightedDraw(cards, weights) {
+  const pool = [];
+  cards.forEach(card => {
+    const w = weights[card.rarity] || 10;
+    for (let i = 0; i < w; i++) pool.push(card);
+  });
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, 3);
+  // Pick 3 unique cards
+  const picked = [];
+  const seen = new Set();
+  for (const card of shuffled) {
+    if (!seen.has(card.title)) {
+      seen.add(card.title);
+      picked.push(card);
+      if (picked.length === 3) break;
+    }
+  }
+  return picked;
 }
 
-function selectPack(type) {
-  currentPackType = type;
-  drawnCards = getRandomCards(type);
+function buildPackUI(packs) {
+  const container = document.getElementById('packContainer');
+  const loadingMsg = document.getElementById('loading-msg');
+  container.innerHTML = '';
+  loadingMsg.style.display = 'none';
 
-  // Setup pack visuals
-  const ripTop = document.getElementById('ripTop');
-  const ripBottom = document.getElementById('ripBottom');
-  ripTop.className = 'pack-rip-top';
-  ripBottom.className = 'pack-rip-bottom';
+  Object.entries(packs).forEach(([key, pack]) => {
+    const el = document.createElement('div');
+    el.className = 'pack';
+    el.innerHTML = `
+      <div class="pack-icon">${pack.icon}</div>
+      <div class="pack-name">${pack.name}</div>
+      <div class="pack-desc">${pack.desc}</div>
+      <div class="pack-count">${pack.cards.length} cards</div>
+    `;
+    el.onclick = () => selectPack(key);
+    container.appendChild(el);
+  });
+}
 
-  if (type === 'gold') {
-    ripTop.classList.add('gold');
-    ripBottom.classList.add('gold');
-    ripTop.textContent = '🏆';
-  } else if (type === 'chaos') {
-    ripTop.classList.add('chaos');
-    ripBottom.classList.add('chaos');
-    ripTop.textContent = '💀';
-  } else {
-    ripTop.textContent = '🎴';
+// Try fetch from cards.json, fall back to inline demo data
+async function loadCards() {
+  try {
+    const res = await fetch('cards.json');
+    if (!res.ok) throw new Error('Not found');
+    cardData = await res.json();
+    buildPackUI(cardData.packs);
+  } catch (e) {
+    // Fallback: inline demo so playground still works
+    cardData = getFallbackData();
+    buildPackUI(cardData.packs);
   }
+}
+
+function getFallbackData() {
+  return {
+    packs: {
+      core: {
+        name: "Core Pack",
+        icon: "📦",
+        desc: "The essentials of chaos",
+        color: "#4a90d9",
+        cards: [
+          { rarity:"common", icon:"🧳", type:"Logistics", title:"Lost Luggage", desc:"A superstar arrives without their gear. They must compete in street clothes this week.", duration:"This show" },
+          { rarity:"common", icon:"🤧", type:"Injury", title:"Under the Weather", desc:"A randomly selected mid-carder is ill. They appear but lose their match, no matter the booking.", duration:"This show" },
+          { rarity:"common", icon:"🚗", type:"Logistics", title:"Travel Delay", desc:"One superstar arrives late. They cannot appear in the first half of the show.", duration:"This show" },
+          { rarity:"common", icon:"🎤", type:"Promo", title:"Unscheduled Promo", desc:"A superstar not booked for a match must open the show with a promo. No match this week.", duration:"This show" },
+          { rarity:"common", icon:"📺", type:"Booking", title:"Dark Match Debut", desc:"A superstar from NXT or the lower card must appear and win a match this show.", duration:"This show" },
+          { rarity:"common", icon:"🔁", type:"Booking", title:"Rematch Clause", desc:"The loser of last week's main event invokes their rematch clause. Book it this show.", duration:"This show" },
+          { rarity:"common", icon:"🩹", type:"Injury", title:"Worked Injury", desc:"A superstar sells a kayfabe injury. They must lose their next match via referee stoppage.", duration:"Next match" },
+          { rarity:"common", icon:"🎭", type:"Gimmick", title:"Wardrobe Malfunction", desc:"Change the attire of one superstar this week. New colour, new look — no explanation given.", duration:"This show" },
+          { rarity:"rare", icon:"📈", type:"Push", title:"Underdog Push", desc:"Pick a mid-carder at random. They must win their next 3 matches clean.", duration:"3 shows" },
+          { rarity:"rare", icon:"🤝", type:"Booking", title:"Unlikely Partners", desc:"Two rivals must tag together this show. They don't have to get along.", duration:"This show" },
+          { rarity:"rare", icon:"⚔️", type:"Match Type", title:"Last Man Standing", desc:"The next title match on this show must be a Last Man Standing match.", duration:"This show" },
+          { rarity:"rare", icon:"🩺", type:"Injury", title:"Medical Suspension", desc:"Randomly select a main eventer. They are pulled from bookings for 2 shows.", duration:"2 shows" },
+          { rarity:"rare", icon:"🔄", type:"Booking", title:"Surprise Return", desc:"Bring back an inactive or previously released superstar for one appearance.", duration:"This show" },
+          { rarity:"rare", icon:"📣", type:"Booking", title:"Open Challenge", desc:"Your current champion must issue an open challenge. Anyone can answer — you pick randomly.", duration:"Use within 2 shows" },
+          { rarity:"rare", icon:"🏷️", type:"Stipulation", title:"No DQ Night", desc:"All matches on this show have No Disqualification rules.", duration:"This show" },
+          { rarity:"epic", icon:"🔥", type:"Event", title:"Extreme Rules Month", desc:"Every match for the next 4 shows must have an extreme or hardcore stipulation.", duration:"4 shows" },
+          { rarity:"epic", icon:"🎭", type:"Gimmick", title:"Character Overhaul", desc:"Fully redesign one superstar — new name, new attire, new alignment. No explanation given.", duration:"Permanent" },
+          { rarity:"epic", icon:"⚡", type:"Push", title:"Rocket Push", desc:"One randomly selected superstar gets an immediate main event push. Win 3 straight, including over a champion.", duration:"3 shows" },
+          { rarity:"epic", icon:"🌀", type:"Authority", title:"Authority Shift", desc:"Your current GM is replaced. Randomly pick a new one from your active roster.", duration:"Permanent" },
+          { rarity:"epic", icon:"🎪", type:"Event", title:"Special Attraction", desc:"Book a dream match between two superstars who have never faced each other in your universe.", duration:"Next show" },
+          { rarity:"legendary", icon:"👑", type:"Legendary", title:"Title Scramble", desc:"All titles are immediately vacated. Book a tournament across the next 4 shows to crown new champions.", duration:"Immediate" },
+          { rarity:"legendary", icon:"🔱", type:"Legendary", title:"Superstar Starter", desc:"Create a brand new superstar from scratch and debut them this show. They must win their first 3 matches.", duration:"Permanent" },
+          { rarity:"legendary", icon:"💥", type:"Legendary", title:"Faction War", desc:"Two factions must be formed this show and feud exclusively for the next 6 shows.", duration:"6 shows" },
+          { rarity:"legendary", icon:"🌟", type:"Legendary", title:"Hall of Fame Moment", desc:"Book the most memorable match of your entire universe. No restrictions. Make it count.", duration:"Next PPV" }
+        ]
+      }
+    },
+    rarityWeights: { common: 50, rare: 30, epic: 15, legendary: 5 }
+  };
+}
+
+// ---- PACK FLOW ----
+function selectPack(key) {
+  currentPackKey = key;
+  const pack = cardData.packs[key];
+  drawnCards = weightedDraw(pack.cards, cardData.rarityWeights);
+
+  document.getElementById('ripTop').textContent = pack.icon;
+  document.getElementById('ripBottom').textContent = pack.name;
+  document.getElementById('ripTop').className = 'pack-rip-top';
+  document.getElementById('ripBottom').className = 'pack-rip-bottom';
 
   document.getElementById('pack-screen').style.display = 'none';
   document.getElementById('opening-screen').style.display = 'flex';
+  document.getElementById('clickHint').style.display = 'block';
+  packRipped = false;
 }
-
-let packRipped = false;
 
 function ripPack() {
   if (packRipped) return;
   packRipped = true;
-
   document.getElementById('clickHint').style.display = 'none';
 
-  const ripTop = document.getElementById('ripTop');
-  const ripBottom = document.getElementById('ripBottom');
-
-  // Shake first
-  const packVisual = document.getElementById('packVisual');
-  packVisual.style.animation = 'none';
-
   setTimeout(() => {
-    ripTop.classList.add('ripped');
-    ripBottom.classList.add('ripped');
+    document.getElementById('ripTop').classList.add('ripped');
+    document.getElementById('ripBottom').classList.add('ripped');
 
-    // Flash
     const flash = document.getElementById('flash');
-    flash.style.opacity = '0.8';
+    flash.style.opacity = '0.7';
     setTimeout(() => { flash.style.opacity = '0'; }, 150);
 
-    setTimeout(() => {
-      showCards();
-    }, 700);
-  }, 200);
+    setTimeout(showCards, 700);
+  }, 150);
 }
 
 function showCards() {
@@ -668,6 +621,7 @@ function showCards() {
           <div class="card-type">${card.type}</div>
           <div class="card-title">${card.title}</div>
           <div class="card-desc">${card.desc}</div>
+          <div class="card-duration">${card.duration}</div>
           <div class="card-rarity-badge">${card.rarity}</div>
         </div>
       </div>
@@ -675,12 +629,8 @@ function showCards() {
     el.onclick = () => flipCard(el, card);
     area.appendChild(el);
 
-    setTimeout(() => {
-      el.classList.add('revealed');
-    }, i * 200 + 100);
+    setTimeout(() => el.classList.add('revealed'), i * 220 + 100);
   });
-
-  packRipped = false;
 }
 
 function flipCard(el, card) {
@@ -688,19 +638,15 @@ function flipCard(el, card) {
   el.classList.add('flipped');
   flippedCount++;
 
-  // Legendary burst
   if (card.rarity === 'legendary') {
     const burst = document.getElementById('glowBurst');
     burst.classList.add('active');
-    setTimeout(() => burst.classList.remove('active'), 800);
+    setTimeout(() => burst.classList.remove('active'), 900);
 
     const flash = document.getElementById('flash');
     flash.style.background = 'rgba(255,154,0,0.4)';
-    flash.style.opacity = '0.6';
-    setTimeout(() => {
-      flash.style.opacity = '0';
-      flash.style.background = 'white';
-    }, 200);
+    flash.style.opacity = '0.5';
+    setTimeout(() => { flash.style.opacity = '0'; flash.style.background = 'white'; }, 200);
   }
 
   if (flippedCount === drawnCards.length) {
@@ -715,6 +661,9 @@ function resetToPackScreen() {
   document.getElementById('cards-screen').style.display = 'none';
   document.getElementById('pack-screen').style.display = 'flex';
 }
+
+// ---- INIT ----
+loadCards();
 </script>
 </body>
 </html>
