@@ -198,7 +198,7 @@
 
   .card {
     width: 165px;
-    height: 240px;
+    height: 270px;
     border-radius: 14px;
     position: relative;
     cursor: pointer;
@@ -297,18 +297,31 @@
     100% { transform: translateX(200%); }
   }
 
-  .card-icon { font-size: 2.2rem; margin-bottom: 6px; }
   .card-type { font-size: 0.52rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; margin-bottom: 4px; }
   .card-title { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 8px; }
-  .card-desc { font-size: 0.58rem; color: #ccc; line-height: 1.45; }
-  .card-duration {
+  .card-desc { font-size: 0.56rem; color: #ccc; line-height: 1.45; margin-bottom: 8px; }
+  .card-meta {
     position: absolute;
-    bottom: 28px;
-    font-size: 0.5rem;
-    color: #888;
-    letter-spacing: 1px;
-    font-style: italic;
+    bottom: 30px;
+    left: 0; right: 0;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: center;
   }
+  .card-meta-row {
+    font-size: 0.48rem;
+    letter-spacing: 0.8px;
+    color: #999;
+  }
+  .card-meta-row span {
+    font-weight: 700;
+    color: #ddd;
+  }
+  .energy-positive { color: #4aff6e !important; }
+  .energy-negative { color: #ff6b6b !important; }
+  .energy-zero { color: #aaa !important; }
   .card-rarity-badge {
     position: absolute;
     bottom: 10px;
@@ -588,15 +601,21 @@ function showCards() {
   drawnCards.forEach((card, i) => {
     const el = document.createElement('div');
     el.className = `card rarity-${card.rarity}`;
+    const energyVal = card.energy;
+    const energyClass = energyVal > 0 ? 'energy-positive' : energyVal < 0 ? 'energy-negative' : 'energy-zero';
+    const energyLabel = energyVal > 0 ? `+${energyVal}` : `${energyVal}`;
     el.innerHTML = `
       <div class="card-inner">
         <div class="card-back">🎴</div>
         <div class="card-front">
-          <div class="card-icon">${card.icon}</div>
           <div class="card-type">${card.type}</div>
           <div class="card-title">${card.title}</div>
           <div class="card-desc">${card.desc}</div>
-          <div class="card-duration">${card.duration}</div>
+          <div class="card-meta">
+            <div class="card-meta-row">Energy: <span class="${energyClass}">${energyLabel}</span></div>
+            <div class="card-meta-row">Duration: <span>${card.duration}</span></div>
+            <div class="card-meta-row">Use: <span>${card.use}</span></div>
+          </div>
           <div class="card-rarity-badge">${card.rarity}</div>
         </div>
       </div>
