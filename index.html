@@ -498,7 +498,7 @@ function buildPackUI(packs) {
   container.innerHTML = '';
   loadingMsg.style.display = 'none';
 
-  Object.entries(packs).forEach(([key, pack]) => {
+  packs.forEach((pack, index) => {
     const el = document.createElement('div');
     el.className = 'pack';
     el.innerHTML = `
@@ -507,20 +507,33 @@ function buildPackUI(packs) {
       <div class="pack-desc">${pack.desc}</div>
       <div class="pack-count">${pack.cards.length} cards</div>
     `;
-    el.onclick = () => selectPack(key);
+    el.onclick = () => selectPack(index);
     container.appendChild(el);
   });
 }
 
-// Try fetch from cards.json, fall back to inline demo data
+// Load packs.json manifest, then fetch each individual pack file
 async function loadCards() {
   try {
-    const res = await fetch('cards.json');
-    if (!res.ok) throw new Error('Not found');
-    cardData = await res.json();
+    const manifestRes = await fetch('packs.json');
+    if (!manifestRes.ok) throw new Error('packs.json not found');
+    const manifest = await manifestRes.json();
+
+    // Fetch all pack files listed in the manifest
+    const packFiles = await Promise.all(
+      manifest.packs.map(path => fetch(path).then(r => {
+        if (!r.ok) throw new Error(`Could not load ${path}`);
+        return r.json();
+      }))
+    );
+
+    cardData = {
+      packs: packFiles,
+      rarityWeights: manifest.rarityWeights
+    };
     buildPackUI(cardData.packs);
   } catch (e) {
-    // Fallback: inline demo so playground still works
+    // Fallback: inline demo so playground still works without a server
     cardData = getFallbackData();
     buildPackUI(cardData.packs);
   }
@@ -569,7 +582,7 @@ function getFallbackData() {
 // ---- PACK FLOW ----
 function selectPack(key) {
   currentPackKey = key;
-  const pack = cardData.packs[key];
+  const pack = cardData.packs[key]; // key is array index
   drawnCards = weightedDraw(pack.cards, cardData.rarityWeights);
 
   document.getElementById('ripTop').textContent = pack.icon;
