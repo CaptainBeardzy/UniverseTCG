@@ -15,6 +15,7 @@ body { background:#0a0a0f; color:#fff; font-family: 'Segoe UI',sans-serif; min-h
 .resource-pill .r-val { min-width:20px; text-align:center; }
 #pill-heat .r-val { color:#f55; } #pill-hype .r-val { color:#fa0 } #pill-clout .r-val { color:#a8f }
 #show-counter { background:#1a1a2e; border:1px solid #333; border-radius:20px; padding:4px 12px; font-size:11px; color:#aaa; }
+#packs-counter { background:#1a1a2e; border:1px solid #333; border-radius:20px; padding:4px 12px; font-size:11px; color:#aaa; }
 #hand-btn { background:#2a2a4a; border:1px solid #4a4aaa; border-radius:20px; padding:6px 12px; font-size:11px; color:#aaf; cursor:pointer; }
 #active-btn { background:#2a4a2a; border:1px solid #4aa44a; border-radius:20px; padding:6px 12px; font-size:11px; color:#afa; cursor:pointer; }
 
@@ -194,6 +195,7 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
     <span class="r-icon">🌐</span><span class="r-val" id="res-clout">5</span><span style="font-size:9px;color:#666">CLOUT</span>
   </div>
   <div id="show-counter">Show #<span id="show-num">1</span></div>
+  <div id="packs-counter">Packs: <span id="packs-count">1</span></div>
   <button id="hand-btn" onclick="showOverlay('hand-overlay')">🃏 Hand (<span id="hand-count">0</span>)</button>
   <button id="active-btn" onclick="showOverlay('active-overlay')">🟢 Active (<span id="active-count">0</span>)</button>
 </div>
@@ -207,11 +209,8 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
       <div id="loading-msg">Loading packs…</div>
       <div id="error-msg"></div>
     </div>
-    <div id="pack-locked-msg" style="display:none; margin-top:16px; color:#f88; background:#1a1010; border:1px solid #a44; padding:10px; border-radius:8px;">
-      ⚠️ Play all immediate-use Heel cards before opening a new pack.
-    </div>
-    <div id="pack-used-msg" style="display:none; margin-top:16px; color:#88f; background:#1a1a2a; border:1px solid #44a; padding:10px; border-radius:8px;">
-      📦 Pack already opened this week. Continue to next show.
+    <div id="no-packs-msg" style="display:none; margin-top:16px; color:#f88; background:#1a1010; border:1px solid #a44; padding:10px; border-radius:8px;">
+      ⚠️ You need 1 pack to open a new one. Advance to the next show to earn more packs.
     </div>
   </div>
 
@@ -296,6 +295,7 @@ button[disabled] { opacity:0.45; cursor:not-allowed; transform:none !important; 
 // STATE
 let cardData = [];
 let resources = { heat: 5, hype: 5, clout: 5 };
+let packs = 1; // New currency
 let showNumber = 1;
 let hand = [];        // { card, useWindow }
 let activeCards = []; // { card, duration }
@@ -307,12 +307,28 @@ let drawnPromosTotal = 0;
 let selectedHandItem = null;
 const HAND_LIMIT = 5;
 let currentOverlay = null;
-let packOpenedThisWeek = false; // New state to track if pack was opened
 
 // UTIL
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function updateResourceDisplay() { ['heat','hype','clout'].forEach(r=>document.getElementById(`res-${r}`).textContent = resources[r]); }
-function applyResource(type, amount) { resources[type] = Math.max(0, resources[type] + amount); updateResourceDisplay(); const pill=document.getElementById(`pill-${type}`); pill.classList.remove('popping'); void pill.offsetWidth; pill.classList.add('popping'); setTimeout(()=>pill.classList.remove('popping'),400); }
+function updateResourceDisplay() { 
+  ['heat','hype','clout'].forEach(r=>document.getElementById(`res-${r}`).textContent = resources[r]); 
+  document.getElementById('packs-count').textContent = packs;
+}
+function applyResource(type, amount) { 
+  resources[type] = Math.max(0, resources[type] + amount); 
+  updateResourceDisplay(); 
+  const pill=document.getElementById(`pill-${type}`); 
+  pill.classList.remove('popping'); 
+  void pill.offsetWidth; 
+  pill.classList.add('popping'); 
+  setTimeout(()=>pill.classList.remove('popping'),400); 
+}
+function spendPack() {
+  if (packs > 0) {
+    packs--;
+    updateResourceDisplay();
+  }
+}
 
 // CAPACITY / IMMEDIATE
 function isImmediate(card) { return card && (card.use === 'Immediately' || card.use === 'Immediate'); }
@@ -410,18 +426,17 @@ function parseUseWindow(use) {
 
 // OPEN PACK
 function openPack(packIndex) {
-  // Check if pack already opened this week
-  if (packOpenedThisWeek) {
-    document.getElementById('pack-used-msg').style.display = 'block';
+  // Check if player has packs
+  if (packs <= 0) {
+    document.getElementById('no-packs-msg').style.display = 'block';
     return;
   }
   
   // Block if immediate heels still in hand
   if (hand.some(h => h.card.cardType === 'heel' && isImmediate(h.card))) {
-    document.getElementById('pack-locked-msg').style.display = 'block';
+    alert("⚠️ Play all immediate-use Heel cards before opening a new pack.");
     return;
   }
-  document.getElementById('pack-locked-msg').style.display = 'none';
 
   const pack = cardData[packIndex];
   drawnCards = drawGuaranteedSet(pack);
@@ -442,6 +457,9 @@ function openPack(packIndex) {
   });
   showScreen('reveal-screen');
   updateContinueButtonState();
+  
+  // Spend one pack
+  spendPack();
 }
 
 function drawGuaranteedSet(pack) {
@@ -551,7 +569,6 @@ function addCardsToHand() {
   drawnTotal = 0;
   drawnPromosTotal = 0;
   promoResolved = 0;
-  packOpenedThisWeek = true; // Mark that pack was opened this week
   updateHandCount();
   
   // Show post-pack screen instead of returning to pack screen
@@ -846,12 +863,13 @@ async function runTransition() {
   document.getElementById('transition-msg').textContent = 'Transition complete. Click continue to proceed.';
 }
 
-// FIXED: Reset pack opened flag when completing transition
+// FIXED: Give player a pack when completing transition
 function completeTransition(nextShow) {
   showNumber = nextShow;
   document.getElementById('show-num').textContent = showNumber;
-  packOpenedThisWeek = false; // Reset pack opened flag for new week
+  packs++; // Give player one pack
   updateHandCount(); updateActiveBar();
+  updateResourceDisplay(); // Update packs counter
   
   // FIXED: Ensure continue button is enabled after transition
   document.getElementById('next-show-btn').disabled = false;
@@ -860,7 +878,7 @@ function completeTransition(nextShow) {
 function finishTransition() { 
   showScreen('pack-screen'); 
   updateContinueButtonState(); 
-  document.getElementById('pack-used-msg').style.display = 'none';
+  document.getElementById('no-packs-msg').style.display = 'none';
 }
 
 // CARD BUILDER
